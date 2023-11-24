@@ -1,0 +1,6 @@
+[submodule "external/armadillo-code"]
+	path = external/armadillo-code
+	url = https://gitlab.com/conradsnicta/armadillo-code.git
+[submodule "external/OpenBLAS"]
+	path = external/OpenBLAS
+	url = https://github.com/OpenMathLib/OpenBLAS.git

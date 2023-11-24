@@ -9,8 +9,9 @@ include_directories(./external/armadillo-code/include -DARMA_DONT_USE_WRAPPER
         ./external/armadillo-code/include/armadillo_bits)
 include_directories(${BLAS_INCLUDE_DIR})
 
-add_library(numoop src/library.cpp
-        examples/example_program.cpp)
-target_compile_options(numoop PRIVATE ${BLAS_LINKER_FLAGS})
+add_library(numoop src/library.cpp)
 
-target_link_libraries(numoop ${BLAS_LIBRARIES})
+project(examples)
+add_executable(examples examples/example_program.cpp)
+target_link_libraries(examples ${BLAS_LIBRARIES})
+target_compile_options(examples PRIVATE ${BLAS_LINKER_FLAGS})

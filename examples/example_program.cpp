@@ -10,10 +10,14 @@ using namespace arma;
 
 int main()
 {
-    mat A(4, 5, fill::randu);
-    mat B(4, 5, fill::randu);
-
-    cout << A*B.t() << mean(A) << endl;
-
+    for (auto &x: suppliersList)
+        std::cout << x << ' ';
+    mat A;
+    field<std::string> header{2};
+    header[0] = "Marital status";
+    header[1] = "Application mode";
+    bool res = A.load(csv_name("/home/chromeilion/Code/Uni/uni2023w/ap/ap2023/hw2/numoop/examples/dataset.csv", header));
+    cout << res << endl;
+    A.print();
     return 0;
 }

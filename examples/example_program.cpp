@@ -10,8 +10,6 @@ using namespace arma;
 
 int main()
 {
-    for (auto &x: suppliersList)
-        std::cout << x << ' ';
     mat A;
     field<std::string> header{2};
     header[0] = "Marital status";

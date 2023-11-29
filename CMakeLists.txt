@@ -1,16 +1,36 @@
+# Some Armadillo related code is taken from here:
+# https://oceanai.mit.edu/svn/moos-ivp-pavlab-aro/src/lib_learning/CMakeLists.txt
+# And here:
+# https://github.com/mlpack/mlpack/blob/master/CMakeLists.txt
+
 cmake_minimum_required(VERSION 3.22.1)
 project(numoop)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -DARMA_DONT_USE_WRAPPER")
 
-find_package(BLAS REQUIRED)
+find_package(Armadillo)
+if (NOT ARMADILLO_FOUND)
+    find_package(BLAS QUIET)
+    find_package(LAPACK QUIET)
+    if (NOT BLAS_FOUND AND NOT LAPACK_FOUND)
+        message(FATAL_ERROR "Can not find BLAS or LAPACK!  These are required
+        for Armadillo.  Please install one of them---or install
+        Armadillo---before installing numoop.")
+    endif()
+    message("Using bundled Armadillo to compile")
+    set(ARMADILLO_INCLUDE_DIR external/armadillo-code/include)
+    find_package(Armadillo REQUIRED)
+endif()
 
-include_directories(./external/armadillo-code/include -DARMA_DONT_USE_WRAPPER
-        ./external/armadillo-code/include/armadillo_bits)
-include_directories(${BLAS_INCLUDE_DIR})
+include_directories(${ARMADILLO_INCLUDE_DIRS})
+
+# Include our header library
 include_directories(src/stats)
 
 project(examples)
 add_executable(examples examples/example_program.cpp)
-target_link_libraries(examples ${BLAS_LIBRARIES})
-target_compile_options(examples PRIVATE ${BLAS_LINKER_FLAGS})
+
+# Link against BLAS and LAPACK for Armadillo
+target_link_libraries(examples ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}
+        ${ARMADILLO_LIBRARIES})

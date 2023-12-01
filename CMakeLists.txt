@@ -32,7 +32,8 @@ project(examples)
 add_executable(examples examples/example_program.cpp
         src/stats/load.hpp
         src/stats/dataframe.hpp
-        src/stats/dataframe_helpers.hpp)
+        src/stats/dataframe_helpers.hpp
+        src/stats/misc.hpp)
 
 # Link against BLAS and LAPACK for Armadillo
 target_link_libraries(examples ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}

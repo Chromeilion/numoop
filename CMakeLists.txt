@@ -1,6 +1,6 @@
 # Some Armadillo related code is taken from here:
 # https://oceanai.mit.edu/svn/moos-ivp-pavlab-aro/src/lib_learning/CMakeLists.txt
-# And here:
+# And some from here:
 # https://github.com/mlpack/mlpack/blob/master/CMakeLists.txt
 
 cmake_minimum_required(VERSION 3.22.1)
@@ -29,7 +29,10 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 include_directories(src/stats)
 
 project(examples)
-add_executable(examples examples/example_program.cpp)
+add_executable(examples examples/example_program.cpp
+        src/stats/_load.hpp
+        src/stats/dataframe.hpp
+        src/stats/dataframe_helpers.hpp)
 
 # Link against BLAS and LAPACK for Armadillo
 target_link_libraries(examples ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}

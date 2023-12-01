@@ -30,5 +30,5 @@ namespace oop::stats {
                char column_delimiter = ',');
 }
 
-#include "_load.hpp"
+#include "load.hpp"
 #endif //NUMOOP_STATS_HPP

@@ -2,8 +2,8 @@
 // Created by uki on 11/30/23.
 //
 
-#ifndef EXAMPLES__LOAD_HPP
-#define EXAMPLES__LOAD_HPP
+#ifndef EXAMPLES_LOAD_HPP
+#define EXAMPLES_LOAD_HPP
 #include <armadillo>
 #include <string>
 #include <fstream>
@@ -57,4 +57,4 @@ namespace oop::stats {
     }
 }
 
-#endif //EXAMPLES__LOAD_HPP
+#endif //EXAMPLES_LOAD_HPP

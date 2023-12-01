@@ -30,7 +30,7 @@ include_directories(src/stats)
 
 project(examples)
 add_executable(examples examples/example_program.cpp
-        src/stats/_load.hpp
+        src/stats/load.hpp
         src/stats/dataframe.hpp
         src/stats/dataframe_helpers.hpp)
 

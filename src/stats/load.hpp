@@ -8,51 +8,109 @@
 #include <string>
 #include <fstream>
 #include <ios>
+#include <optional>
 #include "dataframe.hpp"
+#include "parse.hpp"
 
 namespace oop::stats {
-    // Infer the types of all elements in a vector of strings
-    std::vector<std::string> infer_types(std::vector<std::string> row);
-
     // Split a string wherever some char is present
-    std::vector<std::string> split_line(std::string line, char delimiter);
+    std::vector<std::string> split_line(const std::string &line, const char &delimiter);
 
-    union Columns {
-        std::vector<std::string> vec_s;
-        std::vector<int> vec_i;
-        std::string s;
-        int i;
-    };
+    // Read a line from a file into a vector of strings
+    bool read_line(
+            std::fstream &file,
+            std::vector<std::string>& line,
+            const char &newline_delimiter,
+            const char &column_delimiter,
+            const std::optional<std::vector<int>>& columns = std::nullopt);
 
-    oop::stats::DataFrame &load(std::string &filepath,
-               oop::stats::Columns &columns,
-               std::vector<std::string> col_types,
-               bool header,
-               char newline_delimiter,
-               char column_delimiter) {
+    // Load a CSV file into a DataFrame.
+    void load(
+            std::string& filepath,
+            oop::stats::DataFrame& matr,
+            const std::optional<std::vector<int>>& columns = std::nullopt,
+            std::optional<std::vector<convert_func>> col_types = std::nullopt,
+            std::optional<bool> header = std::nullopt,
+            char newline_delimiter = '\n',
+            char column_delimiter = ',');
+
+    // Implementation
+
+    std::vector<std::string> split_line(const std::string &line, const char &delimiter) {
+        std::vector<std::string> splits;
+        std::string word;
+        std::stringstream str(line);
+        while (getline(str, word, delimiter)) {
+            splits.push_back(word);
+        }
+        return splits;
+    }
+
+    bool read_line(
+            std::fstream& file,
+            std::vector<std::string>& line,
+            const char& newline_delimiter,
+            const char& column_delimiter,
+            const std::optional<std::vector<int>>& columns) {
+        std::string full_line;
+        std::vector<std::string> temp_line;
+        if (getline(file, full_line, newline_delimiter)) {
+            temp_line = split_line(full_line, column_delimiter);
+            line.clear();
+            if (columns.has_value()) {
+                for (auto& col : *columns) {
+                    line.push_back(temp_line[col]);
+                }
+            }
+            else { line = temp_line; }
+            return true;
+        }
+        return false;
+    }
+
+    void load(
+            std::string& filepath,
+            oop::stats::DataFrame& matr,
+            const std::optional<std::vector<int>>& columns,
+            std::optional<std::vector<convert_func>> col_types,
+            std::optional<bool> header,
+            char newline_delimiter,
+            char column_delimiter) {
         std::fstream file(filepath, std::ios::in);
-        if(!file.is_open()) {
-            throw;
+
+        if (!file.is_open()) {
+            throw std::runtime_error(
+                    "Error trying to read CSV file, it may currently be in use.");
         }
-        std::string line, word;
-        if (header) {
-            getline(file, line);
-            std::string head{line};
+
+        // Strings where each line and word will be stored.
+        std::string word;
+        std::vector<std::string> line;
+
+        // Read the first line if there is a header present.
+        std::optional<std::vector<std::string>> full_header;
+        if (header.has_value()) {
+            read_line(file, (*full_header), newline_delimiter,
+                      column_delimiter, columns);
         }
-        getline(file, line);
-        std::vector<std::string> split{split_line(line)};
-        std::vector<std::string> types = oop::stats::infer_types(split);
-        oop::stats::DataFrame matr;
 
-        while(getline(file, line))
-        {
-            row.clear();
+        matr.set_column_labels(full_header);
 
-            stringstream str(line);
+        // The first real line of data is read outside the loop, because some
+        // extra operations such as type inference may have to be performed.
+        if (!read_line(file, line, newline_delimiter, column_delimiter, columns)) {return;}
 
-            while(getline(str, word, ','))
-                row.push_back(word);
-            content.push_back(row);
+        if (!col_types.has_value()) {
+            col_types = oop::stats::infer_types(line);
+        }
+
+        std::vector<oop::stats::sup_single_types> row = convert_strings(
+                line, *col_types);
+        matr.append_row(row);
+
+        while (read_line(file, line, newline_delimiter, column_delimiter, columns)) {
+            matr.append_row(
+                    convert_strings(line, *col_types));
         }
     }
 }

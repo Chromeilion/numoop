@@ -17,11 +17,11 @@ int main() {
 
     // For a system with two variables
     arma::vec y0_twovars = {0.0, 1.0};
-    midpoint(f, y0_twovars, h, T);
+    euler(f, y0_twovars, h, T);
 
     // For a scalar ODE
     double y0_scalar = 1.0;
-    midpoint(f_scalar, y0_scalar, h, T);
+    euler(f_scalar, y0_scalar, h, T);
 
     return 0;
 }

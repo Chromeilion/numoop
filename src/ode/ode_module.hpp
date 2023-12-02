@@ -11,7 +11,7 @@
 #include <armadillo>
 
 // Euler method for vector ODEs
-void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "euler_result.csv") {
+void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "euler_vector_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -43,7 +43,7 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const ar
 }
 
 // Euler method for scalar ODEs
-void euler(const std::function<arma::vec(double, const arma::vec&)>& f, double x0, double y0, double h, double T, const std::string& filename = "euler_result.csv") {
+void euler(const std::function<arma::vec(double, const arma::vec&)>& f, double x0, double y0, double h, double T, const std::string& filename = "euler_scalar_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -74,7 +74,7 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, double x
 
 
 // Runge-Kutta method for vector ODEs
-void rk4(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "runge_kutta_result.csv") {
+void rk4(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "rk_vector_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -113,7 +113,7 @@ void rk4(const std::function<arma::vec(double, const arma::vec&)>& f, const arma
 }   
 
 // Runge-Kutta method for scalar ODEs
-void rungeKutta(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "runge_kutta_scalar_result.csv") {
+void rungeKutta(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "rk_scalar_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -141,13 +141,14 @@ void rungeKutta(const std::function<double(double, double)>& f, double y0, doubl
     std::ofstream file(filename);
     file << "t,y\n";
 
-    rk_mat.save(file, arma::csv_ascii);
+    arma::mat mat = rk_mat.t();
+    mat.save(file, arma::csv_ascii);
 
     std::cout << "Result using Runge-Kutta method for scalar ODE saved to " << filename << "\n";
 }
 
 // Midpoint method for vector ODEs
-void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "midpoint_result.csv") {
+void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "midpoint_vector_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -210,7 +211,8 @@ void midpoint(const std::function<double(double, double)>& f, double y0, double 
     std::ofstream file(filename);
     file << "t,y\n";
 
-    midpoint_mat.save(file, arma::csv_ascii);
+    arma::mat mat = midpoint_mat.t();
+    mat.save(file, arma::csv_ascii);
 
     std::cout << "Result using Midpoint method for scalar ODE saved to " << filename << "\n";
 }

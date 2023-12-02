@@ -36,8 +36,8 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const ar
         file << ",y" << i;
     }
     file << "\n";
-
-    euler_mat.t().save(file, arma::csv_ascii);
+    arma::mat mat = euler_mat.t();
+    mat.save(file, arma::csv_ascii);
 
     std::cout << "Result using Euler method saved to " << filename << "\n";
 }
@@ -66,7 +66,8 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, double x
     std::ofstream file(filename);
     file << "t,x,y\n";
 
-    euler_mat.t().save(file, arma::csv_ascii);
+    arma::mat mat = euler_mat.t();
+    mat.save(file, arma::csv_ascii);
 
     std::cout << "Result using Euler method saved to " << filename << "\n";
 }
@@ -104,8 +105,9 @@ void rk4(const std::function<arma::vec(double, const arma::vec&)>& f, const arma
         file << ",y" << i + 1;
     }
     file << "\n";
-
-    rk_mat.t().save(file, arma::csv_ascii);
+    
+    arma::mat mat = rk_mat.t();
+    mat.save(file, arma::csv_ascii);
 
     std::cout << "Result using Runge-Kutta method saved to " << filename << "\n";
 }   
@@ -175,7 +177,8 @@ void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const
     }
     file << "\n";
 
-    midpoint_mat.t().save(file, arma::csv_ascii);
+    arma::mat mat = midpoint_mat.t();
+    mat.save(file, arma::csv_ascii);
 
     std::cout << "Result using Midpoint method saved to " << filename << "\n";
 }

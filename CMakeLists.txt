@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.1)
 project(numoop)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -DARMA_DONT_USE_WRAPPER")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wextra -Wpedantic -Werror")
 
 find_package(Armadillo)
 if (NOT ARMADILLO_FOUND)
@@ -26,13 +26,10 @@ endif()
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 
 # Include our header library
-include_directories(src/stats)
+include_directories(src)
 
 project(examples)
-add_executable(examples examples/example_program.cpp
-        src/stats/_load.hpp
-        src/stats/dataframe.hpp
-        src/stats/dataframe_helpers.hpp)
+add_executable(examples examples/example_program.cpp)
 
 # Link against BLAS and LAPACK for Armadillo
 target_link_libraries(examples ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}

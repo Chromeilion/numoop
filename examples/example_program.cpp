@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include <armadillo>
-#include "stats.hpp"
+#include <stats/stats.hpp>
 
 using namespace std;
 using namespace arma;

@@ -9,14 +9,14 @@ int main() {
 
     auto f_scalar = [](double t, double y) -> double {
         // Example scalar ODE: dy/dt = -y
-        return -y;
+        return t+y;
     };
 
-    double h = 0.1;
-    double T = 2.0;
+    double h = 0.05;
+    double T = 0.5;
 
     // For a system with two variables
-    arma::vec y0_twovars = {1.0, 0.0};
+    arma::vec y0_twovars = {0.0, 1.0};
     midpoint(f, y0_twovars, h, T);
 
     // For a scalar ODE

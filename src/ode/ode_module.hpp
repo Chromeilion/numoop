@@ -66,8 +66,8 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, double x
     std::ofstream file(filename);
     file << "t,x,y\n";
 
-    arma::mat mat = euler_mat.t();
-    mat.save(file, arma::csv_ascii);
+    //arma::mat mat = euler_mat.t();
+    euler_mat.save(file, arma::csv_ascii);
 
     std::cout << "Result using Euler method saved to " << filename << "\n";
 }

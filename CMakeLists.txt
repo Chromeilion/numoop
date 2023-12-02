@@ -29,7 +29,7 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 include_directories(src)
 
 project(examples)
-add_executable(examples examples/example_program.cpp examples/ode_test.cpp)
+add_executable(examples examples/ode_test.cpp) #examples/example_program.cpp
 
 # Link against BLAS and LAPACK for Armadillo
 target_link_libraries(examples ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}

@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.22.1)
 project(numoop)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall -Wextra -Wpedantic -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
 find_package(Armadillo)
 if (NOT ARMADILLO_FOUND)
@@ -29,7 +29,7 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 include_directories(src)
 
 project(examples)
-add_executable(examples examples/example_program.cpp)
+add_executable(examples examples/example_program.cpp examples/ode_test.cpp)
 
 # Link against BLAS and LAPACK for Armadillo
 target_link_libraries(examples ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}

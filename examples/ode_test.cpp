@@ -9,7 +9,7 @@ int main() {
 
     auto f_scalar = [](double t, double y) -> double {
         // Example scalar ODE: dy/dt = -y
-        return t+y;
+        return t + y;
     };
 
     double h = 0.05;

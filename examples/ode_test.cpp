@@ -21,8 +21,7 @@ int main() {
 
     // For a scalar ODE
     double y0_scalar = 1.0;
-    double x0_scalar = 0.0;
-    euler(f_scalar, x0_scalar, y0_scalar, h, T);
+    euler(f_scalar, y0_scalar, h, T);
 
     return 0;
 }

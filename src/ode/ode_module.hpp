@@ -5,12 +5,13 @@
 #ifndef ODE_MODULE_HPP
 #define ODE_MODULE_HPP
 
-#include <iostream>
-#include <fstream>
 #include <functional>
 #include <armadillo>
+#include <iostream>
+#include <fstream>
+#include <string>
 
-void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "euler_vector_result.csv") {
+void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "euler_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -45,7 +46,7 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const ar
     }
 }
 
-void euler(const std::function<arma::vec(double, const arma::vec&)>& f, double y0, double h, double T, const std::string& filename = "euler_scalar_result.csv") {
+void euler(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "euler_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -58,7 +59,7 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, double y
 
     // Perform Euler's method
     for (arma::uword i = 1; i < t.n_elem; ++i) {
-        euler_mat.col(i) = euler_mat.col(i - 1) + h * f(t(i), euler_mat.col(i - 1));
+        euler_mat.col(i) = euler_mat.col(i - 1) + h * f(t(i), euler_mat(0, i - 1));
     }
 
     // Append the time vector as the first row

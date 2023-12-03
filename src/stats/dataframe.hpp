@@ -41,17 +41,12 @@ namespace oop::stats {
         // Map that stores for each column what int represents what string.
         std::unordered_map<arma::uword, cat_map_t> cat_map;
 
-        // The column types as strings. Not used directly but may be useful to
-        // the end user.
-        std::vector<std::string> _column_types;
-
         // Column labels, usually correspond to a CSV header.
         std::optional<std::vector<std::string>> _column_labels;
-    public:
-        // Column types getter.
-        [[nodiscard]] const std::vector<std::string>& column_types() const {
-            return _column_types;};
 
+        // Function that searches the labels for a specific label.
+        auto find_label(const std::string &label) const;
+    public:
         // Get the column labels.
         [[nodiscard]] auto column_labels() const {
             return _column_labels;};
@@ -60,8 +55,8 @@ namespace oop::stats {
         [[nodiscard]] cat_map_t& get_map(const arma::uword idx) {
             return this->cat_map[idx];};
 
-        // Cat map setter
-        void set_map(const arma::uword idx, const cat_map_t& map) {
+        // Cat map setter.
+        void set_map(const arma::uword idx, const cat_map_t map) {
             this->cat_map[idx] = map;};
 
         // Column label setter. The amount of provided tables must match the
@@ -74,6 +69,10 @@ namespace oop::stats {
         // Indexing
         sup_col_types &operator[](std::size_t idx) { return columns[idx]; }
         const sup_col_types &operator[](std::size_t idx) const { return columns[idx]; }
+
+        // Indexing by column label
+        sup_col_types &operator()(const std::string& label);
+        const sup_col_types &operator()(const std::string& label) const;
 
         // Append a row to the bottom of the dataframe.
         void append_row(const std::vector<sup_single_types>& append_data);
@@ -179,6 +178,9 @@ namespace oop::stats {
             }
             std::cout << std::endl;
         }
+        auto c_shape{this->shape()};
+        std::cout << "Dataset shape: (" << c_shape.second << ", " <<
+        c_shape.first << ")" << std::endl;
     }
 
     void DataFrame::set_column_labels(const std::vector<std::string> &labels) {
@@ -187,6 +189,25 @@ namespace oop::stats {
                                     "column labels.");
         }
         this->_column_labels = labels;
+    }
+
+    auto DataFrame::find_label(const std::string &label) const {
+        auto labels{this->column_labels()};
+        if (!labels) {throw std::out_of_range("DataFrame has no labels");}
+        auto it = std::find((*labels).begin(), (*labels).end(), label);
+        if (it == (*labels).end()) {
+            throw std::out_of_range("Provided label not found in DataFrame");
+        }
+        auto idx = std::distance((*labels).begin(), it);
+        return idx;
+    }
+    sup_col_types &DataFrame::operator()(const std::string& label) {
+        auto idx{this->find_label(label)};
+        return (*this)[idx];
+    }
+    const sup_col_types &DataFrame::operator()(const std::string& label) const {
+        auto idx{this->find_label(label)};
+        return (*this)[idx];
     }
 }
 

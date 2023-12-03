@@ -25,7 +25,7 @@ namespace oop::stats {
             const std::optional<std::vector<int>>& columns = std::nullopt);
 
     // Load a CSV file into a DataFrame.
-    void load(
+    std::vector<std::string> load(
             std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header = std::nullopt,
@@ -73,7 +73,7 @@ namespace oop::stats {
         return false;
     }
 
-    void load(
+    std::vector<std::string> load(
             std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header,
@@ -91,6 +91,9 @@ namespace oop::stats {
         std::string word;
         std::vector<std::string> line;
 
+        // Store auto-detected types in a vector of strings.
+        std::vector<std::string> col_str;
+
         // Read the first line if there is a header present.
         std::vector<std::string> full_header;
         if (header.has_value()) {
@@ -102,12 +105,12 @@ namespace oop::stats {
         // The first line of data is read outside the loop because some
         // extra operations such as type inference have to be performed.
         if (!read_line(file, line, newline_delimiter, column_delimiter,
-                       columns)) {return;}
+                       columns)) {return col_str;}
 
-        // Categorical variable maps get stored in a map for later use.
-        std::unordered_map<arma::uword, CatMap> cat_vars;
+        // Categorical variable maps get stored in a mapfor later use.
+        std::vector<arma::uword> cat_vars;
         if (!col_types.has_value()) {
-            col_types = oop::stats::infer_types(line, cat_vars);
+            col_types = oop::stats::infer_types(line, col_str, cat_vars);
         }
 
         std::vector<oop::stats::sup_single_types> row = convert_strings(
@@ -123,9 +126,11 @@ namespace oop::stats {
         }
 
         // Add the categorical mappings if there are any.
-        for (const auto &[key, value]:  cat_vars) {
-            matr.set_map(key, value.get_swapped_map());
+        for (const auto idx:  cat_vars) {
+            auto *cat_map = (*col_types)[idx].target<CatMap>();
+            matr.set_map(idx, cat_map->get_swapped_map());
         }
+        return col_str;
     }
 }
 

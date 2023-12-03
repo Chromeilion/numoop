@@ -78,12 +78,13 @@ environment, we've included it in external/armadillo-code for your convenience.
 The cmake script will use the bundled Armadillo if it can't find it on your 
 system.
 
-## Performance
+## Performance and other considerations
 The performance of numoop is highly dependent on the libraries present on the 
 system it's being run on. Specifically, the implementation of BLAS and LAPACK.
 Having a multi-threaded library such as OpenBLAS greatly improves the performance
 of Armadillo and therefore numoop.
 
+### The cost of polymorphism
 The polymorphic nature of the DataFrame object comes at a small cost. 
 Specifically, certain templated functions need to be instantiated at compile 
 time for every possible combination of numeric types numoop supports. This 
@@ -92,6 +93,11 @@ std::variant objects, which reduces the indexing performance.
 When performing large batch operations however, one only has to index the column 
 once, after which the variant can be unpacked and there is no more performance 
 loss.
+
+### NaN values
+Numoop uses IEEE NaN values, meaning that any NaN is considered the same regular 
+numeric type present in the current column. This allows us to maintain a 
+single type per column.
 
 ## Credits
 Numoop was created by Christian Špringer (christian.springer228@gmail.com) 

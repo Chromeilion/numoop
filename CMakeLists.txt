@@ -9,6 +9,7 @@ project(numoop)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -Wall -Wextra -Wpedantic -Werror")
 
+
 find_package(Armadillo)
 if (NOT ARMADILLO_FOUND)
     find_package(BLAS QUIET)
@@ -29,7 +30,7 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 include_directories(src)
 
 project(tests)
-add_executable(tests tests/stats_test.cpp)
+add_executable(tests tests/stats_test.cpp tests/ode_test.cpp)
 
 # Link against BLAS and LAPACK for Armadillo
 target_link_libraries(tests ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}

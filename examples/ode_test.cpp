@@ -1,0 +1,28 @@
+// Example usage
+
+#include "ode/ode.hpp"
+
+int main() {
+    auto f_vector = [](double t, const arma::vec& y) -> arma::vec {
+        // Example system: dy1/dt = y2, dy2/dt = -y1
+        return arma::vec({y(1), -y(0)});
+    };
+
+    auto f_scalar = [](double t, double y) -> double {
+        // Example scalar ODE: dy/dt = t + y
+        return t + y;
+    };
+
+    double h = 0.05;
+    double T = 0.5;
+
+    // For a system with two variables
+    arma::vec y0_twovars = {0.0, 1.0};
+    runge_kutta(f_vector, y0_twovars, h, T);
+
+    // For a scalar ODE
+    double y0_scalar = 1.0;
+    runge_kutta(f_scalar, y0_scalar, h, T);
+
+    return 0;
+}

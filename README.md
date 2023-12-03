@@ -66,7 +66,11 @@ or
 ./test_stats
 ```
 ```test_stats``` should be run from the project root, as it uses the dataset.csv 
-file.
+file. 
+
+While it's easy to set up cmake to be able to install the library, we have
+avoided that approach here, as we don't expect any lecturer to install the 
+library on their system.
 
 ### Bundled Armadillo
 While it's not good to use Armadillo in header only mode in a production 
@@ -74,7 +78,23 @@ environment, we've included it in external/armadillo-code for your convenience.
 The cmake script will use the bundled Armadillo if it can't find it on your 
 system.
 
+## Performance
+The performance of numoop is highly dependent on the libraries present on the 
+system it's being run on. Specifically, the implementation of BLAS and LAPACK.
+Having a multi-threaded library such as OpenBLAS greatly improves the performance
+of Armadillo and therefore numoop.
+
+The polymorphic nature of the DataFrame object comes at a small cost. 
+Specifically, certain templated functions need to be instantiated at compile 
+time for every possible combination of numeric types numoop supports. This 
+results in a slightly larger binary file. Additionally, columns are stored in 
+std::variant objects, which reduces the indexing performance.
+When performing large batch operations however, one only has to index the column 
+once, after which the variant can be unpacked and there is no more performance 
+loss.
+
 ## Credits
-Numoop was created by Christian Špringer and Uros Zivanovic. Christian worked on 
-the ODE module and Uros worked on the stats module. 
-All collaboration was done through a repo on GitHub.
+Numoop was created by Christian Špringer (christian.springer228@gmail.com) 
+and Uros Zivanovic (chromeilion@outlook.com). Christian worked on the ODE module 
+and Uros worked on the stats module. All collaboration was done through a 
+repo on GitHub.

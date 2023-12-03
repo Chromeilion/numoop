@@ -73,3 +73,8 @@ While it's not good to use Armadillo in header only mode in a production
 environment, we've included it in external/armadillo-code for your convenience.
 The cmake script will use the bundled Armadillo if it can't find it on your 
 system.
+
+## Credits
+Numoop was created by Christian Špringer and Uros Zivanovic. Christian worked on 
+the ODE module and Uros worked on the stats module. 
+All collaboration was done through a repo on GitHub.

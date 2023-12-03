@@ -12,10 +12,10 @@
 #include <string>
 
 // Euler method for vector ODEs
-void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "euler_vector_result.csv");
+void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename);
 
 // Euler method for scalar ODEs
-void euler(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "euler_scalar_result.csv");
+void euler(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename);
 
 
 

@@ -12,10 +12,10 @@
 #include <string>
 
 // Midpoint method for vector ODEs
-void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "midpoint_vector_result.csv");
+void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename);
 
 // Midpoint method for scalar ODEs
-void midpoint(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "midpoint_scalar_result.csv");
+void midpoint(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename);
 
 
 
@@ -44,16 +44,20 @@ void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const
 
     // Save the result to the specified or default CSV file with a header
     std::ofstream file(filename);
-    file << "t";
-    for (arma::uword i = 0; i < y0.n_elem; ++i) {
-        file << ",y" << i + 1;
+    if (file.is_open()) {
+        file << "t";
+        for (arma::uword i = 0; i < y0.n_elem; ++i) {
+            file << ",y" << i + 1;
+        }
+        file << "\n";
+
+        arma::mat mat = midpoint_mat.t();
+        mat.save(file, arma::csv_ascii);
+
+        std::cout << "Result using Midpoint method saved to " << filename << "\n";
+    } else {
+        std::cerr << "Error: Unable to open file for writing.\n";
     }
-    file << "\n";
-
-    arma::mat mat = midpoint_mat.t();
-    mat.save(file, arma::csv_ascii);
-
-    std::cout << "Result using Midpoint method saved to " << filename << "\n";
 }
 
 // Midpoint method for scalar ODEs
@@ -81,12 +85,16 @@ void midpoint(const std::function<double(double, double)>& f, double y0, double 
 
     // Save the result to the specified or default CSV file with a header
     std::ofstream file(filename);
-    file << "t,y\n";
+    if (file.is_open()) {
+        file << "t,y\n";
 
-    arma::mat mat = midpoint_mat.t();
-    mat.save(file, arma::csv_ascii);
+        arma::mat mat = midpoint_mat.t();
+        mat.save(file, arma::csv_ascii);
 
-    std::cout << "Result using Midpoint method for scalar ODE saved to " << filename << "\n";
+        std::cout << "Result using Midpoint method for scalar ODE saved to " << filename << "\n";
+    } else {
+        std::cerr << "Error: Unable to open file for writing.\n";
+    }    
 }
 
 

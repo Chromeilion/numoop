@@ -12,10 +12,10 @@
 #include <string>
 
 // Runge-Kutta method for vector ODEs
-void runge_kutta(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "runge_kutta_vector_result.csv");
+void runge_kutta(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename);
 
 // Runge-Kutta method for scalar ODEs
-void runge_kutta(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "runge_kutta_scalar_result.csv");
+void runge_kutta(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename);
 
 
 
@@ -47,16 +47,20 @@ void runge_kutta(const std::function<arma::vec(double, const arma::vec&)>& f, co
 
     // Save the result to the specified or default CSV file with a header
     std::ofstream file(filename);
-    file << "t";
-    for (arma::uword i = 0; i < y0.n_elem; ++i) {
-        file << ",y" << i + 1;
-    }
-    file << "\n";
+    if (file.is_open()) {
+        file << "t";
+        for (arma::uword i = 0; i < y0.n_elem; ++i) {
+           file << ",y" << i + 1;
+        }
+        file << "\n";
     
-    arma::mat mat = rk_mat.t();
-    mat.save(file, arma::csv_ascii);
+        arma::mat mat = rk_mat.t();
+        mat.save(file, arma::csv_ascii);
 
-    std::cout << "Result using Runge-Kutta method saved to " << filename << "\n";
+        std::cout << "Result using Runge-Kutta method saved to " << filename << "\n";
+    } else {
+        std::cerr << "Error: Unable to open file for writing.\n";
+    }
 }   
 
 // Runge-Kutta method for scalar ODEs
@@ -86,12 +90,16 @@ void runge_kutta(const std::function<double(double, double)>& f, double y0, doub
 
     // Save the result to the specified or default CSV file with a header
     std::ofstream file(filename);
-    file << "t,y\n";
+    if (file.is_open()) {
+        file << "t,y\n";
 
-    arma::mat mat = rk_mat.t();
-    mat.save(file, arma::csv_ascii);
+        arma::mat mat = rk_mat.t();
+        mat.save(file, arma::csv_ascii);
 
-    std::cout << "Result using Runge-Kutta method for scalar ODE saved to " << filename << "\n";
+        std::cout << "Result using Runge-Kutta method for scalar ODE saved to " << filename << "\n";
+    } else {
+        std::cerr << "Error: Unable to open file for writing.\n";
+    }    
 }
 
 #endif //RUNGE_KUTTA_HPP

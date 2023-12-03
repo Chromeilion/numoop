@@ -1,8 +1,9 @@
 // Example usage
 
 #include "ode/ode.hpp"
+
 int main() {
-    auto f = [](double t, const arma::vec& y) -> arma::vec {
+    auto f_vector = [](double t, const arma::vec& y) -> arma::vec {
         // Example system: dy1/dt = y2, dy2/dt = -y1
         return arma::vec({y(1), -y(0)});
     };
@@ -17,11 +18,11 @@ int main() {
 
     // For a system with two variables
     arma::vec y0_twovars = {0.0, 1.0};
-    euler(f, y0_twovars, h, T);
+    runge_kutta(f_vector, y0_twovars, h, T);
 
     // For a scalar ODE
     double y0_scalar = 1.0;
-    euler(f_scalar, y0_scalar, h, T);
+    runge_kutta(f_scalar, y0_scalar, h, T);
 
     return 0;
 }

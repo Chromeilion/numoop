@@ -117,7 +117,14 @@ namespace oop::stats {
                 line, *col_types);
         matr.append_row(row);
 
-        if (!full_header.empty()) {matr.set_column_labels(full_header);}
+        // Add the header, keeping in mind that the user may not want all
+        // columns.
+        if (!full_header.empty()) {
+            if (columns.has_value()) {
+                std::vector<std::string> new_header;
+                for (auto idx: *columns) {new_header.push_back(full_header[idx]);}
+                matr.set_column_labels(new_header);
+            } else {matr.set_column_labels(full_header);}}
 
         // Append the rest of the CSV file, assuming constant types.
         while (read_line(file, line, newline_delimiter, column_delimiter,

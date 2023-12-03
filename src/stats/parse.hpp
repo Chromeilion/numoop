@@ -5,6 +5,7 @@
 #ifndef EXAMPLES_PARSE_HPP
 #define EXAMPLES_PARSE_HPP
 #include <regex>
+#include <limits>
 
 namespace oop::stats {
     // A vector of functions that convert a string to some supported type.
@@ -40,8 +41,10 @@ namespace oop::stats {
 
     // Implementation
 
-    static const auto str_float = [](const std::string& x){return std::stof(x);};
-    static const auto str_intll = [](const std::string& x){return std::stoll(x);};
+    static const auto str_float = [](const std::string& x){
+        try {return std::stof(x);} catch (std::invalid_argument&){return std::numeric_limits<float>::quiet_NaN();}};
+    static const auto str_intll = [](const std::string& x){
+        try {return std::stoll(x);} catch (std::invalid_argument&) {return std::numeric_limits<long long>::quiet_NaN();}};
 
     arma::uword &CatMap::operator()(const std::string& str) {
         if (this->cat_map.count(str) == 0) {

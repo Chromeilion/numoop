@@ -28,7 +28,6 @@ int main() {
     << std::endl;
     data.summarize();
 
-
     auto header = data.column_labels();
     arma::uword target = std::find((*header).begin(), (*header).end(),
                             "Target") - (*header).begin();

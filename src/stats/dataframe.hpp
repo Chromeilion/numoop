@@ -9,9 +9,11 @@
 #include <string>
 #include <variant>
 #include <armadillo>
-#include "misc.hpp"
 #include <optional>
 #include <cassert>
+#include <algorithm>
+#include <iostream>
+#include "misc.hpp"
 
 namespace oop::stats {
     // All supported column types.
@@ -22,21 +24,23 @@ namespace oop::stats {
     typedef std::variant<double, arma::cx_double, arma::cx_float,
             arma::uword, arma::sword> sup_single_types;
 
+    // Map of ints to string categories
+    typedef std::unordered_map<arma::uword, std::string> cat_map_t;
+
+    class AppendColumn;
+
     // DataFrame class. Similar in spirit to a Pandas DataFrame. Groups together
     // multiple Armadillo Col classes of (potentially) different types.
     class DataFrame {
+        friend AppendColumn;
     private:
-        // A functor for inserting a row into an armadillo column vector. For
-        // use with std::visit.
-        class InsertRow {
-        public:
-            template<template<typename B> typename A, typename B>
-            void operator()(A<B> &row, const B &item);
-        };
-
         // Each column in the dataframe is represented by an armadillo Col
         // object which can hold most types minus strings.
         std::vector<sup_col_types> columns;
+
+        // Map that stores for each column what int represents what string.
+        std::unordered_map<arma::uword, cat_map_t> cat_map;
+
         // The column types as strings. Not used directly but may be useful to
         // the end user.
         std::vector<std::string> _column_types;
@@ -44,10 +48,6 @@ namespace oop::stats {
         // Column labels, usually correspond to a CSV header.
         std::optional<std::vector<std::string>> _column_labels;
     public:
-        explicit DataFrame(
-                std::optional<std::vector<std::string>> column_labels = std::nullopt
-                        ) : _column_labels{std::move(column_labels)} {}
-
         // Column types getter.
         [[nodiscard]] const std::vector<std::string>& column_types() const {
             return _column_types;};
@@ -56,9 +56,17 @@ namespace oop::stats {
         [[nodiscard]] auto column_labels() const {
             return _column_labels;};
 
-        // Column label setter. Does not check for the correct number of labels.
-        void set_column_labels(const std::optional<std::vector<std::string>> &labels) {
-            this->_column_labels = labels;}
+        // Cat map getter
+        [[nodiscard]] cat_map_t& get_map(const arma::uword idx) {
+            return this->cat_map[idx];};
+
+        // Cat map setter
+        void set_map(const arma::uword idx, const cat_map_t& map) {
+            this->cat_map[idx] = map;};
+
+        // Column label setter. The amount of provided tables must match the
+        // amount of initialized columns.
+        void set_column_labels(const std::vector<std::string> &labels);
 
         // Shape of the matrix.
         [[nodiscard]] std::pair<arma::uword, arma::uword> shape() const;
@@ -72,18 +80,46 @@ namespace oop::stats {
 
         void insert_column(sup_col_types &col, const arma::uword &idx);
         void append_column(sup_col_types &col) { insert_column(col, shape().second);};
+
+        // Print a summary of the dataframe.
+        void summarize();
+    };
+
+    // A functor for inserting a row into an armadillo column vector. For
+    // use with std::visit.
+    class InsertRow {
+    public:
+        template<template<typename B> typename A, typename B>
+        void operator()(A<B> &row, const B &item);
+    };
+
+    // A functor for appending a column into the DataFrame.
+    class AppendColumn {
+        DataFrame* parent;
+    public:
+        explicit AppendColumn(DataFrame* parent) : parent{parent} {}
+        template<typename B>
+        void operator()(const B &item);
     };
 
     // Implementation
 
+    template<typename B>
+    void AppendColumn::operator()(const B &item) {
+        arma::Col<B> col{1};
+        col(0) = item;
+        parent->columns.push_back(col);
+    }
+
     template<template<typename B> typename A, typename B>
-    void DataFrame::InsertRow::operator()(A<B> &row, const B &item) {
-        arma::Row <B> to_insert{1, 1};
+    void InsertRow::operator()(A<B> &row, const B &item) {
+        arma::Row <B> to_insert{1};
         to_insert(0, 0) = item;
-        row.insert_rows(row.n_rows - 1, to_insert);
+        row.insert_rows(row.n_rows, to_insert);
     }
 
     std::pair<arma::uword, arma::uword> DataFrame::shape() const {
+        if (this->columns.empty()) {return {0, 0};}
         arma::uword rows;
         arma::uword cols;
         rows = std::visit(
@@ -94,15 +130,27 @@ namespace oop::stats {
     }
 
     void DataFrame::append_row(std::vector<sup_single_types> const &append_data) {
+        // When there are no columns present they get initialized.
+        if (this->shape().second == 0) {
+            for (const auto & i : append_data) {
+                std::visit(AppendColumn(this), i);
+            }
+            return;
+        }
+        if (this->shape().second != append_data.size() and this->shape().second != 0) {
+            throw std::length_error("The provided row has an incorrect length");
+        }
+
         // When InsertRow is invalid this function gets called. This should
         // only happen when the provided item does not match the type of the
         // column.
-        auto base = [](auto, auto){throw std::runtime_error(
+        static auto base = [](auto, auto){
+            throw std::runtime_error(
                 "Some provided type did not match with the column type when "
                 "appending a row");};
 
         for (std::size_t i = 0; i < this->shape().second; ++i) {
-            std::visit(overloaded{DataFrame::InsertRow(), base},
+            std::visit(overloaded{InsertRow(), base},
                        (*this)[i], append_data[i]);
         }
     }
@@ -112,6 +160,33 @@ namespace oop::stats {
         it = this->columns.begin();
         advance(it, idx);
         this->columns.insert(it, col);
+    }
+
+    void DataFrame::summarize() {
+        auto col_labels = this->column_labels();
+        if (col_labels.has_value()) {
+            for (const auto &i : *col_labels) {
+                std::cout << i << ", ";
+            }
+            std::cout << std::endl;
+        }
+        arma::uword default_rows{5};
+        arma::uword no_rows{std::min(this->shape().first, default_rows)};
+        for (arma::uword i = 0; i<no_rows; ++i) {
+            for(arma::uword j = 0; j<this->shape().second; ++j) {
+                std::visit([i](auto &col){std::cout << col[i] << " ";},
+                           (*this)[j]);
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    void DataFrame::set_column_labels(const std::vector<std::string> &labels) {
+        if (this->shape().second != labels.size()) {
+            throw std::length_error("There is an incorrect number of provided "
+                                    "column labels.");
+        }
+        this->_column_labels = labels;
     }
 }
 

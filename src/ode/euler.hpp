@@ -12,15 +12,15 @@
 #include <string>
 
 // Euler method for vector ODEs
-void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename);
+arma::mat euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename);
 
 // Euler method for scalar ODEs
-void euler(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename);
+arma::mat euler(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename);
 
 
 
 // Euler method for vector ODEs
-void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "euler_vector_result.csv") {
+arma::mat euler(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "euler_vector_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -35,7 +35,7 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const ar
     for (arma::uword i = 1; i < t.n_elem; ++i) {
         euler_mat.col(i) = euler_mat.col(i - 1) + h * f(t(i), euler_mat.col(i - 1));
     }
-
+    arma::mat sol = euler_mat;
     // Append the time vector as the first row
     euler_mat.insert_rows(0, t.t());
 
@@ -49,14 +49,15 @@ void euler(const std::function<arma::vec(double, const arma::vec&)>& f, const ar
         file << "\n";
         arma::mat mat = euler_mat.t();
         mat.save(file, arma::csv_ascii);
-        std::cout << "Result using Euler method for scalar ODE saved to " << filename << "\n";
+        std::cout << "Result using Euler method saved to " << filename << "\n";
     } else {
         std::cerr << "Error: Unable to open file for writing.\n";
     }
+    return sol;
 }
 
 // Euler method for scalar ODEs
-void euler(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "euler_scalar_result.csv") {
+arma::mat euler(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "euler_scalar_result.csv") {
     // Create the vector t containing the jumps
     arma::uword steps = static_cast<arma::uword>(T / h) + 1;
     arma::vec t = arma::linspace(0, T, steps);
@@ -71,7 +72,7 @@ void euler(const std::function<double(double, double)>& f, double y0, double h, 
     for (arma::uword i = 1; i < t.n_elem; ++i) {
         euler_mat(i,0) = euler_mat(i - 1,0) + h * f(t(i-1), euler_mat(i - 1,0));
     }
-
+    arma::mat sol = euler_mat;
     // Append the time vector as the first column
     euler_mat.insert_cols(0, t);
 
@@ -80,10 +81,11 @@ void euler(const std::function<double(double, double)>& f, double y0, double h, 
     if (file.is_open()) {
         file << "t,y\n";
         euler_mat.save(file, arma::csv_ascii);
-        std::cout << "Result using Euler method saved to " << filename << "\n";
+        std::cout << "Result using Euler method for scalar ODE saved to " << filename << "\n";
     } else {
         std::cerr << "Error: Unable to open file for writing.\n";
     }
+    return sol;
 }
 
 #endif //EULER_HPP

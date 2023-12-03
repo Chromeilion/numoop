@@ -18,7 +18,8 @@ namespace oop::stats {
     // Convert a vector of strings to types supported by the DataFrame
     std::vector<oop::stats::sup_single_types> convert_strings(
             std::vector<std::string> &strings,
-            std::vector<convert_func> &types);
+            std::vector<convert_func> &types,
+            const std::optional<std::vector<int>> &columns);
 
     // A functor that takes a string and maps it to a number. It keeps track of
     // what string is mapped to what number. Useful when converting a
@@ -90,10 +91,17 @@ namespace oop::stats {
     // Convert a vector of strings to types supported by the DataFrame
     std::vector<oop::stats::sup_single_types> convert_strings(
             std::vector<std::string> &strings,
-            std::vector<convert_func> &types) {
+            std::vector<convert_func> &types,
+            const std::optional<std::vector<int>> &columns) {
         std::vector<oop::stats::sup_single_types> new_col;
-        for (std::size_t i = 0; i < strings.size(); ++i) {
-            new_col.push_back(types[i](strings[i]));
+        if (columns.has_value()) {
+            for (arma::uword i=0;i<(*columns).size();++i) {
+                new_col.push_back(types[i](strings[i]));
+            }
+        } else {
+            for (std::size_t i = 0; i < strings.size(); ++i) {
+                new_col.push_back(types[i](strings[i]));
+            }
         }
         return new_col;
     }

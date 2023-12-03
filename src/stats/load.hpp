@@ -114,7 +114,7 @@ namespace oop::stats {
         }
 
         std::vector<oop::stats::sup_single_types> row = convert_strings(
-                line, *col_types);
+                line, *col_types, columns);
         matr.append_row(row);
 
         // Add the header, keeping in mind that the user may not want all
@@ -122,14 +122,14 @@ namespace oop::stats {
         if (!full_header.empty()) {
             if (columns.has_value()) {
                 std::vector<std::string> new_header;
-                for (auto idx: *columns) {new_header.push_back(full_header[idx]);}
+                for (const auto& str: full_header) {new_header.push_back(str);}
                 matr.set_column_labels(new_header);
             } else {matr.set_column_labels(full_header);}}
 
         // Append the rest of the CSV file, assuming constant types.
         while (read_line(file, line, newline_delimiter, column_delimiter,
                          columns)) {
-            matr.append_row(convert_strings(line, *col_types));
+            matr.append_row(convert_strings(line, *col_types, columns));
         }
 
         // Add the categorical mappings if there are any.

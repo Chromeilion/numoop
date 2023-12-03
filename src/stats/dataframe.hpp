@@ -77,8 +77,11 @@ namespace oop::stats {
         // Append a row to the bottom of the dataframe.
         void append_row(const std::vector<sup_single_types>& append_data);
 
-        void insert_column(sup_col_types &col, const arma::uword &idx);
-        void append_column(sup_col_types &col) { insert_column(col, shape().second);};
+        void insert_column(sup_col_types &col, const arma::uword &idx,
+                           const std::optional<std::string> &label);
+        void append_column(sup_col_types col,
+                           const std::optional<std::string> &label) {
+            insert_column(col, shape().second, label);};
 
         // Print a summary of the dataframe.
         void summarize();
@@ -154,7 +157,17 @@ namespace oop::stats {
         }
     }
 
-    void DataFrame::insert_column(sup_col_types &col, const arma::uword &idx) {
+    void DataFrame::insert_column(sup_col_types &col, const arma::uword &idx,
+                                  const std::optional<std::string> &label) {
+        if (label.has_value()) {
+            auto current_labs{this->column_labels()};
+            if (!current_labs.has_value()) {
+                throw std::runtime_error("Requested a label for a new column but the "
+                                         "current dataframe does not have labels.");}
+            auto it = (*this->_column_labels).begin();
+            for (arma::uword i=0; i<idx; ++i) {it++;}
+            (*this->_column_labels).insert(it, *label);
+        }
         std::vector<sup_col_types>::iterator it;
         it = this->columns.begin();
         advance(it, idx);

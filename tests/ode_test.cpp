@@ -3,7 +3,7 @@
 #include "ode/ode.hpp"
 
 int main() {
-    auto f_vector = [](double t, const arma::vec& y) -> arma::vec {
+    auto f_vector = [](double, const arma::vec& y) -> arma::vec {
         // Example system: dy1/dt = y2, dy2/dt = -y1
         return arma::vec({y(1), -y(0)});
     };

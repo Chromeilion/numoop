@@ -6,5 +6,6 @@
 #define EXAMPLES_NUMOOP_HPP
 
 #include "stats/stats.hpp"
+#include "ode/ode.hpp"
 
 #endif //EXAMPLES_NUMOOP_HPP

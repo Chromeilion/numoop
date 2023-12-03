@@ -29,9 +29,11 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 # Include our header library
 include_directories(src)
 
-project(tests)
-add_executable(tests tests/stats_test.cpp tests/ode_test.cpp)
+add_executable(test_stats tests/stats_test.cpp)
+add_executable(test_ode tests/ode_test.cpp)
 
 # Link against BLAS and LAPACK for Armadillo
-target_link_libraries(tests ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}
+target_link_libraries(test_stats ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}
+        ${ARMADILLO_LIBRARIES})
+target_link_libraries(test_ode ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}
         ${ARMADILLO_LIBRARIES})

@@ -36,3 +36,40 @@ Numoop provides the following ordinary differential equation solvers:
 
 All methods work with both vector and scalar inputs. The solution is saved to a 
 CSV file and also returned from the function.
+
+## Using numoop
+Since numoop is a header only library, using it is as simple as adding /src to 
+your include directories. From here, if you want to use the whole module, you 
+can include numoop.hpp. If you just want the stats module include stats/stats.hpp, 
+and if you just want the ode module include ode/ode.hpp.
+
+Armadillo must be installed on your system in some way as well.
+
+## Compiling
+While numoop itself does not need to be compiled, it comes with two files which 
+can be compiled to test out the functionality of both modules. These can be 
+compiled with the provided cmake file.
+Before compiling, make sure you have BLAS and LAPACK installed, or a substitute 
+such as OpenBLAS.
+
+Make sure you're in the root directory of numoop and then run:
+```bash
+cmake .
+make
+```
+Then you can run either test with:
+```bash
+./test_ode
+```
+or
+```bash
+./test_stats
+```
+```test_stats``` should be run from the project root, as it uses the dataset.csv 
+file.
+
+### Bundled Armadillo
+While it's not good to use Armadillo in header only mode in a production 
+environment, we've included it in external/armadillo-code for your convenience.
+The cmake script will use the bundled Armadillo if it can't find it on your 
+system.

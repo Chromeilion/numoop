@@ -2,7 +2,7 @@
 // Created by kiki on 12/3/23.
 //
 
-#ifndef RUNGR_KUTTA_HPP
+#ifndef RUNGE_KUTTA_HPP
 #define RUNGE_KUTTA_HPP
 
 #include <functional>

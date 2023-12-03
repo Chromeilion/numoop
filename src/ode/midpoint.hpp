@@ -12,10 +12,10 @@
 #include <string>
 
 // Midpoint method for vector ODEs
-void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "midpoint_vector_result.csv")
+void midpoint(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double T, const std::string& filename = "midpoint_vector_result.csv");
 
 // Midpoint method for scalar ODEs
-void midpoint(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "midpoint_scalar_result.csv")
+void midpoint(const std::function<double(double, double)>& f, double y0, double h, double T, const std::string& filename = "midpoint_scalar_result.csv");
 
 
 

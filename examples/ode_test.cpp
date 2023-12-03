@@ -1,6 +1,6 @@
 // Example usage
 
-#include "ode/ode_module.hpp"
+#include "ode/ode.hpp"
 int main() {
     auto f = [](double t, const arma::vec& y) -> arma::vec {
         // Example system: dy1/dt = y2, dy2/dt = -y1

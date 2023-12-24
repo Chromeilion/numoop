@@ -6,7 +6,8 @@
 #define ODE_HPP
 
 #include "euler.hpp"
-#include "runge_kutta.hpp"
 #include "midpoint.hpp"
+#include "rk4.hpp"
+
 
 #endif //ODE_HPP

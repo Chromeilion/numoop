@@ -7,8 +7,6 @@
 
 #include <ode/method.hpp>
 
-namespace oop::ode {
-
 class RungeKutta4 : public ODE {
 
 public:
@@ -27,5 +25,5 @@ public:
         return result_mat;
     }
 };
-}
+
 #endif //RK4_HPP

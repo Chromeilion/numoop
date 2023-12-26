@@ -7,8 +7,6 @@
 
 #include <ode/method.hpp>
 
-namespace ode {
-
 class Euler : public ODE {
 
 public:
@@ -21,7 +19,5 @@ public:
         return result_mat;
     }
 };
-
-} // namespace euler
 
 #endif //EULER_HPP

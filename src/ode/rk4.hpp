@@ -7,10 +7,8 @@
 
 #include <ode/method.hpp>
 
-namespace rk4 {
-
 class RungeKutta4 : public ODE {
-    
+
 public:
 
     // Implement Runge-Kutta 4 method
@@ -27,7 +25,5 @@ public:
         return result_mat;
     }
 };
-
-} // namespace rk4
 
 #endif //RK4_HPP

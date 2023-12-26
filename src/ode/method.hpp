@@ -33,7 +33,7 @@ public:
         result_mat.insert_rows(0, t.t());
 
         // Save the result to the specified or default CSV file with a header
-        saveToFile(result_mat, t, filename);
+        saveToFile(result_mat, filename);
 
         return out;
     }

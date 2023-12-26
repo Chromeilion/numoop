@@ -10,6 +10,8 @@
 #include <iostream>
 #include <fstream>
 
+namespace oop::ode {
+
 class ODE {
 public:
     virtual ~ODE() = default;
@@ -52,5 +54,6 @@ public:
         return out;
     }
 };
+}
 
 #endif //METHOD_HPP

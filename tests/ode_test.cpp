@@ -37,7 +37,7 @@ int main() {
     }
 
     // Euler method for a scalar ODE
-    Euler obj4;
+    euler::Euler obj4;
     auto start2 = std::chrono::high_resolution_clock::now();
     arma::mat eul2 = obj4.ode(f_scalar, y0_scalar, h2, T2);
     auto end2 = std::chrono::high_resolution_clock::now();
@@ -50,7 +50,7 @@ int main() {
 
 
     // Runge-Kutta method for a scalar ODE
-    RungeKutta4 obj5;
+    rk4::RungeKutta4 obj5;
     auto start4 = std::chrono::high_resolution_clock::now();
     arma::mat rk2 = obj5.ode(f_scalar, y0_scalar, h2, T2);
     auto end4 = std::chrono::high_resolution_clock::now();
@@ -63,7 +63,7 @@ int main() {
     
 
     // Midpoint method for a scalar ODE
-    Midpoint obj6;
+    midpoint::Midpoint obj6;
     auto start6 = std::chrono::high_resolution_clock::now();
     arma::mat midp2 = obj6.ode(f_scalar, y0_scalar, h2, T2);
     auto end6 = std::chrono::high_resolution_clock::now();

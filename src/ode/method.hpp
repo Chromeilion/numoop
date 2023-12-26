@@ -13,12 +13,13 @@
 class ODE {
 public:
     virtual ~ODE() = default;
-
+    template <typename T1, typename T2>
     // Virtual method
-    virtual arma::mat method(const std::function<arma::vec(double, const arma::vec&)>& f, arma::mat& result_mat, const arma::vec& t, double h) const = 0;
+    virtual arma::mat method(const std::function<arma::vec(T1, const T2&)>& f, arma::mat& result_mat, const arma::vec& t, double h) const = 0;
 
     // Method implementation
-    arma::mat ode(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double end, const std::string& filename = "result.csv") {
+    arma::mat ode(const std::function<arma::vec(T1, const T2&)>& f, const T2& y0, T1 h, T1 end, const std::string& filename = "result.csv") {
+        double h = static_cast<double>(h);
         arma::uword steps = static_cast<arma::uword>(end / h) + 1;
         arma::vec t = arma::linspace(0, end, steps);
 

@@ -10,18 +10,17 @@
 #include <iostream>
 #include <fstream>
 
-namespace method {
+namespace euler {
 
 class ODE {
 public:
     virtual ~ODE() = default;
 
-    template <typename T>
     // Virtual method
-    virtual arma::mat method(const std::function<arma::vec(double, const T&)>& f, arma::mat& result_mat, const arma::vec& t, double h) const = 0;
+    virtual arma::mat method(const std::function<arma::vec(double, const arma::vec&)>& f, arma::mat& result_mat, const arma::vec& t, double h) const = 0;
     
     // Templated method
-    arma::mat ode(const std::function<arma::vec(double, const arma::vec&)>& f, const T& y0, double h, double end, const std::string& filename = "result.csv") {
+    arma::mat ode(const std::function<arma::vec(double, const arma::vec&)>& f, const arma::vec& y0, double h, double end, const std::string& filename = "result.csv") {
         arma::uword steps = static_cast<arma::uword>(end / h) + 1;
         arma::vec t = arma::linspace(0, end, steps);
 

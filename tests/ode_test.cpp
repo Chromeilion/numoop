@@ -52,7 +52,7 @@ int main() {
     eul1 -= vector_solution;
     arma::rowvec e1 = eul1.row(steps1 -1);
     e1 = arma::abs(e1);
-    std::cout << "Error at time T: " << e1 <<  std::endl;
+    std::cout << "Error at final time: " << e1 <<  std::endl;
     std::cout << "\n";
 
     // Runge-Kutta method for a system with two variables
@@ -66,7 +66,7 @@ int main() {
     rk1 -= vector_solution;
     arma::rowvec e3 = rk1.row(steps1 - 1);
     e3 = arma::abs(e3);
-    std::cout << "Error at time T: " << e3 <<  std::endl;
+    std::cout << "Error at final time: " << e3 <<  std::endl;
     std::cout << "\n";
 
     // Midpoint method for a system with two variables
@@ -80,5 +80,5 @@ int main() {
     midp1 -= vector_solution;
     arma::rowvec e5 = midp1.row(steps1 -1);
     e5 = arma::abs(e5);
-    std::cout << "Error at time T: " << e5 <<  std::endl;
+    std::cout << "Error at final time: " << e5 <<  std::endl;
 }

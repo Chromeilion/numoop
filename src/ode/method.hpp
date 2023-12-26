@@ -14,9 +14,12 @@ class ODE {
 public:
     virtual ~ODE() = default;
 
-    // Templated method for generic types
-    template <typename YType>
-    arma::mat ode(const std::function<arma::vec(double, const arma::vec&)>& f, const YType& y0, double h, double end, const std::string& filename = "result.csv") {
+    // Virtual method
+    virtual arma::mat method(const std::function<arma::vec(double, const arma::vec&)>& f, arma::mat& result_mat, const arma::vec& t, double h) const = 0;
+    
+    // Templated method
+    template <typename T>
+    arma::mat ode(const std::function<arma::vec(double, const arma::vec&)>& f, const T& y0, double h, double end, const std::string& filename = "result.csv") {
         arma::uword steps = static_cast<arma::uword>(end / h) + 1;
         arma::vec t = arma::linspace(0, end, steps);
 

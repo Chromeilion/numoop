@@ -56,7 +56,7 @@ int main() {
     std::cout << "\n";
 
     // Runge-Kutta method for a system with two variables
-    Rk4 obj2;
+    RungeKutta4 obj2;
     auto start3 = std::chrono::high_resolution_clock::now();
     arma::mat rk1 = obj2.ode(f_vector, y0_twovars, h1, T1);
     auto end3 = std::chrono::high_resolution_clock::now();
@@ -126,7 +126,7 @@ int main() {
 
 
     // Runge-Kutta method for a scalar ODE
-    Rk4 obj5;
+    RungeKutta4 obj5;
     auto start4 = std::chrono::high_resolution_clock::now();
     arma::mat rk2 = obj5.ode(f_scalar, y0_scalar, h2, T2);
     auto end4 = std::chrono::high_resolution_clock::now();

@@ -42,8 +42,9 @@ int main() {
 
 
     // Euler method for a system with two variables
+    Euler obj1;
     auto start1 = std::chrono::high_resolution_clock::now();
-    arma::mat eul1 = euler(f_vector, y0_twovars, h1, T1);
+    arma::mat eul1 = obj1.ode(f_vector, y0_twovars, h1, T1);
     auto end1 = std::chrono::high_resolution_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
     std::cout << "Euler system runtime: " << duration1.count() << " microseconds" << std::endl;
@@ -55,8 +56,9 @@ int main() {
     std::cout << "\n";
 
     // Runge-Kutta method for a system with two variables
+    RungeKutta4 obj2;
     auto start3 = std::chrono::high_resolution_clock::now();
-    arma::mat rk1 = runge_kutta(f_vector, y0_twovars, h1, T1);
+    arma::mat rk1 = obj2.ode(f_vector, y0_twovars, h1, T1);
     auto end3 = std::chrono::high_resolution_clock::now();
     auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(end3 - start3);
     std::cout << "Runge-Kutta 4 system runtime: " << duration3.count() << " microseconds" << std::endl;
@@ -68,8 +70,9 @@ int main() {
     std::cout << "\n";
 
     // Midpoint method for a system with two variables
+    Midpoint obj3;
     auto start5 = std::chrono::high_resolution_clock::now();
-    arma::mat midp1 = midpoint(f_vector, y0_twovars, h1, T1);
+    arma::mat midp1 = obj3.ode(f_vector, y0_twovars, h1, T1);
     auto end5 = std::chrono::high_resolution_clock::now();
     auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(end5 - start5);
     std::cout << "Midpoint system runtime: " << duration5.count() << " microseconds" << std::endl;
@@ -110,8 +113,9 @@ int main() {
     }
 
     // Euler method for a scalar ODE
+    Euler obj4;
     auto start2 = std::chrono::high_resolution_clock::now();
-    arma::mat eul2 = euler(f_scalar, y0_scalar, h2, T2);
+    arma::mat eul2 = obj4.ode(f_scalar, y0_scalar, h2, T2);
     auto end2 = std::chrono::high_resolution_clock::now();
     auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(end2 - start2);
     std::cout << "Euler scalar runtime: " << duration2.count() << " microseconds" << std::endl;
@@ -122,8 +126,9 @@ int main() {
 
 
     // Runge-Kutta method for a scalar ODE
+    RungeKutta4 obj5;
     auto start4 = std::chrono::high_resolution_clock::now();
-    arma::mat rk2 = runge_kutta(f_scalar, y0_scalar, h2, T2);
+    arma::mat rk2 = obj5.ode(f_scalar, y0_scalar, h2, T2);
     auto end4 = std::chrono::high_resolution_clock::now();
     auto duration4 = std::chrono::duration_cast<std::chrono::microseconds>(end4 - start4);
     std::cout << "Runge-Kutta 4 scalar runtime: " << duration4.count() << " microseconds" << std::endl;
@@ -134,8 +139,9 @@ int main() {
     
 
     // Midpoint method for a scalar ODE
+    Midpoint obj6;
     auto start6 = std::chrono::high_resolution_clock::now();
-    arma::mat midp2 = midpoint(f_scalar, y0_scalar, h2, T2);
+    arma::mat midp2 = obj6.ode(f_scalar, y0_scalar, h2, T2);
     auto end6 = std::chrono::high_resolution_clock::now();
     auto duration6 = std::chrono::duration_cast<std::chrono::microseconds>(end6 - start6);
     std::cout << "Midpoint scalar runtime: " << duration6.count() << " microseconds" << std::endl;

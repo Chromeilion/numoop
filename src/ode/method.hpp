@@ -43,7 +43,7 @@ public:
 
 private:
     // Save results to file
-    void saveToFile(const arma::mat& result_mat, const arma::vec& t, const std::string& filename) const {
+    void saveToFile(const arma::mat& result_mat, const std::string& filename) const {
         std::ofstream file(filename);
         if (file.is_open()) {
             file << "t,y0";

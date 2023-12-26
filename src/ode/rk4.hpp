@@ -5,7 +5,7 @@
 #ifndef RK4_HPP
 #define RK4_HPP
 
-#include <method.hpp>
+#include <ode/method.hpp>
 
 class RungeKutta4 : public ODE {
 public:

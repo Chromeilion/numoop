@@ -5,7 +5,7 @@
 #ifndef MIDPOINT_HPP
 #define MIDPOINT_HPP
 
-#include <method.hpp>
+#include <ode/method.hpp>
 
 class Midpoint : public ODE {
 public:

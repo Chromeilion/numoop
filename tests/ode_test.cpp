@@ -48,7 +48,6 @@ int main() {
     auto end1 = std::chrono::high_resolution_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
     std::cout << "Euler system runtime: " << duration1.count() << " microseconds" << std::endl;
-    //eul1 = eul1.t();
     eul1 -= vector_solution;
     arma::rowvec e1 = eul1.row(steps1 -1);
     e1 = arma::abs(e1);
@@ -62,7 +61,6 @@ int main() {
     auto end3 = std::chrono::high_resolution_clock::now();
     auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(end3 - start3);
     std::cout << "Runge-Kutta 4 system runtime: " << duration3.count() << " microseconds" << std::endl;
-    //rk1 = rk1.t();
     rk1 -= vector_solution;
     arma::rowvec e3 = rk1.row(steps1 - 1);
     e3 = arma::abs(e3);
@@ -76,7 +74,6 @@ int main() {
     auto end5 = std::chrono::high_resolution_clock::now();
     auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(end5 - start5);
     std::cout << "Midpoint system runtime: " << duration5.count() << " microseconds" << std::endl;
-    //midp1 = midp1.t();
     midp1 -= vector_solution;
     arma::rowvec e5 = midp1.row(steps1 -1);
     e5 = arma::abs(e5);

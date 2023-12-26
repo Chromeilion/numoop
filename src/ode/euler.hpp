@@ -5,7 +5,7 @@
 #ifndef EULER_HPP
 #define EULER_HPP
 
-#include <method.hpp>
+#include <ode/method.hpp>
 
 class Euler : public ODE {
 public:

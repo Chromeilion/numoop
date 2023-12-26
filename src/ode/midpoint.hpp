@@ -7,6 +7,8 @@
 
 #include <ode/method.hpp>
 
+namespace midpoint {
+
 class Midpoint : public ODE {
 public:
     template <typename T>
@@ -22,5 +24,7 @@ public:
         return result_mat;
     }
 };
+
+} // namespace midpoint
 
 #endif //MIDPOINT_HPP

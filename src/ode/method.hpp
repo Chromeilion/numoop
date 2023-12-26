@@ -10,6 +10,8 @@
 #include <iostream>
 #include <fstream>
 
+namespace method {
+
 class ODE {
 public:
     virtual ~ODE() = default;
@@ -53,5 +55,7 @@ public:
         return out;
     }
 };
+
+} // namespace method
 
 #endif //METHOD_HPP

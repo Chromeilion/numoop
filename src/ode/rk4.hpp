@@ -7,6 +7,8 @@
 
 #include <ode/method.hpp>
 
+namespace rk4 {
+
 class RungeKutta4 : public ODE {
 public:
     template <typename T>
@@ -24,5 +26,7 @@ public:
         return result_mat;
     }
 };
+
+} // namespace rk4
 
 #endif //RK4_HPP

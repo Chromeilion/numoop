@@ -9,8 +9,9 @@
 
 class Midpoint : public ODE {
 public:
+    template <typename T>
     // Implement Midpoint method
-    arma::mat method(const std::function<arma::vec(double, const arma::vec&)>& f, arma::mat& result_mat, const arma::vec& t, double h) const override {
+    arma::mat method(const std::function<arma::vec(double, const T&)>& f, arma::mat& result_mat, const arma::vec& t, double h) const override {
 
         for (arma::uword i = 1; i < t.n_elem; ++i) {
             arma::vec k1 = h * f(t(i - 1), result_mat.col(i - 1));

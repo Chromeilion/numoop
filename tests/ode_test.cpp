@@ -58,7 +58,7 @@ int main() {
     // Runge-Kutta method for a system with two variables
     RungeKutta4 obj2;
     auto start3 = std::chrono::high_resolution_clock::now();
-    arma::mat rk1 = obj2.ode(f_vector, y0_twovars, h1, T1,filename "result_rk4.csv");
+    arma::mat rk1 = obj2.ode(f_vector, y0_twovars, h1, T1, "result_rk4.csv");
     auto end3 = std::chrono::high_resolution_clock::now();
     auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(end3 - start3);
     std::cout << "Runge-Kutta 4 system runtime: " << duration3.count() << " microseconds" << std::endl;
@@ -72,7 +72,7 @@ int main() {
     // Midpoint method for a system with two variables
     Midpoint obj3;
     auto start5 = std::chrono::high_resolution_clock::now();
-    arma::mat midp1 = obj3.ode(f_vector, y0_twovars, h1, T1, filename "result_midpoint.csv");
+    arma::mat midp1 = obj3.ode(f_vector, y0_twovars, h1, T1, "result_midpoint.csv");
     auto end5 = std::chrono::high_resolution_clock::now();
     auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(end5 - start5);
     std::cout << "Midpoint system runtime: " << duration5.count() << " microseconds" << std::endl;

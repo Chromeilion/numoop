@@ -18,14 +18,8 @@ public:
     virtual ~ODE() = default;
 
     // Typedef for the function types
-    using func_scalar = std::function<arma::vec(double, double)>;
+    using func_scalar = std::function<double(double, double)>;
     using func_vec = std::function<arma::vec(double, const arma::vec&)>;
-
-    // Explicit constructor for scalar functions
-    //explicit ODE(const func_scalar& scalar_func) : f_scal(scalar_func) {}
-
-    // Explicit constructor for vector functions
-    //explicit ODE(const func_vec& vector_func) : f_vec(vector_func) {}
 
     // Set the scalar function f
     void set_scal_fun(const func_scalar& new_func) {
@@ -38,11 +32,11 @@ public:
 
     // Virtual method for vector case
     virtual arma::mat method_vec(arma::mat& result_mat, const arma::vec& y0, 
-                                  const arma::vec& t, double h) const = 0;
+                                  const arma::vec& t, double h) = 0;
 
     // Virtual method for scalar case
     virtual arma::mat method_scalar(arma::mat& result_mat, const arma::vec& t, 
-                                    double h) const = 0;
+                                    double h) = 0;
 
     // Method for scalar case
     arma::mat ode(double y0, double h, double end) {
@@ -84,7 +78,7 @@ protected:
     }
     // Instansiating the matrix in scalar case
     arma::mat instantiate_scalar(double y0, arma::uword steps) {
-        arma::mat result_mat(1, steps);
+        arma::mat result_mat(1,steps);
         result_mat(0,0) = y0;
         return result_mat;
     }

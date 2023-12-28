@@ -8,10 +8,11 @@ int main() {
     std::cout << "\n";
     std::cout << "Let's solve some ODE's!\n" << std::endl;
 
-     auto f_vector = [](double, const arma::vec& y) -> arma::vec {
+    auto f_vector = [](double, const arma::vec& y) -> arma::vec {
         // Example system: dy0/dt = y1, dy1/dt = -y0
         return arma::vec({y(1), -y(0)});
     };
+
     std::cout << "Example system ODE: dy0/dt = y1, dy1/dt = -y0" << std::endl;
 
     double h1 = 0.05;
@@ -43,8 +44,9 @@ int main() {
 
     // Euler method for a system with two variables
     Euler obj1;
+    obj1.set_vec_fun(f_vector);
     auto start1 = std::chrono::high_resolution_clock::now();
-    arma::mat eul1 = obj1.ode(f_vector, y0_twovars, h1, T1, "result_euler.csv");
+    arma::mat eul1 = obj1.ode(y0_twovars, h1, T1);
     auto end1 = std::chrono::high_resolution_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
     std::cout << "Euler system runtime: " << duration1.count() << " microseconds" << std::endl;
@@ -56,8 +58,9 @@ int main() {
 
     // Runge-Kutta method for a system with two variables
     RungeKutta4 obj2;
+    obj2.set_vec_fun(f_vector);
     auto start3 = std::chrono::high_resolution_clock::now();
-    arma::mat rk1 = obj2.ode(f_vector, y0_twovars, h1, T1, "result_rk4.csv");
+    arma::mat rk1 = obj2.ode(y0_twovars, h1, T1);
     auto end3 = std::chrono::high_resolution_clock::now();
     auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(end3 - start3);
     std::cout << "Runge-Kutta 4 system runtime: " << duration3.count() << " microseconds" << std::endl;
@@ -69,8 +72,9 @@ int main() {
 
     // Midpoint method for a system with two variables
     Midpoint obj3;
+    obj3.set_vec_fun(f_vector);
     auto start5 = std::chrono::high_resolution_clock::now();
-    arma::mat midp1 = obj3.ode(f_vector, y0_twovars, h1, T1, "result_midpoint.csv");
+    arma::mat midp1 = obj3.ode(y0_twovars, h1, T1);
     auto end5 = std::chrono::high_resolution_clock::now();
     auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(end5 - start5);
     std::cout << "Midpoint system runtime: " << duration5.count() << " microseconds" << std::endl;
@@ -80,5 +84,6 @@ int main() {
     std::cout << "Error at final time: " << e5 <<  std::endl;
     
     std::cout << "\n";
+
     return 0;
 }

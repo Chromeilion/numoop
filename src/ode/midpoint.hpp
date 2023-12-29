@@ -7,6 +7,8 @@
 
 #include <ode/method.hpp>
 
+namespace oop::ode{
+
 class Midpoint : public ODE {
 
 public:
@@ -35,5 +37,5 @@ public:
         return result_mat;
     }
 };
-
+}
 #endif //MIDPOINT_HPP

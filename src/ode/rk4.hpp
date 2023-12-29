@@ -7,6 +7,8 @@
 
 #include <ode/method.hpp>
 
+namespace oop::ode{
+
 class RungeKutta4 : public ODE {
 
 public:
@@ -42,5 +44,5 @@ public:
 
     }
 };
-
+}
 #endif //RK4_HPP

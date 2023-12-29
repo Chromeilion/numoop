@@ -13,6 +13,8 @@
 #include <vector>
 #include <type_traits>
 
+namespace oop::ode{
+    
 class ODE {
 public:
     virtual ~ODE() = default;
@@ -137,4 +139,5 @@ protected:
         }
     }
 };
+}
 #endif //METHOD_HPP

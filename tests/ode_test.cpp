@@ -4,6 +4,8 @@
 #include <chrono>
 #include "ode/ode.hpp"
 
+using namespace oop::ode;
+
 int main() {
     std::cout << "\n";
     std::cout << "Let's solve some ODE's!\n" << std::endl;

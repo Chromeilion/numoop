@@ -47,6 +47,10 @@ namespace oop::stats {
         // Function that searches the labels for a specific label.
         auto find_label(const std::string &label) const;
     public:
+        explicit DataFrame(const std::vector<std::vector<sup_single_types>> &data,
+                  std::optional<std::vector<std::string>> labels = std::nullopt);
+        DataFrame() = default;
+
         // Get the column labels.
         [[nodiscard]] auto column_labels() const {
             return _column_labels;};
@@ -56,7 +60,7 @@ namespace oop::stats {
             return this->cat_map[idx];};
 
         // Cat map setter.
-        void set_map(const arma::uword idx, const cat_map_t map) {
+        void set_map(const arma::uword idx, const cat_map_t& map) {
             this->cat_map[idx] = map;};
 
         // Column label setter. The amount of provided tables must match the
@@ -105,6 +109,14 @@ namespace oop::stats {
     };
 
     // Implementation
+
+    DataFrame::DataFrame(const std::vector<std::vector<sup_single_types>> &data,
+                         std::optional<std::vector<std::string>> labels) {
+        for (const auto & i : data) {
+            this->append_row(i);
+        }
+        if (labels) {this->set_column_labels(*labels);}
+    }
 
     template<typename B>
     void AppendColumn::operator()(const B &item) {
@@ -159,6 +171,13 @@ namespace oop::stats {
 
     void DataFrame::insert_column(sup_col_types &col, const arma::uword &idx,
                                   const std::optional<std::string> &label) {
+        arma::uword n_rows;
+        n_rows = std::visit(overloaded{[](auto c){return c.n_rows;}}, col);
+        if (n_rows != this->shape().first) {
+            throw std::invalid_argument(
+                    "Trying to append a column with an incorrect amount of rows"
+                    );
+        }
         if (label.has_value()) {
             auto current_labs{this->column_labels()};
             if (!current_labs.has_value()) {

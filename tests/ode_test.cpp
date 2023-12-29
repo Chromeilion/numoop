@@ -44,9 +44,12 @@ int main() {
 
     // Euler method for a system with two variables
     Euler obj1;
-    obj1.set_vec_fun(f_vector);
+    obj1.set_fun_vec(f_vector);
+    obj1.set_y0_vec(y0_twovars);
+    obj1.set_h(h1);
+    obj1.set_end(T1);
     auto start1 = std::chrono::high_resolution_clock::now();
-    arma::mat eul1 = obj1.ode(y0_twovars, h1, T1);
+    arma::mat eul1 = obj1.ode_vec();
     auto end1 = std::chrono::high_resolution_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
     std::cout << "Euler system runtime: " << duration1.count() << " microseconds" << std::endl;
@@ -58,9 +61,12 @@ int main() {
 
     // Runge-Kutta method for a system with two variables
     RungeKutta4 obj2;
-    obj2.set_vec_fun(f_vector);
+    obj2.set_fun_vec(f_vector);
+    obj2.set_y0_vec(y0_twovars);
+    obj2.set_h(h1);
+    obj2.set_end(T1);
     auto start3 = std::chrono::high_resolution_clock::now();
-    arma::mat rk1 = obj2.ode(y0_twovars, h1, T1);
+    arma::mat rk1 = obj2.ode_vec();
     auto end3 = std::chrono::high_resolution_clock::now();
     auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(end3 - start3);
     std::cout << "Runge-Kutta 4 system runtime: " << duration3.count() << " microseconds" << std::endl;
@@ -72,9 +78,12 @@ int main() {
 
     // Midpoint method for a system with two variables
     Midpoint obj3;
-    obj3.set_vec_fun(f_vector);
+    obj3.set_fun_vec(f_vector);
+    obj3.set_y0_vec(y0_twovars);
+    obj3.set_h(h1);
+    obj3.set_end(T1);
     auto start5 = std::chrono::high_resolution_clock::now();
-    arma::mat midp1 = obj3.ode(y0_twovars, h1, T1);
+    arma::mat midp1 = obj3.ode_vec();
     auto end5 = std::chrono::high_resolution_clock::now();
     auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(end5 - start5);
     std::cout << "Midpoint system runtime: " << duration5.count() << " microseconds" << std::endl;

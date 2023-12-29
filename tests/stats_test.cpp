@@ -124,12 +124,35 @@ TEST_F(DataFrameTest, Indexing) {
 }
 
 TEST_F(DataFrameTest, AppendColumn) {
-    arma::vec new_column{5.2, 5.5, 6.4};
-    arma::vec invalid_column{3.3};
-    d1_.append_column(new_column, {});
+    oop::stats::sup_col_types new_column{arma::vec{5.2, 5.5, 6.4}};
+    d1_.append_column(new_column, "New Column");
     ASSERT_TRUE(d1_.shape().second == 4);
     ASSERT_TRUE(d1_.shape().first == 3);
-    ASSERT_ANY_THROW(d1_.append_column(invalid_column, {}));
+    ASSERT_EQ((*d1_.column_labels())[(*d1_.column_labels()).size()-1],
+              "New Column");
+}
+
+TEST_F(DataFrameTest, AppendInvalidColumn) {
+    oop::stats::sup_col_types invalid_column{arma::vec{3.3}};
+    ASSERT_ANY_THROW(d1_.append_column(invalid_column));
+}
+
+TEST_F(DataFrameTest, InsertColumn) {
+    const std::string new_column_label{"New Column"};
+    const arma::vec new_column{5.2, 5.5, 6.4};
+    oop::stats::sup_col_types new_column_var{new_column};
+    d1_.insert_column(new_column_var, 0, new_column_label);
+    EXPECT_TRUE(d1_.shape().second == 4);
+    EXPECT_TRUE(d1_.shape().first == 3);
+    EXPECT_EQ((*d1_.column_labels())[0], new_column_label);
+    auto col = std::get<arma::vec>(d1_[0]);
+    EXPECT_TRUE(arma::approx_equal(col, new_column, "absdiff", 0));
+    EXPECT_NO_THROW(d1_.insert_column(new_column_var, 0));
+}
+
+TEST_F(DataFrameTest, InsertInvalidColumn) {
+    oop::stats::sup_col_types invalid_column{arma::vec{3.3}};
+    ASSERT_ANY_THROW(d1_.insert_column(invalid_column, 0));
 }
 
 TEST_F(DataFrameTest, AppendRow) {

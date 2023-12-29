@@ -45,7 +45,7 @@ int main() {
 
 
     // Euler method for a system with two variables
-    Euler obj1;
+    oop::ode::Euler<double> obj1;
     obj1.set_fun_vec(f_vector);
     obj1.set_y0_vec(y0_twovars);
     obj1.set_h(h1);
@@ -62,7 +62,7 @@ int main() {
     std::cout << "\n";
 
     // Runge-Kutta method for a system with two variables
-    RungeKutta4 obj2;
+    oop::ode::RungeKutta4<double> obj2;
     obj2.set_fun_vec(f_vector);
     obj2.set_y0_vec(y0_twovars);
     obj2.set_h(h1);
@@ -79,7 +79,7 @@ int main() {
     std::cout << "\n";
 
     // Midpoint method for a system with two variables
-    Midpoint obj3;
+    oop::ode::Midpoint<double> obj3;
     obj3.set_fun_vec(f_vector);
     obj3.set_y0_vec(y0_twovars);
     obj3.set_h(h1);

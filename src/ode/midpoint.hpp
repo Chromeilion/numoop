@@ -9,31 +9,33 @@
 
 namespace oop::ode{
 
-class Midpoint : public ODE {
+template <typename T>
+
+class Midpoint : public ODE<T> {
 
 public:
 
     // Implement Midpoint method for vector case
-    arma::mat method_vec(arma::mat& result_mat, const arma::vec& t) override {
+    arma::Mat<T> method_vec(arma::Mat<T>& result_mat, const arma::Col<T>& t) override {
         for (arma::uword i = 1; i < t.n_elem; ++i) {
-            arma::vec k1 = h * f_vec(t(i - 1), result_mat.col(i - 1));
-            arma::vec k2 = h * f_vec(t(i - 1) + h / 2, result_mat.col(i - 1) + k1 / 2);
+            arma::Col<T> k1 = this->h * this->f_vec(t(i - 1), result_mat.col(i - 1));
+            arma::Col<T> k2 = this->h * this->f_vec(t(i - 1) + this->h / 2, result_mat.col(i - 1) + k1 / 2);
 
             result_mat.col(i) = result_mat.col(i - 1) + k2;
         }
-        save_vec(result_mat, t, "result_midpoint_vector.csv");
+        this->save_vec(result_mat, t, "result_midpoint_vector.csv");
         return result_mat;
     }
 
     // Implementation for scalar case
-    arma::mat method_scalar(arma::mat& result_mat, const arma::vec& t) override {
+    arma::Mat<T> method_scalar(arma::Mat<T>& result_mat, const arma::Col<T>& t) override {
         for (arma::uword i = 1; i < t.n_elem; ++i) {
-            double k1 = h * f_scal(t(i - 1), result_mat(0,i - 1));
-            double k2 = h * f_scal(t(i - 1) + h / 2, result_mat(0,i - 1) + k1 / 2);
+            T k1 = this->h * this->f_scal(t(i - 1), result_mat(0,i - 1));
+            T k2 = this->h * this->f_scal(t(i - 1) + this->h / 2, result_mat(0,i - 1) + k1 / 2);
 
             result_mat(0,i) = result_mat(0,i - 1) + k2;
         }
-        save_scalar(result_mat, t, "result_midpoint_scalar.csv");
+        this->save_scalar(result_mat, t, "result_midpoint_scalar.csv");
         return result_mat;
     }
 };

@@ -83,9 +83,14 @@ namespace oop::stats {
 
         void insert_column(sup_col_types &col, const arma::uword &idx,
                            const std::optional<std::string> &label);
-        void append_column(sup_col_types col,
+        void insert_column(sup_col_types &col, const arma::uword &idx) {
+            this->insert_column(col, idx, {});};
+
+        void append_column(sup_col_types &col,
                            const std::optional<std::string> &label) {
             insert_column(col, shape().second, label);};
+        void append_column(sup_col_types &col) {
+            insert_column(col, shape().second, {});};
 
         // Print a summary of the dataframe.
         void summarize();

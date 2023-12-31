@@ -20,34 +20,23 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-find_package(Armadillo)
-if (NOT ARMADILLO_FOUND)
-    find_package(BLAS QUIET)
-    find_package(LAPACK QUIET)
-    if (NOT BLAS_FOUND AND NOT LAPACK_FOUND)
-        message(FATAL_ERROR "Can not find BLAS or LAPACK!  These are required
-        for Armadillo.  Please install one of them---or install
-        Armadillo---before installing numoop.")
-    endif()
-    message("Using bundled Armadillo to compile")
-    set(ARMADILLO_INCLUDE_DIR external/armadillo-code/include)
-    find_package(Armadillo REQUIRED)
-endif()
+# Dependencies
+add_subdirectory(external/armadillo-code REQUIRED)
+# Python bindings
+find_package(Python COMPONENTS Interpreter Development)
+add_subdirectory(external/pybind11)
+add_subdirectory(external/carma)
 
-include_directories(${ARMADILLO_INCLUDE_DIRS})
-
-# Include our header library
+# Include dirs
 include_directories(src)
 
-add_executable(test_stats tests/stats_test.cpp)
 add_executable(test_ode tests/ode_test.cpp)
+add_executable(tests tests/stats_test.cpp)
+pybind11_add_module(python_bindings bindings/dataframe.cpp)
 
-# Link against BLAS and LAPACK for Armadillo
-target_link_libraries(test_stats ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}
-        ${ARMADILLO_LIBRARIES} GTest::gtest_main)
-target_link_libraries(test_ode ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES}
-        ${ARMADILLO_LIBRARIES} GTest::gtest_main)
+target_link_libraries(python_bindings PRIVATE carma::carma)
+target_link_libraries(tests armadillo GTest::gtest_main)
+target_link_libraries(test_ode armadillo GTest::gtest_main)
 
 include(GoogleTest)
-gtest_discover_tests(test_stats)
-gtest_discover_tests(test_ode)
+gtest_discover_tests(tests)

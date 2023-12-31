@@ -1,3 +1,11 @@
 [submodule "external/armadillo-code"]
 	path = external/armadillo-code
 	url = https://gitlab.com/conradsnicta/armadillo-code.git
+[submodule "external/pybind11"]
+	path = external/pybind11
+	url = ../../pybind/pybind11
+	branch = stable
+[submodule "external/carma"]
+	path = external/carma
+	url = ../../RUrlus/carma
+	branch = stable

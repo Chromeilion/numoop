@@ -1,16 +1,85 @@
 // Example usage
 
-#include <cmath>
 #include <chrono>
 #include "ode/ode.hpp"
 
-using namespace oop::ode;
+using namespace oop::ode_scal;
+using namespace oop::ode_vec;
+
 
 int main() {
     std::cout << "\n";
-    std::cout << "Let's solve some ODE's!\n" << std::endl;
+    std::cout << "Let's solve some scalar ODE's!\n" << std::endl;
 
-    auto f_vector = [](double, const arma::vec& y) -> arma::vec {
+    auto f_scalar = [](double t, double y) -> double {
+        // Example scalar ODE: dy/dt = y + t
+        return double (t + y);
+    };
+    std::cout << "Example scalar ODE: dy/dt = y + t" << std::endl;
+
+    double h2 = 0.05;
+    std::cout << "Step considered: " << h2 << std::endl;
+
+    double T2 = 0.5;
+    std::cout << "Final time: " << T2 << std::endl;
+
+        double y0_scalar = 1.0;
+    std::cout << "Initial conditions: " << y0_scalar << std::endl;
+
+    std::cout << "\n";
+
+    arma::uword steps2 = static_cast<arma::uword>(T2 / h2) + 1;
+    arma::vec time2 = arma::linspace(0, T2, steps2);
+
+    auto scalar_solution = [](double t) -> double {
+        return -t + 2 * std::exp(t) - 1;
+    };
+    arma::vec scalar_solution_values = arma::vec(time2.n_elem);
+    for (arma::uword i = 0; i < time2.n_elem; ++i) {
+        scalar_solution_values(i) = scalar_solution(time2(i));
+    }
+
+    // Euler method for a scalar ODE
+    Euler_Scal<double> obj4(f_scalar, y0_scalar, h2, T2);
+    auto start2 = std::chrono::high_resolution_clock::now();
+    arma::mat eul2 = obj4.ode();
+    auto end2 = std::chrono::high_resolution_clock::now();
+    auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(end2 - start2);
+    std::cout << "Euler scalar runtime: " << duration2.count() << " microseconds" << std::endl;
+    eul2 -= scalar_solution_values;
+    double e2 = std::abs(eul2.at(steps2-1,0));
+    std::cout << "Error at time T: " << e2 <<  std::endl;
+    std::cout << "\n";
+
+
+    // Runge-Kutta method for a scalar ODE
+    RK4_Scal<double> obj5(f_scalar, y0_scalar, h2, T2);
+    auto start4 = std::chrono::high_resolution_clock::now();
+    arma::mat rk2 = obj5.ode();
+    auto end4 = std::chrono::high_resolution_clock::now();
+    auto duration4 = std::chrono::duration_cast<std::chrono::microseconds>(end4 - start4);
+    std::cout << "Runge-Kutta 4 scalar runtime: " << duration4.count() << " microseconds" << std::endl;
+    rk2 -= scalar_solution_values;
+    double e4 = std::abs(rk2.at(steps2-1,0));
+    std::cout << "Error at time T: " << e4 <<  std::endl;
+    std::cout << "\n";
+    
+
+    // Midpoint method for a scalar ODE
+    Midpoint_Scal<double> obj6(f_scalar, y0_scalar, h2, T2);
+    auto start6 = std::chrono::high_resolution_clock::now();
+    arma::mat midp2 = obj6.ode();
+    auto end6 = std::chrono::high_resolution_clock::now();
+    auto duration6 = std::chrono::duration_cast<std::chrono::microseconds>(end6 - start6);
+    std::cout << "Midpoint scalar runtime: " << duration6.count() << " microseconds" << std::endl;
+    midp2 -= scalar_solution_values;
+    double e6 = std::abs(midp2.at(steps2-1,0));
+    std::cout << "Error at time T: " << e6 <<  std::endl;
+
+    std::cout << "\n";
+    std::cout << "\n";
+    std::cout << "Now let's solve some vector ODE's!\n" << std::endl;
+    auto f = [](double, const arma::vec& y) -> arma::vec {
         // Example system: dy0/dt = y1, dy1/dt = -y0
         return arma::vec({y(1), -y(0)});
     };
@@ -23,8 +92,8 @@ int main() {
     double T1 = 0.5;
     std::cout << "Final time: " << T1 << std::endl;
 
-    arma::vec y0_twovars = {0.0, 1.0};
-    std::cout << "Initial conditions: " << arma::trans(y0_twovars) << std::endl;
+    arma::Col<double> y0 = {0.0, 1.0};
+    std::cout << "Initial conditions: " << arma::trans(y0) << std::endl;
 
     arma::uword steps1 = static_cast<arma::uword>(T1 / h1) + 1;
     arma::vec time1 = arma::linspace(0, T1, steps1);
@@ -45,13 +114,9 @@ int main() {
 
 
     // Euler method for a system with two variables
-    oop::ode::Euler<double> obj1;
-    obj1.set_fun_vec(f_vector);
-    obj1.set_y0_vec(y0_twovars);
-    obj1.set_h(h1);
-    obj1.set_end(T1);
+    Euler<double> obj1(f,y0,h1,T1);
     auto start1 = std::chrono::high_resolution_clock::now();
-    arma::mat eul1 = obj1.ode_vec();
+    arma::mat eul1 = obj1.ode();
     auto end1 = std::chrono::high_resolution_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1);
     std::cout << "Euler system runtime: " << duration1.count() << " microseconds" << std::endl;
@@ -62,13 +127,9 @@ int main() {
     std::cout << "\n";
 
     // Runge-Kutta method for a system with two variables
-    oop::ode::RungeKutta4<double> obj2;
-    obj2.set_fun_vec(f_vector);
-    obj2.set_y0_vec(y0_twovars);
-    obj2.set_h(h1);
-    obj2.set_end(T1);
+    RK4<double> obj2(f,y0,h1,T1);
     auto start3 = std::chrono::high_resolution_clock::now();
-    arma::mat rk1 = obj2.ode_vec();
+    arma::mat rk1 = obj2.ode();
     auto end3 = std::chrono::high_resolution_clock::now();
     auto duration3 = std::chrono::duration_cast<std::chrono::microseconds>(end3 - start3);
     std::cout << "Runge-Kutta 4 system runtime: " << duration3.count() << " microseconds" << std::endl;
@@ -79,13 +140,9 @@ int main() {
     std::cout << "\n";
 
     // Midpoint method for a system with two variables
-    oop::ode::Midpoint<double> obj3;
-    obj3.set_fun_vec(f_vector);
-    obj3.set_y0_vec(y0_twovars);
-    obj3.set_h(h1);
-    obj3.set_end(T1);
+    Midpoint<double> obj3(f,y0,h1,T1);
     auto start5 = std::chrono::high_resolution_clock::now();
-    arma::mat midp1 = obj3.ode_vec();
+    arma::mat midp1 = obj3.ode();
     auto end5 = std::chrono::high_resolution_clock::now();
     auto duration5 = std::chrono::duration_cast<std::chrono::microseconds>(end5 - start5);
     std::cout << "Midpoint system runtime: " << duration5.count() << " microseconds" << std::endl;

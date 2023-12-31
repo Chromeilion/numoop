@@ -9,7 +9,7 @@
 
 namespace oop::ode_vec{
 
-template <typename T>
+template <typename T = double>
 
 class RK4 : public ODE_Vec<T> {
 

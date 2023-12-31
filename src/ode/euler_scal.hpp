@@ -9,7 +9,7 @@
 
 namespace oop::ode_scal{
 
-template <typename T>
+template <typename T = double>
 
 class Euler_Scal : public ODE_Scal<T> {
 

@@ -9,15 +9,14 @@
 
 namespace oop::ode_vec {
 
-template <typename T>
-
+template <typename T = double>
 class Euler : public ODE_Vec<T> {
 
 public:
 
     using func_vec = std::function<arma::Col<T>(T, const arma::Col<T>&)>;
 
-    Euler(func_vec f = {}, arma::Col<T>& y0 = {}, T& h = {}, T& end = {})
+    Euler(func_vec f = {}, arma::Col<T>& y0 = {}, T h = {}, T end = {})
         : ODE_Vec<T>(f, y0, h, end) {}
 
     // Implement Euler method for vector case

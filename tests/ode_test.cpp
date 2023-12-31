@@ -40,7 +40,7 @@ int main() {
     }
 
     // Euler method for a scalar ODE
-    Euler_Scal<double> obj4(f_scalar, y0_scalar, h2, T2);
+    Euler_Scal<> obj4(f_scalar, y0_scalar, h2, T2);
     auto start2 = std::chrono::high_resolution_clock::now();
     arma::mat eul2 = obj4.ode();
     auto end2 = std::chrono::high_resolution_clock::now();
@@ -53,7 +53,7 @@ int main() {
 
 
     // Runge-Kutta method for a scalar ODE
-    RK4_Scal<double> obj5(f_scalar, y0_scalar, h2, T2);
+    RK4_Scal<> obj5(f_scalar, y0_scalar, h2, T2);
     auto start4 = std::chrono::high_resolution_clock::now();
     arma::mat rk2 = obj5.ode();
     auto end4 = std::chrono::high_resolution_clock::now();
@@ -66,7 +66,7 @@ int main() {
     
 
     // Midpoint method for a scalar ODE
-    Midpoint_Scal<double> obj6(f_scalar, y0_scalar, h2, T2);
+    Midpoint_Scal<> obj6(f_scalar, y0_scalar, h2, T2);
     auto start6 = std::chrono::high_resolution_clock::now();
     arma::mat midp2 = obj6.ode();
     auto end6 = std::chrono::high_resolution_clock::now();
@@ -114,7 +114,7 @@ int main() {
 
 
     // Euler method for a system with two variables
-    Euler<double> obj1(f,y0,h1,T1);
+    Euler<> obj1(f,y0,h1,T1);
     auto start1 = std::chrono::high_resolution_clock::now();
     arma::mat eul1 = obj1.ode();
     auto end1 = std::chrono::high_resolution_clock::now();
@@ -127,7 +127,7 @@ int main() {
     std::cout << "\n";
 
     // Runge-Kutta method for a system with two variables
-    RK4<double> obj2(f,y0,h1,T1);
+    RK4<> obj2(f,y0,h1,T1);
     auto start3 = std::chrono::high_resolution_clock::now();
     arma::mat rk1 = obj2.ode();
     auto end3 = std::chrono::high_resolution_clock::now();
@@ -140,7 +140,7 @@ int main() {
     std::cout << "\n";
 
     // Midpoint method for a system with two variables
-    Midpoint<double> obj3(f,y0,h1,T1);
+    Midpoint<> obj3(f,y0,h1,T1);
     auto start5 = std::chrono::high_resolution_clock::now();
     arma::mat midp1 = obj3.ode();
     auto end5 = std::chrono::high_resolution_clock::now();

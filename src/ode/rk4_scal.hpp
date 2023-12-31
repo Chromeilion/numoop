@@ -6,7 +6,6 @@
 #define RK4_SCAL_HPP
 
 #include <ode/method_scal.hpp>
-#include <vector>
 
 namespace oop::ode_scal{
 

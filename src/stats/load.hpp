@@ -26,7 +26,7 @@ namespace oop::stats {
 
     // Load a CSV file into a DataFrame.
     std::vector<std::string> load(
-            std::string& filepath,
+            const std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header = std::nullopt,
             const std::optional<std::vector<int>>& columns = std::nullopt,
@@ -74,7 +74,7 @@ namespace oop::stats {
     }
 
     std::vector<std::string> load(
-            std::string& filepath,
+            const std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header,
             const std::optional<std::vector<int>>& columns,

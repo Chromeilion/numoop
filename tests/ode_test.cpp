@@ -19,7 +19,7 @@ protected:
         // Example scalar ODE: dy/dt = y + t
         return t + y;
     };
-    func_vec f_vec = [](double t, const arma::Col<double>& y) -> arma::Col<double> {
+    func_vec f = [](double t, const arma::Col<double>& y) -> arma::Col<double> {
         // Example system: dy0/dt = y1, dy1/dt = -y0
         return arma::Col<double>({y(1), -y(0)});
     };

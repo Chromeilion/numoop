@@ -3,7 +3,7 @@
 # And some from here:
 # https://github.com/mlpack/mlpack/blob/master/CMakeLists.txt
 
-cmake_minimum_required(VERSION 3.22.1)
+cmake_minimum_required(VERSION 3.28)
 project(numoop)
 
 set(CMAKE_CXX_STANDARD 17)

@@ -1,16 +1,17 @@
+//
+// Created by kiki on 01/02/2024.
+//
+
 #include "ode/ode.hpp"
 #include <iostream>
 #include <gtest/gtest.h>
 
 using namespace oop::ode_scal;
 using namespace oop::ode_vec;
+using func_scal = std::function<double(double,double)>;
+using func_vec = std::function<arma::Col<double>(double, const arma::Col<double>&)>;
 
 class ODETest : public testing::Test {
-
-public:
-
-    using func_scal = std::function<double(double,double)>;
-    using func_vec = std::function<arma::Col<double>(double,arma::Col<double>&)>;
 
 protected:
 
@@ -21,7 +22,8 @@ protected:
     };
     func_vec f = [](double t, const arma::Col<double>& y) -> arma::Col<double> {
         // Example system: dy0/dt = y1, dy1/dt = -y0
-        return arma::Col<double>({y(1), -y(0)});
+        t = 0;
+        return arma::Col<double>({y(1)+t, -y(0)});
     };
     double y0_sc = 1.0;
     arma::Col<double> y0 = {0.0, 1.0};
@@ -52,16 +54,16 @@ protected:
 
         // Compare the generated CSV with the reference CSV
         const std::string reference_csv = "csvtests/euler_scalar.csv";
-        CompareCSV("result_euler_scalar.csv", reference_csv);
+        CompareCSV("build/result_euler_scalar.csv", reference_csv);
     }
 
     // Test case for scalar Midpoint
     void TestMidpointScal() {
 
-        Midpoint_Scal<> eulerObj(f_sc, y0_sc, h, end);
+        Midpoint_Scal<> midpointObj(f_sc, y0_sc, h, end);
         midpointObj.ode();
         const std::string reference_csv = "csvtests/midpoint_scalar.csv";
-        CompareCSV("result_midpoint_scalar.csv", reference_csv);
+        CompareCSV("build/result_midpoint_scalar.csv", reference_csv);
     }
 
     // Test case for scalar RungeKutta4
@@ -70,16 +72,16 @@ protected:
         RK4_Scal<> rk4Obj(f_sc, y0_sc, h, end);
         rk4Obj.ode();
         const std::string reference_csv = "csvtests/rk4_scalar.csv";
-        CompareCSV("result_rk4_scalar.csv", reference_csv);
+        CompareCSV("build/result_rk4_scalar.csv", reference_csv);
     }
 
     // Test case for vector Euler
     void TestEulerVec() {
 
-        Euler<> eulerObj(f, y0, h, end);
+        oop::ode_vec::Euler<> eulerObj(f, y0, h, end);
         eulerObj.ode();
         const std::string reference_csv = "csvtests/euler_vector.csv";
-        CompareCSV("result_euler_vector.csv", reference_csv);
+        CompareCSV("build/result_euler_vector.csv", reference_csv);
     }
 
     // Test case for vector Midpoint
@@ -88,7 +90,7 @@ protected:
         Midpoint<> midpointObj(f, y0, h, end);
         midpointObj.ode();
         const std::string reference_csv = "csvtests/midpoint_vector.csv";
-        CompareCSV("result_midpoint_vector.csv", reference_csv);
+        CompareCSV("build/result_midpoint_vector.csv", reference_csv);
     }
 
     // Test case for vector RungeKutta4
@@ -97,7 +99,7 @@ protected:
         RK4<> rk4Obj(f, y0, h, end);
         rk4Obj.ode();
         const std::string reference_csv = "csvtests/rk4_vector.csv";
-        CompareCSV("result_rk4_vector.csv", reference_csv);
+        CompareCSV("build/result_rk4_vector.csv", reference_csv);
     }
 };
 

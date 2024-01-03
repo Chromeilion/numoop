@@ -1,0 +1,38 @@
+[build-system]
+requires = ["scikit-build-core", "numpy"]
+build-backend = "scikit_build_core.build"
+
+[tool.scikit-build]
+build-dir = "build"
+cmake.verbose = true
+logging.level = "INFO"
+cmake.build-type = "Debug"
+
+[project]
+name = "numoop"
+authors = [
+    {name = "Uros Zivanovic", email = "chromeilion@outlook.com"},
+    {name = "Christian Špringer", email = "christian.springer228@gmail.com" }
+]
+description = "Fast statistics and ODE solver library."
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+    "numpy",
+    "pytest-cpp"
+]
+version = "0.0.1"
+
+[project.urls]
+Repository = "https://github.com/Chromeilion/numoop"
+
+[tool.pytest.ini_options]
+testpaths = ["build/tests", "tests"]
+
+[tool.mypy]
+strict = true
+paths = ["src/package"]
+exclude = "(extern|venv)"
+plugins = "numpy.typing.mypy_plugin"
+python_version = "3.11"

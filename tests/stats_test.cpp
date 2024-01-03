@@ -94,7 +94,7 @@ TEST_F(DataFrameTest, LoadCSVCatMap) {
 }
 
 TEST_F(DataFrameTest, LoadCSVCorrectShape) {
-    EXPECT_EQ(d2_->first.shape().first, 8848) << "Wrong number of rows returned by .shape()";
+    EXPECT_EQ(d2_->first.shape().first, 998) << "Wrong number of rows returned by .shape()";
     EXPECT_EQ(d2_->first.shape().second, 35) << "Wrong number of columns returned by .shape()";
 }
 

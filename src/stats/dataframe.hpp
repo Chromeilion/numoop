@@ -55,6 +55,10 @@ namespace oop::stats {
         [[nodiscard]] auto column_labels() const {
             return _column_labels;};
 
+        // Column label setter. The amount of provided tables must match the
+        // amount of initialized columns.
+        void set_column_labels(const std::vector<std::string> &labels);
+
         // Cat map getter
         [[nodiscard]] cat_map_t& get_map(const arma::uword idx) {
             return this->cat_map[idx];};
@@ -62,10 +66,6 @@ namespace oop::stats {
         // Cat map setter.
         void set_map(const arma::uword idx, const cat_map_t& map) {
             this->cat_map[idx] = map;};
-
-        // Column label setter. The amount of provided tables must match the
-        // amount of initialized columns.
-        void set_column_labels(const std::vector<std::string> &labels);
 
         // Shape of the matrix.
         [[nodiscard]] std::pair<arma::uword, arma::uword> shape() const;

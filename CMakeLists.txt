@@ -18,5 +18,5 @@ add_subdirectory(src)
 add_subdirectory(tests)
 
 if(SKBUILD)
-    install(TARGETS _numoop LIBRARY DESTINATION numoop)
+    install(TARGETS _numoop LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})
 endif()

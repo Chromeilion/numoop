@@ -2,12 +2,6 @@
 requires = ["scikit-build-core", "numpy"]
 build-backend = "scikit_build_core.build"
 
-[tool.scikit-build]
-build-dir = "build"
-cmake.verbose = true
-logging.level = "INFO"
-cmake.build-type = "Debug"
-
 [project]
 name = "numoop"
 authors = [
@@ -19,10 +13,12 @@ readme = "README.md"
 requires-python = ">=3.11"
 
 dependencies = [
-    "numpy",
-    "pytest-cpp"
+    "numpy"
 ]
 version = "0.0.1"
+
+[project.optional-dependencies]
+test = ["pytest-cpp"]
 
 [project.urls]
 Repository = "https://github.com/Chromeilion/numoop"

@@ -31,7 +31,8 @@ protected:
     double end = 0.5;
 
     // Helper function to compare two CSV files
-    void CompareCSV(const std::string& generated_csv, const std::string& reference_csv) {
+    static void CompareCSV(const std::string& generated_csv,
+                           const std::string& reference_csv) {
         // Load the generated CSV file
         arma::Mat<double> generated_mat;
         generated_mat.load(generated_csv, arma::csv_ascii);
@@ -41,7 +42,8 @@ protected:
         reference_mat.load(reference_csv, arma::csv_ascii);
 
         // Compare the generated CSV with the reference CSV
-        ASSERT_TRUE(arma::approx_equal(generated_mat, reference_mat, "absdiff", 1e-6));
+        ASSERT_TRUE(arma::approx_equal(generated_mat, reference_mat,
+                                       "absdiff", 1e-6));
     }
 
     // Test case for scalar Euler

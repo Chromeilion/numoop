@@ -14,10 +14,10 @@
 
 namespace oop::stats {
     // Split a string wherever some char is present
-    std::vector<std::string> split_line(const std::string &line, const char &delimiter);
+    inline std::vector<std::string> split_line(const std::string &line, const char &delimiter);
 
     // Read a line from a file into a vector of strings
-    bool read_line(
+    inline bool read_line(
             std::fstream &file,
             std::vector<std::string>& line,
             const char &newline_delimiter,
@@ -25,18 +25,27 @@ namespace oop::stats {
             const std::optional<std::vector<int>>& columns = std::nullopt);
 
     // Load a CSV file into a DataFrame.
-    std::vector<std::string> load(
+    inline std::vector<std::string> load(
             const std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header = std::nullopt,
             const std::optional<std::vector<int>>& columns = std::nullopt,
             std::optional<std::vector<convert_func>> col_types = std::nullopt,
-            char newline_delimiter = '\n',
-            char column_delimiter = ',');
+            std::optional<char> newline_delimiter = std::nullopt,
+            std::optional<char> column_delimiter = std::nullopt);
+    // Load into a new DataFrame. Not ideal because it involves an extra copy on
+    // return, but it's more convenient.
+    inline std::pair<std::vector<std::string>, DataFrame> load(
+            const std::string& filepath,
+            std::optional<bool> header = std::nullopt,
+            const std::optional<std::vector<int>>& columns = std::nullopt,
+            std::optional<std::vector<convert_func>> col_types = std::nullopt,
+            std::optional<char> newline_delimiter = std::nullopt,
+            std::optional<char> column_delimiter = std::nullopt);
 
     // Implementation
 
-    std::vector<std::string> split_line(const std::string &line, const char &delimiter) {
+    inline std::vector<std::string> split_line(const std::string &line, const char &delimiter) {
         std::vector<std::string> splits;
         std::string word;
         std::stringstream str(line);
@@ -46,7 +55,7 @@ namespace oop::stats {
         return splits;
     }
 
-    bool read_line(
+    inline bool read_line(
             std::fstream& file,
             std::vector<std::string>& line,
             const char& newline_delimiter,
@@ -73,14 +82,17 @@ namespace oop::stats {
         return false;
     }
 
-    std::vector<std::string> load(
+    inline std::vector<std::string> load(
             const std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header,
             const std::optional<std::vector<int>>& columns,
             std::optional<std::vector<convert_func>> col_types,
-            char newline_delimiter,
-            char column_delimiter) {
+            std::optional<char> newline_delimiter,
+            std::optional<char> column_delimiter) {
+        if (!newline_delimiter) {newline_delimiter = '\n';}
+        if (!column_delimiter) {column_delimiter = ',';}
+
         std::fstream file(filepath, std::ios::in);
         if (!file.is_open()) {
             throw std::runtime_error(
@@ -98,13 +110,13 @@ namespace oop::stats {
         std::vector<std::string> full_header;
         if (header.has_value()) {
             if (*header) {
-                read_line(file, full_header, newline_delimiter,
-                          column_delimiter, columns);
+                read_line(file, full_header, *newline_delimiter,
+                          *column_delimiter, columns);
             }
         }
         // The first line of data is read outside the loop because some
         // extra operations such as type inference have to be performed.
-        if (!read_line(file, line, newline_delimiter, column_delimiter,
+        if (!read_line(file, line, *newline_delimiter, *column_delimiter,
                        columns)) {return col_str;}
 
         // Categorical variable maps get stored in a mapfor later use.
@@ -122,12 +134,13 @@ namespace oop::stats {
         if (!full_header.empty()) {
             if (columns.has_value()) {
                 std::vector<std::string> new_header;
-                for (const auto& str: full_header) {new_header.push_back(str);}
+                new_header.reserve(full_header.size());
+        for (const auto& str: full_header) {new_header.push_back(str);}
                 matr.set_column_labels(new_header);
-            } else {matr.set_column_labels(full_header);}}
-
+            } else {matr.set_column_labels(full_header);}
+        }
         // Append the rest of the CSV file, assuming constant types.
-        while (read_line(file, line, newline_delimiter, column_delimiter,
+        while (read_line(file, line, *newline_delimiter, *column_delimiter,
                          columns)) {
             matr.append_row(convert_strings(line, *col_types, columns));
         }
@@ -138,6 +151,19 @@ namespace oop::stats {
             matr.set_map(idx, cat_map->get_swapped_map());
         }
         return col_str;
+    }
+    inline std::pair<std::vector<std::string>, DataFrame> load(
+            const std::string& filepath,
+            std::optional<bool> header,
+            const std::optional<std::vector<int>>& columns,
+            std::optional<std::vector<convert_func>> col_types,
+            std::optional<char> newline_delimiter,
+            std::optional<char> column_delimiter) {
+        DataFrame new_df;
+        std::vector<std::string> types = load(
+                filepath, new_df, header, columns, col_types,
+                newline_delimiter, column_delimiter);
+        return {types, new_df};
     }
 }
 

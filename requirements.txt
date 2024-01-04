@@ -1,0 +1,4 @@
+pytest-cpp
+numpy
+mypy
+pybind11

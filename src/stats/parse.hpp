@@ -16,7 +16,7 @@ namespace oop::stats {
             R"([+-]?(\d+([.]\d*)?(e[+-]?\d+)?|[.]\d+(e[+-]?\d+)?))"};
 
     // Convert a vector of strings to types supported by the DataFrame
-    std::vector<oop::stats::sup_single_types> convert_strings(
+    inline std::vector<oop::stats::sup_single_types> convert_strings(
             std::vector<std::string> &strings,
             std::vector<convert_func> &types,
             const std::optional<std::vector<int>> &columns);
@@ -28,14 +28,14 @@ namespace oop::stats {
         arma::uword no_cats = 0;
     public:
         std::unordered_map<std::string, arma::uword> cat_map;
-        std::unordered_map<arma::uword, std::string> get_swapped_map() const;
+        inline std::unordered_map<arma::uword, std::string> get_swapped_map() const;
 
         // Take string and return a number unique to that string.
-        arma::uword &operator()(const std::string& str);
+        inline arma::uword &operator()(const std::string& str);
     };
 
     // Infer the types of all elements in a vector of strings.
-    std::vector<convert_func> infer_types(
+    inline std::vector<convert_func> infer_types(
             const std::vector<std::string> &row,
             std::vector<std::string> &col_types,
             std::vector<arma::uword> &cat_vars);
@@ -47,7 +47,7 @@ namespace oop::stats {
     static const auto str_intll = [](const std::string& x){
         try {return std::stoll(x);} catch (std::invalid_argument&) {return std::numeric_limits<long long>::quiet_NaN();}};
 
-    arma::uword &CatMap::operator()(const std::string& str) {
+    inline arma::uword &CatMap::operator()(const std::string& str) {
         if (this->cat_map.count(str) == 0) {
             this->cat_map.insert({str, this->no_cats++});
         }
@@ -55,14 +55,14 @@ namespace oop::stats {
     }
 
     std::unordered_map<arma::uword, std::string>
-    CatMap::get_swapped_map() const {
+    inline CatMap::get_swapped_map() const {
         std::unordered_map<arma::uword, std::string> new_map;
         for (auto& [key, value]: cat_map) {
             new_map[value] = key;}
         return new_map;
     }
 
-    std::vector<convert_func> infer_types(
+    inline std::vector<convert_func> infer_types(
             const std::vector<std::string> &row,
             std::vector<std::string> &col_types,
             std::vector<arma::uword> &cat_vars) {
@@ -89,7 +89,7 @@ namespace oop::stats {
     }
 
     // Convert a vector of strings to types supported by the DataFrame
-    std::vector<oop::stats::sup_single_types> convert_strings(
+    inline std::vector<oop::stats::sup_single_types> convert_strings(
             std::vector<std::string> &strings,
             std::vector<convert_func> &types,
             const std::optional<std::vector<int>> &columns) {

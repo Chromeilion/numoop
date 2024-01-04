@@ -6,10 +6,8 @@
 
 #include <pybind11/pybind11.h>
 
-namespace py = pybind11;
-
 namespace oop::bindings {
-    void load_bindings(py::module_ &);
+    void load_bindings(pybind11::module_ &);
 }
 
 #endif //NUMOOP_LOAD_BINDINGS_HPP

@@ -7,22 +7,20 @@
 #include <pybind11/pybind11.h>
 #include <stats/stats.hpp>
 
-namespace py = pybind11;
-
 namespace oop::bindings {
-    void dataframe_bindings(py::module &);
-    void df_init(py::class_<oop::stats::DataFrame> &);
-    void df_setitem(py::class_<oop::stats::DataFrame> &);
-    void df_getitem(py::class_<oop::stats::DataFrame> &);
-    void df_call(py::class_<oop::stats::DataFrame> &);
-    void df_get_map(py::class_<oop::stats::DataFrame> &);
-    void df_set_map(py::class_<oop::stats::DataFrame> &);
-    void df_column_labels(py::class_<oop::stats::DataFrame> &);
-    void df_shape(py::class_<oop::stats::DataFrame> &);
-    void df_append_row(py::class_<oop::stats::DataFrame> &);
-    void df_append_column(py::class_<oop::stats::DataFrame> &);
-    void df_insert_column(py::class_<oop::stats::DataFrame> &);
-    void df_summarize(py::class_<oop::stats::DataFrame> &);
+    void dataframe_bindings(pybind11::module &);
+    void df_init(pybind11::class_<oop::stats::DataFrame> &);
+    void df_setitem(pybind11::class_<oop::stats::DataFrame> &);
+    void df_getitem(pybind11::class_<oop::stats::DataFrame> &);
+    void df_call(pybind11::class_<oop::stats::DataFrame> &);
+    void df_get_map(pybind11::class_<oop::stats::DataFrame> &);
+    void df_set_map(pybind11::class_<oop::stats::DataFrame> &);
+    void df_column_labels(pybind11::class_<oop::stats::DataFrame> &);
+    void df_shape(pybind11::class_<oop::stats::DataFrame> &);
+    void df_append_row(pybind11::class_<oop::stats::DataFrame> &);
+    void df_append_column(pybind11::class_<oop::stats::DataFrame> &);
+    void df_insert_column(pybind11::class_<oop::stats::DataFrame> &);
+    void df_summarize(pybind11::class_<oop::stats::DataFrame> &);
 
 }
 

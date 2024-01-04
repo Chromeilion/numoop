@@ -8,6 +8,7 @@
 #include <pybind11/pybind11.h>
 #include <stats/stats.hpp>
 
+namespace py = pybind11;
 namespace oop::bindings {
     void load_bindings(py::module_ &m) {
         m.def("load",

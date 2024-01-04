@@ -2,6 +2,9 @@
 requires = ["scikit-build-core", "numpy"]
 build-backend = "scikit_build_core.build"
 
+[tool.scikit-build]
+build-dir = "build"
+
 [project]
 name = "numoop"
 authors = [
@@ -11,11 +14,10 @@ authors = [
 description = "Fast statistics and ODE solver library."
 readme = "README.md"
 requires-python = ">=3.11"
-
+version = "0.0.1"
 dependencies = [
     "numpy"
 ]
-version = "0.0.1"
 
 [project.optional-dependencies]
 test = ["pytest-cpp"]

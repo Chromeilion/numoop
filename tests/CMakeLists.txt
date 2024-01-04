@@ -16,3 +16,4 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/extern/googletest extern/googletest)
 include(GoogleTest)
 
 add_new_test(stats_test)
+add_new_test(ode_test)

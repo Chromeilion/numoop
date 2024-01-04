@@ -45,9 +45,9 @@ namespace oop::stats {
         std::optional<std::vector<std::string>> _column_labels;
 
         // Function that searches the labels for a specific label.
-        auto find_label(const std::string &label) const;
+        inline auto find_label(const std::string &label) const;
     public:
-        explicit DataFrame(const std::vector<std::vector<sup_single_types>> &data,
+        inline explicit DataFrame(const std::vector<std::vector<sup_single_types>> &data,
                   std::optional<std::vector<std::string>> labels = std::nullopt);
         DataFrame() = default;
 
@@ -57,7 +57,7 @@ namespace oop::stats {
 
         // Column label setter. The amount of provided tables must match the
         // amount of initialized columns.
-        void set_column_labels(const std::vector<std::string> &labels);
+        inline void set_column_labels(const std::vector<std::string> &labels);
 
         // Cat map getter
         [[nodiscard]] cat_map_t& get_map(const arma::uword idx) {
@@ -68,20 +68,20 @@ namespace oop::stats {
             this->cat_map[idx] = map;};
 
         // Shape of the matrix.
-        [[nodiscard]] std::pair<arma::uword, arma::uword> shape() const;
+        [[nodiscard]] inline std::pair<arma::uword, arma::uword> shape() const;
 
         // Indexing
         sup_col_types &operator[](std::size_t idx) { return columns[idx]; }
         const sup_col_types &operator[](std::size_t idx) const { return columns[idx]; }
 
         // Indexing by column label
-        sup_col_types &operator()(const std::string& label);
-        const sup_col_types &operator()(const std::string& label) const;
+        inline sup_col_types &operator()(const std::string& label);
+        inline const sup_col_types &operator()(const std::string& label) const;
 
         // Append a row to the bottom of the dataframe.
-        void append_row(const std::vector<sup_single_types>& append_data);
+        inline void append_row(const std::vector<sup_single_types>& append_data);
 
-        void insert_column(sup_col_types &col, const arma::uword &idx,
+        inline void insert_column(sup_col_types &col, const arma::uword &idx,
                            const std::optional<std::string> &label);
         void insert_column(sup_col_types &col, const arma::uword &idx) {
             this->insert_column(col, idx, {});};
@@ -93,7 +93,7 @@ namespace oop::stats {
             insert_column(col, shape().second, {});};
 
         // Print a summary of the dataframe.
-        void summarize();
+        inline void summarize();
     };
 
     // A functor for inserting a row into an armadillo column vector. For
@@ -115,7 +115,7 @@ namespace oop::stats {
 
     // Implementation
 
-    DataFrame::DataFrame(const std::vector<std::vector<sup_single_types>> &data,
+    inline DataFrame::DataFrame(const std::vector<std::vector<sup_single_types>> &data,
                          std::optional<std::vector<std::string>> labels) {
         for (const auto & i : data) {
             this->append_row(i);
@@ -137,7 +137,7 @@ namespace oop::stats {
         row.insert_rows(row.n_rows, to_insert);
     }
 
-    std::pair<arma::uword, arma::uword> DataFrame::shape() const {
+    inline  std::pair<arma::uword, arma::uword> DataFrame::shape() const {
         if (this->columns.empty()) {return {0, 0};}
         arma::uword rows;
         arma::uword cols;
@@ -148,7 +148,7 @@ namespace oop::stats {
         return {rows, cols};
     }
 
-    void DataFrame::append_row(std::vector<sup_single_types> const &append_data) {
+    inline void DataFrame::append_row(std::vector<sup_single_types> const &append_data) {
         // When there are no columns present they get initialized.
         if (this->shape().second == 0) {
             for (const auto & i : append_data) {
@@ -174,7 +174,7 @@ namespace oop::stats {
         }
     }
 
-    void DataFrame::insert_column(sup_col_types &col, const arma::uword &idx,
+    inline void DataFrame::insert_column(sup_col_types &col, const arma::uword &idx,
                                   const std::optional<std::string> &label) {
         arma::uword n_rows;
         n_rows = std::visit(overloaded{[](auto c){return c.n_rows;}}, col);
@@ -198,7 +198,7 @@ namespace oop::stats {
         this->columns.insert(it, col);
     }
 
-    void DataFrame::summarize() {
+    inline void DataFrame::summarize() {
         auto col_labels = this->column_labels();
         if (col_labels.has_value()) {
             for (const auto &i : *col_labels) {
@@ -220,7 +220,7 @@ namespace oop::stats {
         c_shape.first << ")" << std::endl;
     }
 
-    void DataFrame::set_column_labels(const std::vector<std::string> &labels) {
+    inline void DataFrame::set_column_labels(const std::vector<std::string> &labels) {
         if (this->shape().second != labels.size()) {
             throw std::length_error("There is an incorrect number of provided "
                                     "column labels.");
@@ -228,7 +228,7 @@ namespace oop::stats {
         this->_column_labels = labels;
     }
 
-    auto DataFrame::find_label(const std::string &label) const {
+    inline auto DataFrame::find_label(const std::string &label) const {
         auto labels{this->column_labels()};
         if (!labels) {throw std::out_of_range("DataFrame has no labels");}
         auto it = std::find((*labels).begin(), (*labels).end(), label);
@@ -238,11 +238,11 @@ namespace oop::stats {
         auto idx = std::distance((*labels).begin(), it);
         return idx;
     }
-    sup_col_types &DataFrame::operator()(const std::string& label) {
+    inline sup_col_types &DataFrame::operator()(const std::string& label) {
         auto idx{this->find_label(label)};
         return (*this)[idx];
     }
-    const sup_col_types &DataFrame::operator()(const std::string& label) const {
+    inline const sup_col_types &DataFrame::operator()(const std::string& label) const {
         auto idx{this->find_label(label)};
         return (*this)[idx];
     }

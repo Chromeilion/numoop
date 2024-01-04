@@ -14,10 +14,10 @@
 
 namespace oop::stats {
     // Split a string wherever some char is present
-    std::vector<std::string> split_line(const std::string &line, const char &delimiter);
+    inline std::vector<std::string> split_line(const std::string &line, const char &delimiter);
 
     // Read a line from a file into a vector of strings
-    bool read_line(
+    inline bool read_line(
             std::fstream &file,
             std::vector<std::string>& line,
             const char &newline_delimiter,
@@ -25,7 +25,7 @@ namespace oop::stats {
             const std::optional<std::vector<int>>& columns = std::nullopt);
 
     // Load a CSV file into a DataFrame.
-    std::vector<std::string> load(
+    inline std::vector<std::string> load(
             const std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header = std::nullopt,
@@ -35,7 +35,7 @@ namespace oop::stats {
             std::optional<char> column_delimiter = std::nullopt);
     // Load into a new DataFrame. Not ideal because it involves an extra copy on
     // return, but it's more convenient.
-    std::pair<std::vector<std::string>, DataFrame> load(
+    inline std::pair<std::vector<std::string>, DataFrame> load(
             const std::string& filepath,
             std::optional<bool> header = std::nullopt,
             const std::optional<std::vector<int>>& columns = std::nullopt,
@@ -45,7 +45,7 @@ namespace oop::stats {
 
     // Implementation
 
-    std::vector<std::string> split_line(const std::string &line, const char &delimiter) {
+    inline std::vector<std::string> split_line(const std::string &line, const char &delimiter) {
         std::vector<std::string> splits;
         std::string word;
         std::stringstream str(line);
@@ -55,7 +55,7 @@ namespace oop::stats {
         return splits;
     }
 
-    bool read_line(
+    inline bool read_line(
             std::fstream& file,
             std::vector<std::string>& line,
             const char& newline_delimiter,
@@ -82,7 +82,7 @@ namespace oop::stats {
         return false;
     }
 
-    std::vector<std::string> load(
+    inline std::vector<std::string> load(
             const std::string& filepath,
             oop::stats::DataFrame& matr,
             std::optional<bool> header,
@@ -152,7 +152,7 @@ namespace oop::stats {
         }
         return col_str;
     }
-    std::pair<std::vector<std::string>, DataFrame> load(
+    inline std::pair<std::vector<std::string>, DataFrame> load(
             const std::string& filepath,
             std::optional<bool> header,
             const std::optional<std::vector<int>>& columns,

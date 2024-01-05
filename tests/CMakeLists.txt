@@ -4,8 +4,8 @@ include(GoogleTest)
 
 add_executable(
         tests
-        stats_test.cpp
-        ode_test.cpp
+        test_stats.cpp
+        test_ode.cpp
 )
 target_link_libraries(
         tests

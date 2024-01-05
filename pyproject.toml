@@ -2,9 +2,6 @@
 requires = ["scikit-build-core", "numpy"]
 build-backend = "scikit_build_core.build"
 
-[tool.scikit-build]
-build-dir = "build"
-
 [project]
 name = "numoop"
 authors = [

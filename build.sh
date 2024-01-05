@@ -1,3 +1,3 @@
 source venv/bin/activate
-source .env
+set -a; source .env; set +a
 pip install -v .

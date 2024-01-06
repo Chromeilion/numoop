@@ -20,5 +20,4 @@ target_link_libraries(
         armadillo
         GTest::gtest_main
 )
-gtest_discover_tests(test_stats)
-gtest_discover_tests(test_ode)
+gtest_discover_tests(test_stats test_ode)

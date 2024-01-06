@@ -2,7 +2,6 @@
 // Created by uki on 1/4/24.
 //
 #include "dataframe_bindings.hpp"
-#include <carma>
 #include <pybind11/stl.h>
 #include <pybind11/pybind11.h>
 #include <stats/stats.hpp>
@@ -14,5 +13,4 @@ namespace oop::bindings {
               [](oop::stats::DataFrame &self, std::string& label)
               { return self(label); });
     }
-
 }

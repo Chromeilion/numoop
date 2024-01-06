@@ -19,9 +19,12 @@ namespace oop::bindings {
         df_column_labels(df);
         df_shape(df);
         df_append_row(df);
+        df_insert_row(df);
         df_append_column(df);
         df_insert_column(df);
         df_summarize(df);
+        df_view(df);
+        df_pickle(df);
+        df_repr(df);
     }
-
 }

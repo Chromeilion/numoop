@@ -9,6 +9,7 @@
 
 namespace oop::bindings {
     class ConvertArray;
+    sup_arr_types convert_col(oop::stats::sup_col_types &col);
     oop::stats::sup_col_types transfer_col_ownership(sup_arr_types &col);
 }
 

@@ -18,6 +18,21 @@ namespace oop::bindings {
     }
 
     void df_view(py::class_<oop::stats::DataFrame> &m) {
-        m.def("view", view_wrapper);
+        m.def("view", view_wrapper,
+              py::arg("idx"),
+              R"pbdoc(
+Get a view into a column. This is much faster than indexing the dataframe
+because the column memory is not copied. This does mean however that the
+returned Numpy array is read-only.
+
+Parameters
+----------
+idx : unsigned int
+
+Returns
+-------
+col : np.typing.NDArray
+    A read-only numpy array.
+)pbdoc");
     }
 }

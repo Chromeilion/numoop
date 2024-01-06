@@ -13,14 +13,15 @@
 namespace py=pybind11;
 namespace oop::bindings {
     // All Numpy datatypes that work with Numoop.
-    typedef std::variant<py::array_t<double>,
+    typedef std::variant<
+            py::array_t<double>,
             py::array_t<long long>,
             py::array_t<long>,
             py::array_t<float>,
             py::array_t<unsigned long>,
+            py::array_t<unsigned long long>,
             py::array_t<std::complex<double>>,
-            py::array_t<std::complex<float>>,
-            py::array_t<unsigned long long>> sup_arr_types;
+            py::array_t<std::complex<float>>> sup_arr_types;
 }
 
 #endif //NUMOOP_SUPPORTED_TYPES_HPP

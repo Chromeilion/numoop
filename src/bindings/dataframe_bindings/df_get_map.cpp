@@ -11,6 +11,7 @@ namespace oop::bindings {
     void df_get_map(py::class_<oop::stats::DataFrame> &m) {
         m.def("get_map",
               &oop::stats::DataFrame::get_map,
+              py::arg("idx"),
               R"pbdoc(
 Get the integer label map for some column (if there is a mapping).
 

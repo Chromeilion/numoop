@@ -5,33 +5,33 @@ import pickle
 
 
 class TestDataFrame:
-    def test_init(self):
+    def test_init(self) -> None:
         # Init without anything
         df = numoop.DataFrame()
         assert df.shape == (0, 0)
         # Init with arguments
         df = numoop.DataFrame([[0, 2.0, 100], [10, 11.11, 12]])
         assert df.shape == (2, 3)
-        assert (df[0] == np.array([[0], [10]])).all()
+        assert np.all((df[0] == np.array([[0], [10]])))
 
-    def test_column_labels(self):
+    def test_column_labels(self) -> None:
         labels = ["col1", "col2", "col3"]
         # Init with labels should work as expected.
         df = numoop.DataFrame([[0, 2.0, 100],
                                [10, 11.11, 12]], labels)
         assert df.column_labels == labels
-        assert (df("col1") == np.array([[0], [10]])).all()
+        assert np.all(df("col1") == np.array([[0], [10]]))
         other_labels = ["c1", "c2", "c3"]
         # Test label setter
         df.column_labels = other_labels
-        assert (df("c3") == np.array([[100], [12]])).all()
+        assert np.all(df("c3") == np.array([[100], [12]]))
         # Try testing incorrect number of labels
         with pytest.raises(ValueError):
             df.column_labels = ["c1", "c2", "c3", "c4"]
         with pytest.raises(ValueError):
             df.column_labels = ["c1", "c2"]
 
-    def test_append_row(self):
+    def test_append_row(self) -> None:
         df = numoop.DataFrame()
         # Appending to an empty DataFrme
         df.append_row([5.5, 1, 4, 7.7])
@@ -51,7 +51,7 @@ class TestDataFrame:
         assert df.shape == (2, 4)
         assert np.isclose(df[0], np.array([[5.5], [5.6]])).all()
 
-    def test_insert_row(self):
+    def test_insert_row(self) -> None:
         df = numoop.DataFrame()
         # Insert a row into an empty DataFrame
         df.insert_row([5, 1.3, 4.4, 7], 0)
@@ -70,9 +70,9 @@ class TestDataFrame:
         # Insert a second row and do checks again
         df.insert_row([6, 2.0, 5.3, 8], 0)
         assert df.shape == (2, 4)
-        assert (df[0] == np.array([6, 5])[:, None]).all()
+        assert np.all(df[0] == np.array([6, 5])[:, None])
 
-    def test_append_column(self):
+    def test_append_column(self) -> None:
         df = numoop.DataFrame()
         # Append a column to an empty DataFrame.
         df.append_column(np.array([[5], [1], [4], [7]]))
@@ -84,9 +84,9 @@ class TestDataFrame:
         # Append second column and check values and shape.
         df.append_column(np.array([[5.6], [2.0], [5.3], [8.8]]))
         assert df.shape == (4, 2)
-        assert (df[0] == np.array([[5], [1], [4], [7]])).all()
+        assert np.all(df[0] == np.array([[5], [1], [4], [7]]))
 
-    def test_insert_column(self):
+    def test_insert_column(self) -> None:
         df = numoop.DataFrame()
         # Insert column into an empty DataFrame.
         df.insert_column(np.array([[5], [1], [4], [7]]), 0)
@@ -101,13 +101,13 @@ class TestDataFrame:
         # Insert second column and check values/shape.
         df.insert_column(np.array([[5.6], [2.0], [5.3], [8.8]]), 0)
         assert df.shape == (4, 2)
-        assert (df[1] == np.array([[5], [1], [4], [7]])).all()
+        assert np.all(df[1] == np.array([[5], [1], [4], [7]]))
 
-    def test_indexing(self):
+    def test_indexing(self) -> None:
         df = numoop.DataFrame([[5, 12.6, 4, 65.2],
                                [1, 55.0, 7, 99.9]])
         # Make sure indexing gives us what we expect.
-        assert (df[0] == np.array([[5], [1]])).all()
+        assert np.all(df[0] == np.array([[5], [1]]))
         # Take a column out of the DataFrame, change a value, and then reinsert
         # it.
         col = df[0]
@@ -120,16 +120,16 @@ class TestDataFrame:
         with pytest.raises(ValueError):
             df[0] = arr
 
-    def test_view(self):
+    def test_view(self) -> None:
         df = numoop.DataFrame([[5, 12.6, 4, 65.2],
                                [1, 55.0, 7, 99.9]])
         # Make sure the view has the correct values.
-        assert (df.view(0) == np.array([[5], [1]])).all()
+        assert np.all(df.view(0) == np.array([[5], [1]]))
         # Editing a view is not allowed.
         with pytest.raises(ValueError):
             df.view(0)[1] = 10
 
-    def test_pickle(self):
+    def test_pickle(self) -> None:
         labs = ["col1", "col2", "col3", "col4"]
         df = numoop.DataFrame([[0, 12.6, 4, 65.2],
                                [1, 55.0, 7, 99.9]],
@@ -141,14 +141,14 @@ class TestDataFrame:
         # Unplickle data
         df_unpickled = pickle.loads(data)
         # Make sure all unpickled data is correct.
-        assert (df[0] == df_unpickled[0]).all
-        assert np.isclose(df[1], df_unpickled[1]).all
-        assert (df[2] == df_unpickled[2]).all
-        assert np.isclose(df[3], df_unpickled[3]).all
+        assert np.all(df[0] == df_unpickled[0])
+        assert np.all(np.isclose(df[1], df_unpickled[1]))
+        assert np.all(df[2] == df_unpickled[2])
+        assert np.all(np.isclose(df[3], df_unpickled[3]))
         assert df_unpickled.column_labels == labs
         assert df_unpickled.get_map(0) == cat_map
 
-    def test_set_map(self):
+    def test_set_map(self) -> None:
         df = numoop.DataFrame([[1, 12.6, 0],
                                [1, 55.0, 2],
                                [0, 33.1, 3]])
@@ -206,7 +206,7 @@ class TestLoadCSV:
         assert catmap[1] == "Graduate"
         assert catmap[2] == "Enrolled"
 
-    def test_partial_load(self):
+    def test_partial_load(self) -> None:
         types, df = numoop.load(self.CSV_PATH, True, columns=[1, 6])
         assert df.column_labels == [self.CSV_CORRECT_LABELS[1],
                                     self.CSV_CORRECT_LABELS[6]]

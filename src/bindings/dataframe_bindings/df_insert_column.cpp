@@ -21,6 +21,15 @@ namespace oop::bindings {
         m.def("insert_column", &insert_col_wrapper,
               py::arg("col"),
               py::arg("idx"),
-              py::arg("label")=std::nullopt);
+              py::arg("label")=std::nullopt,
+              R"pbdoc(
+Insert a column into the DataFrame.
+
+Parameters
+----------
+col : np.typing.NDArray
+idx : unsigned int
+label : string, optional
+)pbdoc");
     }
 }

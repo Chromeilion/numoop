@@ -28,7 +28,29 @@ namespace oop::bindings {
               py::arg("columns") = std::nullopt,
               py::arg("col_types") = std::nullopt,
               py::arg("newline_delimiter") = std::nullopt,
-              py::arg("column_delimiter") = std::nullopt
+              py::arg("column_delimiter") = std::nullopt,
+              R"pbdoc(
+Load a CSV file into a DataFrame object.
+
+Parameters
+----------
+filepath : str
+dataframe : numoop.DataFrame, optional
+header : bool
+    Whether the CSV file has a header.
+columns : list[int], optional
+    What specific columns should be loaded from the file.
+col_types : list[Callable[Any, str]]
+    A list of functions to be used when converting strings to numeric types.
+newline_delimiter : str
+column_delimiter : str
+
+Returns
+-------
+df : numoop.DataFrame
+types : list[str]
+    The column types that were autodetected when loading the CSV.
+)pbdoc"
         );
         m.def("load",
               static_cast<std::pair<std::vector<std::string>,

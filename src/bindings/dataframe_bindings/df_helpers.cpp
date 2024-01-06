@@ -21,4 +21,9 @@ namespace oop::bindings {
         oop::stats::sup_col_types new_col = std::visit(ConvertArray(), col);
         return new_col;
     }
+    sup_arr_types convert_col(oop::stats::sup_col_types &col) {
+        return std::visit(
+                [](auto &c){return sup_arr_types{carma::col_to_arr(c, true)};},
+                col);
+    }
 }

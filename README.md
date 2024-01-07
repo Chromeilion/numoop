@@ -1,6 +1,6 @@
 # numoop 
-A header only C++ library for working with statistics and ordinary differential 
-equations, built on top of [Armadillo](https://arma.sourceforge.net/).
+A header only C++ 17 library with Python bindings for working with statistics 
+and ordinary differential equations, built on top of [Armadillo](https://arma.sourceforge.net/).
 
 ## What does numoop provide?
 ### DataFrame
@@ -37,46 +37,43 @@ Numoop provides the following ordinary differential equation solvers:
 All methods work with both vector and scalar inputs. The solution is saved to a 
 CSV file and also returned from the function.
 
+### Python Bindings
+While the module is perfectly usable as a header-only library in C++, all 
+functionality can additionally be accessed through Python with the included 
+bindings. When using the Python bindings, Armadillo columns are seamlessly 
+mapped to numpy arrays.
+
 ## Using numoop
 Since numoop is a header only library, using it is as simple as adding /src to 
 your include directories. From here, if you want to use the whole module, you 
 can include numoop.hpp. If you just want the stats module include stats/stats.hpp, 
 and if you just want the ode module include ode/ode.hpp.
 
-Armadillo must be installed on your system in some way as well.
-
-## Compiling
-While numoop itself does not need to be compiled, it comes with two files which 
-can be compiled to test out the functionality of both modules. These can be 
-compiled with the provided cmake file.
-Before compiling, make sure you have BLAS and LAPACK installed, or a substitute 
-such as OpenBLAS.
-
-Make sure you're in the root directory of numoop and then run:
+### Using the Python Bindings
+Simply install the package with:
 ```bash
-cmake .
-make
+pip install .
 ```
-Then you can run either test with:
-```bash
-./test_ode
-```
-or
-```bash
-./test_stats
-```
-```test_stats``` should be run from the project root, as it uses the dataset.csv 
-file. 
+All the bindings will be compiled and the package will be installed in your 
+currently active Python environment.
 
-While it's easy to set up cmake to be able to install the library, we have
-avoided that approach here, as we don't expect any lecturer to install the 
-library on their system.
+## Testing
+The best way to test the package is through pytest with
+[pytest-cpp](https://github.com/pytest-dev/pytest-cpp).
 
-### Bundled Armadillo
-While it's not good to use Armadillo in header only mode in a production 
-environment, we've included it in external/armadillo-code for your convenience.
-The cmake script will use the bundled Armadillo if it can't find it on your 
-system.
+Install the package with testing extras and a permanant build directory.
+```bash
+SKBUILD_BUILD_DIR=build pip install .[test]
+```
+It's important to specify the build directory because this is where the compiled 
+C++ tests are saved. Under normal circumstances these binaries get deleted once 
+the build is complete.
+
+Once the package is built and installed, all tests can be run from the project 
+root with pytest:
+```bash
+pytest
+```
 
 ## Performance and other considerations
 The performance of numoop is highly dependent on the libraries present on the 
@@ -84,20 +81,11 @@ system it's being run on. Specifically, the implementation of BLAS and LAPACK.
 Having a multi-threaded library such as OpenBLAS greatly improves the performance
 of Armadillo and therefore numoop.
 
-### The cost of polymorphism
-The polymorphic nature of the DataFrame object comes at a small cost. 
-Specifically, certain templated functions need to be instantiated at compile 
-time for every possible combination of numeric types numoop supports. This 
-results in a slightly larger binary file. Additionally, columns are stored in 
-std::variant objects, which reduces the indexing performance.
-When performing large batch operations however, one only has to index the column 
-once, after which the variant can be unpacked and there is no more performance 
-loss.
-
-### NaN values
-Numoop uses IEEE NaN values, meaning that any NaN is considered the same regular 
-numeric type present in the current column. This allows us to maintain a 
-single type per column.
+### Python Bindings Performance
+In order to maintain memory safety, a copy operation must be performed when a 
+column is indexed. Therefore, when accessing a column, it's preferable to use 
+DataFrame.view, as this avoids copies. This does result in a read-only numpy 
+array however.
 
 ## Credits
 Numoop was created by Christian Špringer (christian.springer228@gmail.com) 

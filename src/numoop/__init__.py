@@ -1,5 +1,5 @@
 from __future__ import annotations
 
-from ._numoop import __doc__, __version__, load, DataFrame
+from numoop._numoop import __doc__, __version__, load, DataFrame
 
-__all__ = ["__doc__", "__version__", "DataFrame", "load"]
+__all__: list[str] = ["__doc__", "__version__", "DataFrame", "load"]

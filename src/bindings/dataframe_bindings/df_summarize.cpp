@@ -8,6 +8,10 @@
 namespace py = pybind11;
 namespace oop::bindings {
     void df_summarize(py::class_<oop::stats::DataFrame> &m) {
-        m.def("summarize", &oop::stats::DataFrame::summarize);
+        m.def("summarize",
+              &oop::stats::DataFrame::summarize,
+              R"pbdoc(
+Print a summary of the DataFrame.
+)pbdoc");
     }
 }

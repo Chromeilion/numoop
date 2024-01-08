@@ -17,6 +17,8 @@ namespace oop::bindings {
         self.set_column(conv_col, idx);
     }
     void df_setitem(py::class_<oop::stats::DataFrame> &m) {
-        m.def("__setitem__", setitem_wrapper);
+        m.def("__setitem__", setitem_wrapper,
+              py::arg("idx"),
+              py::arg("value").noconvert(true));
     }
 }

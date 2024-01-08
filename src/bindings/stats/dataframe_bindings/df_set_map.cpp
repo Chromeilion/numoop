@@ -14,7 +14,7 @@ namespace oop::bindings {
               py::arg("idx"),
               py::arg("map"),
               R"pbdoc(
-Set a integer-string mapping for a specific column.
+Set an integer-string mapping for a specific column.
 
 Parameters
 ----------

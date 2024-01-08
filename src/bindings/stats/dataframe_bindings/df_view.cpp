@@ -2,7 +2,6 @@
 // Created by uki on 1/6/24.
 //
 #include "dataframe_bindings.hpp"
-#include "df_supported_types.hpp"
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <carma>

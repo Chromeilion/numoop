@@ -1,6 +1,5 @@
 target_sources(_numoop PRIVATE
         df_append_column.cpp
-        df_supported_types.hpp
         df_append_row.cpp
         df_insert_row.cpp
         df_call.cpp

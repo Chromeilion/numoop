@@ -17,14 +17,21 @@
 
 namespace oop::stats {
     // All supported column types.
-    typedef std::variant <arma::dcolvec, arma::cx_dcolvec, arma::cx_fcolvec,
-            arma::ucolvec, arma::icolvec, arma::Col<long>,
-            arma::Col<unsigned long>, arma::Col<float>> sup_col_types;
+    typedef std::variant <arma::Col<int>,
+                          arma::Col<long int>,
+                          arma::Col<long long int>,
+                          arma::Col<float>,
+                          arma::Col<double>,
+                          arma::Col<unsigned int>,
+                          arma::Col<unsigned long int>,
+                          arma::Col<unsigned long long int>,
+                          arma::Col<std::complex<double>>,
+                          arma::Col<std::complex<float>>> sup_col_types;
 
     // All supported column internal value types.
-    typedef std::variant<double, arma::cx_double, arma::cx_float,
-            arma::uword, arma::sword, long, unsigned long,
-            float> sup_single_types;
+    typedef std::variant<int, long int, long long int, float, double,
+    unsigned int, unsigned long int, unsigned long long int, std::complex<double>,
+            std::complex<float>> sup_single_types;
 
     // Map of ints to string categories
     typedef std::unordered_map<arma::uword, std::string> cat_map_t;

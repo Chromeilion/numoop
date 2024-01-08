@@ -9,6 +9,19 @@
 #include <stats/stats.hpp>
 
 namespace oop::bindings {
+    // All Numpy datatypes that work with Numoop.
+    typedef std::variant<
+            py::array_t<int>,
+            py::array_t<long int>,
+            py::array_t<long long int>,
+            py::array_t<float>,
+            py::array_t<double>,
+            py::array_t<unsigned int>,
+            py::array_t<unsigned long int>,
+            py::array_t<unsigned long long int>,
+            py::array_t<std::complex<double>>,
+            py::array_t<std::complex<float>>> sup_arr_types;
+
     void dataframe_bindings(pybind11::module &);
     void df_init(pybind11::class_<oop::stats::DataFrame> &);
     void df_setitem(pybind11::class_<oop::stats::DataFrame> &);

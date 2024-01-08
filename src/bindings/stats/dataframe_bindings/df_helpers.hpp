@@ -5,7 +5,7 @@
 #ifndef NUMOOP_DF_HELPERS_HPP
 #define NUMOOP_DF_HELPERS_HPP
 #include <stats/stats.hpp>
-#include "df_supported_types.hpp"
+#include "dataframe_bindings.hpp"
 
 namespace oop::bindings {
     class ConvertArray;

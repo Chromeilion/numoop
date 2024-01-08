@@ -18,7 +18,7 @@ namespace oop::bindings {
     }
     void df_append_column(py::class_<oop::stats::DataFrame> &m) {
         m.def("append_column", &append_column_wrapper,
-              py::arg("col"),
+              py::arg("col").noconvert(true),
               py::arg("label")=std::nullopt,
               R"pbdoc(
 Append a column to the DataFrame. Must have a correct amount of

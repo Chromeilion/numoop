@@ -19,7 +19,7 @@ namespace oop::bindings {
     }
     void df_insert_column(py::class_<oop::stats::DataFrame> &m) {
         m.def("insert_column", &insert_col_wrapper,
-              py::arg("col"),
+              py::arg("col").noconvert(true),
               py::arg("idx"),
               py::arg("label")=std::nullopt,
               R"pbdoc(

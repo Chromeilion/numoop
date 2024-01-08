@@ -120,6 +120,30 @@ class TestDataFrame:
         with pytest.raises(ValueError):
             df[0] = arr
 
+    def test_dtypes(self) -> None:
+        df = numoop.DataFrame()
+
+        # Now lets make sure that no hidden type conversions are happening.
+        int_ = np.array([[21], [100]], dtype=np.intc)
+        long_int = np.array([[21], [100]], dtype=np.int_)
+        long_long_int = np.array([[20001], [10]], dtype=np.longlong)
+        single = np.array([[22.2], [55.5]], dtype=np.single)
+        double = np.array([[23.002], [55.504]], dtype=np.double)
+        cx_single = np.array([[33.3 + 10j], [55.5 + 200j]], dtype=np.csingle)
+        cx_double = np.array([[44.3 + 100j], [604.2 + 67j]], dtype=np.cdouble)
+
+        cols: list[numoop.types.sup_col_arr_types] = [
+            int_, long_int, long_long_int, single, double, cx_single, cx_double
+        ]
+
+        list(map(df.append_column, cols))
+        assert all([df[i].dtype == cols[i].dtype for i in range(len(cols))])
+
+        # Inserting an invalid type should raise an error.
+        bool_ = np.array([[True], [False]], dtype=np.bool_)
+        with pytest.raises(TypeError):
+            df.append_column(bool_)  # type: ignore
+
     def test_view(self) -> None:
         df = numoop.DataFrame([[5, 12.6, 4, 65.2],
                                [1, 55.0, 7, 99.9]])
@@ -190,11 +214,11 @@ class TestLoadCSV:
         'Unemployment rate', 'Inflation rate', 'GDP', 'Target']
 
     def test_full_load(self) -> None:
-        types, df = numoop.load(self.CSV_PATH, True)
+        detected_types, df = numoop.load(self.CSV_PATH, True)
         assert df.column_labels == self.CSV_CORRECT_LABELS
         first_col = df[0]
-        assert isinstance(types, list)
-        assert len(types) == 35
+        assert isinstance(detected_types, list)
+        assert len(detected_types) == 35
         assert df.shape == (499, 35)
         assert first_col.shape[0] == 499
         assert first_col.dtype.name == 'int64'
@@ -207,13 +231,13 @@ class TestLoadCSV:
         assert catmap[2] == "Enrolled"
 
     def test_partial_load(self) -> None:
-        types, df = numoop.load(self.CSV_PATH, True, columns=[1, 6])
+        detected_types, df = numoop.load(self.CSV_PATH, True, columns=[1, 6])
         assert df.column_labels == [self.CSV_CORRECT_LABELS[1],
                                     self.CSV_CORRECT_LABELS[6]]
         first_col = df[0]
         assert df.shape == (499, 2)
-        assert isinstance(types, list)
-        assert len(types) == 2
+        assert isinstance(detected_types, list)
+        assert len(detected_types) == 2
         assert first_col.shape[0] == 499
         assert first_col.dtype.name == 'int64'
         assert df[df.shape[1]-2].dtype.name == 'int64'

@@ -3,8 +3,8 @@
 //
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
-#include "dataframe_bindings/dataframe_bindings.hpp"
-#include "load_bindings.hpp"
+#include "stats/dataframe_bindings/dataframe_bindings.hpp"
+#include "stats/load_bindings.hpp"
 
 namespace py = pybind11;
 

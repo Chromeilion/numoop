@@ -9,7 +9,7 @@ namespace py = pybind11;
 namespace oop::bindings {
     void dataframe_bindings(py::module &m) {
         py::class_<oop::stats::DataFrame> df = py::class_<oop::stats::DataFrame>(
-                m, "DataFrame");
+                m, "PyDataFrame");
         df_init(df);
         df_setitem(df);
         df_getitem(df);

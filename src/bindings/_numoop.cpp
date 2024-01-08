@@ -14,6 +14,8 @@ PYBIND11_MODULE(_numoop, m) {
     // Load function bindings
     oop::bindings::load_bindings(m);
 
+    oop::bidnings::ode::ode_scal_bidnings(m);
+
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
 #else

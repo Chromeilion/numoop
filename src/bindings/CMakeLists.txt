@@ -1,6 +1,6 @@
 # Python bindings
 find_package(Python COMPONENTS Interpreter Development.Module NumPy REQUIRED)
-set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
+set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
 
 if(${CMAKE_BUILD_TYPE} EQUAL "DEBUG")
     OPTION(ENABLE_CARMA_EXTRA_DEBUG "Enable CARMA_EXTRA_DEBUG" ON)

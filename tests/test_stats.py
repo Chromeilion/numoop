@@ -50,6 +50,12 @@ class TestDataFrame:
         df.append_row([5.6, 2, 5, 8.8])
         assert df.shape == (2, 4)
         assert np.isclose(df[0], np.array([[5.5], [5.6]])).all()
+        df_2 = numoop.DataFrame()
+        # We should also be able to use a numpy array to add rows.
+        np_row = np.array([1, 2, 3, 4])
+        df_2.append_row(np_row)
+        assert (df_2[0][0] == 1 and df_2[1][0] == 2 and df_2[2][0] == 3 and
+                df_2[3][0] == 4)
 
     def test_insert_row(self) -> None:
         df = numoop.DataFrame()

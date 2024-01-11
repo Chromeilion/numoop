@@ -1,6 +1,7 @@
 target_sources(_numoop PRIVATE
         df_append_column.cpp
         df_append_row.cpp
+        df_insert_row.cpp
         df_call.cpp
         df_column_labels.cpp
         dataframe_bindings.cpp
@@ -13,4 +14,9 @@ target_sources(_numoop PRIVATE
         df_shape.cpp
         df_summarize.cpp
         dataframe_bindings.hpp
+        df_helpers.cpp
+        df_helpers.hpp
+        df_view.cpp
+        df_pickle.cpp
+        df_repr.cpp
 )

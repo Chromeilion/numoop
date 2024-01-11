@@ -5,6 +5,7 @@
 #include "ode/ode.hpp"
 #include <iostream>
 #include <gtest/gtest.h>
+#include <filesystem>
 
 using namespace oop::ode_scal;
 using namespace oop::ode_vec;
@@ -31,7 +32,8 @@ protected:
     double end = 0.5;
 
     // Helper function to compare two CSV files
-    void CompareCSV(const std::string& generated_csv, const std::string& reference_csv) {
+    static void CompareCSV(const std::string& generated_csv,
+                           const std::string& reference_csv) {
         // Load the generated CSV file
         arma::Mat<double> generated_mat;
         generated_mat.load(generated_csv, arma::csv_ascii);
@@ -41,7 +43,8 @@ protected:
         reference_mat.load(reference_csv, arma::csv_ascii);
 
         // Compare the generated CSV with the reference CSV
-        ASSERT_TRUE(arma::approx_equal(generated_mat, reference_mat, "absdiff", 1e-6));
+        ASSERT_TRUE(arma::approx_equal(generated_mat, reference_mat,
+                                       "absdiff", 1e-6));
     }
 
     // Test case for scalar Euler
@@ -53,26 +56,30 @@ protected:
         eulerObj.ode();
 
         // Compare the generated CSV with the reference CSV
-        const std::string reference_csv = "csvtests/euler_scalar.csv";
-        CompareCSV("build/result_euler_scalar.csv", reference_csv);
+        const std::string reference_csv = "tests/csvtests/euler_scalar.csv";
+        const std::string generated_csv = "result_euler_scalar.csv";
+        CompareCSV(generated_csv, reference_csv);
+        std::filesystem::remove(generated_csv);
     }
 
     // Test case for scalar Midpoint
     void TestMidpointScal() {
-
         Midpoint_Scal<> midpointObj(f_sc, y0_sc, h, end);
         midpointObj.ode();
-        const std::string reference_csv = "csvtests/midpoint_scalar.csv";
-        CompareCSV("build/result_midpoint_scalar.csv", reference_csv);
+        const std::string reference_csv = "tests/csvtests/midpoint_scalar.csv";
+        const std::string generated_csv = "result_midpoint_scalar.csv";
+        CompareCSV(generated_csv, reference_csv);
+        std::filesystem::remove(generated_csv);
     }
 
     // Test case for scalar RungeKutta4
     void TestRK4Scal() {
-
         RK4_Scal<> rk4Obj(f_sc, y0_sc, h, end);
         rk4Obj.ode();
-        const std::string reference_csv = "csvtests/rk4_scalar.csv";
-        CompareCSV("build/result_rk4_scalar.csv", reference_csv);
+        const std::string reference_csv = "tests/csvtests/rk4_scalar.csv";
+        const std::string generated_csv = "result_rk4_scalar.csv";
+        CompareCSV(generated_csv, reference_csv);
+        std::filesystem::remove(generated_csv);
     }
 
     // Test case for vector Euler
@@ -80,8 +87,10 @@ protected:
 
         oop::ode_vec::Euler<> eulerObj(f, y0, h, end);
         eulerObj.ode();
-        const std::string reference_csv = "csvtests/euler_vector.csv";
-        CompareCSV("build/result_euler_vector.csv", reference_csv);
+        const std::string reference_csv = "tests/csvtests/euler_vector.csv";
+        const std::string generated_csv = "result_euler_vector.csv";
+        CompareCSV(generated_csv, reference_csv);
+        std::filesystem::remove(generated_csv);
     }
 
     // Test case for vector Midpoint
@@ -89,8 +98,10 @@ protected:
 
         Midpoint<> midpointObj(f, y0, h, end);
         midpointObj.ode();
-        const std::string reference_csv = "csvtests/midpoint_vector.csv";
-        CompareCSV("build/result_midpoint_vector.csv", reference_csv);
+        const std::string reference_csv = "tests/csvtests/midpoint_vector.csv";
+        const std::string generated_csv = "result_midpoint_vector.csv";
+        CompareCSV(generated_csv, reference_csv);
+        std::filesystem::remove(generated_csv);
     }
 
     // Test case for vector RungeKutta4
@@ -98,8 +109,10 @@ protected:
 
         RK4<> rk4Obj(f, y0, h, end);
         rk4Obj.ode();
-        const std::string reference_csv = "csvtests/rk4_vector.csv";
-        CompareCSV("build/result_rk4_vector.csv", reference_csv);
+        const std::string reference_csv = "tests/csvtests/rk4_vector.csv";
+        const std::string generated_csv = "result_rk4_vector.csv";
+        CompareCSV(generated_csv, reference_csv);
+        std::filesystem::remove(generated_csv);
     }
 };
 

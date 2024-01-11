@@ -10,7 +10,8 @@
 
 
 typedef std::pair<oop::stats::DataFrame, std::optional<std::vector<std::string>>> dataframe_col;
-class DataFrameTest : public testing::Test {
+
+class LoadTest : public testing::Test {
 protected:
     // Set up all static members when the first test is run.
     static void SetUpTestSuite() {
@@ -28,29 +29,36 @@ protected:
         delete d3_;
         d3_ = nullptr;
     }
-    oop::stats::DataFrame d0_;
-    oop::stats::DataFrame d1_{{{0, 1.5, 4}, {3, 14.99, 50}, {10, 8.12, 33}},
-                              {{"tc_1", "tc_2", "tc_3"}}};
     static const inline std::string filepath = "./tests/dataset.csv";
+    oop::stats::DataFrame d0_;
     static dataframe_col* d2_; // DataFrame with CSV data
     static dataframe_col* d3_; // DataFrame with partial CSV data
 };
-dataframe_col* DataFrameTest::d2_ = nullptr;
-dataframe_col* DataFrameTest::d3_ = nullptr;
+dataframe_col* LoadTest::d2_ = nullptr;
+dataframe_col* LoadTest::d3_ = nullptr;
 
-TEST_F(DataFrameTest, LoadCSV) {
+class DataFrameTest : public testing::Test {
+protected:
+    oop::stats::DataFrame d0_;
+    oop::stats::DataFrame d1_{{{arma::sword{0}, double{1.5}, arma::sword{4}},
+                               {arma::sword{3}, double{14.99}, arma::sword{50}},
+                               {arma::sword{10}, double{8.12}, arma::sword{33}}},
+                              {{"tc_1", "tc_2", "tc_3"}}};
+};
+
+TEST_F(LoadTest, LoadCSV) {
     // Load the dataset into our dataframe
     std::vector<std::string> col_types;
     oop::stats::load(filepath, d0_, true);
 }
 
-TEST_F(DataFrameTest, LoadCSVPartially) {
+TEST_F(LoadTest, LoadCSVPartially) {
     std::vector<int> cols;
     cols.push_back(2);
     oop::stats::load(filepath, d3_->first, true, cols);
 }
 
-TEST_F(DataFrameTest, LoadCSVHeader) {
+TEST_F(LoadTest, LoadCSVHeader) {
     std::vector<std::string> correct_header{
         "\xEF\xBB\xBFMarital status","Application mode","Application order","Course",
         "Daytime/evening attendance","Previous qualification","Nationality",
@@ -70,7 +78,7 @@ TEST_F(DataFrameTest, LoadCSVHeader) {
     EXPECT_EQ(*(d2_->first.column_labels()), correct_header) << "Loaded header is incorrect";
 }
 
-TEST_F(DataFrameTest, LoadCSVTypesAutodetect) {
+TEST_F(LoadTest, LoadCSVTypesAutodetect) {
     std::vector<std::string> correct_types{
         "long long", "long long", "long long", "long long", "long long",
         "long long", "long long", "long long", "long long", "long long",
@@ -82,7 +90,7 @@ TEST_F(DataFrameTest, LoadCSVTypesAutodetect) {
     EXPECT_EQ(*d2_->second, correct_types);
 }
 
-TEST_F(DataFrameTest, LoadCSVCatMap) {
+TEST_F(LoadTest, LoadCSVCatMap) {
     std::unordered_map<arma::uword, std::string> correct_catmap{
             {0, "Dropout"}, {1, "Graduate"}, {2, "Enrolled"}
     };
@@ -93,7 +101,7 @@ TEST_F(DataFrameTest, LoadCSVCatMap) {
     }
 }
 
-TEST_F(DataFrameTest, LoadCSVCorrectShape) {
+TEST_F(LoadTest, LoadCSVCorrectShape) {
     EXPECT_EQ(d2_->first.shape().first, 998) << "Wrong number of rows returned by .shape()";
     EXPECT_EQ(d2_->first.shape().second, 35) << "Wrong number of columns returned by .shape()";
 }
@@ -156,7 +164,8 @@ TEST_F(DataFrameTest, InsertInvalidColumn) {
 }
 
 TEST_F(DataFrameTest, AppendRow) {
-    std::vector<oop::stats::sup_single_types> new_row{5, 5.5, 6};
+    std::vector<oop::stats::sup_single_types> new_row{
+        arma::sword{5}, double{5.5}, arma::sword{6}};
 
     ASSERT_NO_THROW(d1_.append_row(new_row));
     EXPECT_TRUE(d1_.shape().first == 4);
@@ -169,7 +178,8 @@ TEST_F(DataFrameTest, AppendInvalidRowType) {
 }
 
 TEST_F(DataFrameTest, AppendInvalidRowLen) {
-    std::vector<oop::stats::sup_single_types> invalid_row{9, 99.9, 5, 44};
+    std::vector<oop::stats::sup_single_types> invalid_row{
+        long{9}, float{99.9}, long{5}, long{44}};
     EXPECT_ANY_THROW(d1_.append_row(invalid_row));
 }
 

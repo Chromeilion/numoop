@@ -16,10 +16,8 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/extern/carma extern/carma)
 # Add Python Bindings
 pybind11_add_module(_numoop MODULE
         _numoop.cpp
-        load_bindings.cpp
-        load_bindings.hpp
 )
 target_link_libraries(_numoop PRIVATE carma::carma)
 
-add_subdirectory(dataframe_bindings)
+add_subdirectory(stats_bindings)
 add_subdirectory(ode_bindings)

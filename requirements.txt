@@ -1,4 +1,9 @@
+scikit-build-core
 pytest-cpp
 numpy
 mypy
 pybind11
+ninja
+pathspec
+pyproject_metadata
+matplotlib

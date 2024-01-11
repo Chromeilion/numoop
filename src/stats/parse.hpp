@@ -43,9 +43,11 @@ namespace oop::stats {
     // Implementation
 
     static const auto str_float = [](const std::string& x){
-        try {return std::stof(x);} catch (std::invalid_argument&){return std::numeric_limits<float>::quiet_NaN();}};
+        try {return std::stof(x);} catch (std::invalid_argument&)
+        { return std::numeric_limits<float>::quiet_NaN(); }};
     static const auto str_intll = [](const std::string& x){
-        try {return std::stoll(x);} catch (std::invalid_argument&) {return std::numeric_limits<long long>::quiet_NaN();}};
+        try {return std::stoll(x);} catch (std::invalid_argument&)
+        { return std::numeric_limits<long long>::quiet_NaN(); }};
 
     inline arma::uword &CatMap::operator()(const std::string& str) {
         if (this->cat_map.count(str) == 0) {

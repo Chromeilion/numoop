@@ -7,7 +7,7 @@
 #include <pybind11/stl.h>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_insert_row(py::class_<oop::stats::DataFrame> &m) {
         m.def("insert_row", &oop::stats::DataFrame::insert_row,
               py::arg("row").noconvert(true),

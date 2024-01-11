@@ -6,7 +6,7 @@
 #include <pybind11/pybind11.h>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_repr(py::class_<oop::stats::DataFrame> &m) {
         m.def("__repr__", [](oop::stats::DataFrame &self){
             auto shape = self.shape();

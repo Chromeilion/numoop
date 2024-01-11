@@ -8,7 +8,7 @@
 #include <stats/stats.hpp>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_call(py::class_<oop::stats::DataFrame> &m) {
         m.def("__call__",
               [](oop::stats::DataFrame &self, std::string& label)

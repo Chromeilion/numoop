@@ -7,7 +7,7 @@
 #include <stats/stats.hpp>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_append_row(py::class_<oop::stats::DataFrame> &m) {
         // Because the append_row method creates a copy of the data being
         // inserted, we don't need to worry about memory ownership like we do

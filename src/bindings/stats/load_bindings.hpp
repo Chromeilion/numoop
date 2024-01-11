@@ -5,8 +5,9 @@
 #define NUMOOP_LOAD_BINDINGS_HPP
 
 #include <pybind11/pybind11.h>
+#include "load_bindings.hpp"
 
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void load_bindings(pybind11::module_ &);
 }
 

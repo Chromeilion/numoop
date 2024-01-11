@@ -6,7 +6,7 @@
 #include <stats/stats.hpp>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_shape(py::class_<oop::stats::DataFrame> &m) {
         m.def_property_readonly("shape",
                                 &oop::stats::DataFrame::shape,

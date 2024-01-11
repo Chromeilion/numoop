@@ -3,16 +3,13 @@
 //
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
-#include "stats/dataframe_bindings/dataframe_bindings.hpp"
-#include "stats/load_bindings.hpp"
+#include "stats/stats_bindings.hpp"
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(_numoop, m) {
     // DataFrame bindings
-    oop::bindings::dataframe_bindings(m);
-    // Load function bindings
-    oop::bindings::load_bindings(m);
+    oop::stats::bindings::stats_bindings(m);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

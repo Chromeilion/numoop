@@ -7,7 +7,7 @@
 #include <pybind11/stl.h>
 
 namespace py=pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_pickle(py::class_<oop::stats::DataFrame> &m) {
         m.def(py::pickle(
                 [](const oop::stats::DataFrame &self) {

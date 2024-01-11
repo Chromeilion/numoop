@@ -2,10 +2,14 @@ import numoop
 import numpy as np
 import pytest
 import pickle
-import matplotlib.testing as mplt
+import matplotlib.testing
+import matplotlib.testing.compare
+import tempfile
 
 
 class TestDataFrame:
+    PLOT_DIR = "./tests/correct_plots"
+
     def test_init(self) -> None:
         # Init without anything
         df = numoop.DataFrame()
@@ -203,15 +207,31 @@ class TestDataFrame:
                                [0, 50.5, 3],
                                [0, 22.2, 0]])
         df.set_map(0, {0: "cat1", 1: "cat2"})
+        df.column_labels = ["First Column", "Second Column", "Third Column"]
 
-        mplt.setup()
-        df.make_plot(1, "hist")
-        # Labeled bar
-        df.make_plot(0, "bar")
-        # Bar with no labels
-        df.make_plot(2, "bar")
+        plot_args = [(1, "hist"), (0, "bar"), (2, "bar"), (1, "line"),
+                     (0, "pie")]
 
-        df.make_plot(1, "line")
+        # Improve reproducibility
+        matplotlib.testing.setup()
+        with tempfile.TemporaryDirectory() as f:
+            for file_no, (idx, plot_type) in enumerate(plot_args):
+                fig, ax = df.make_plot(idx, plot_type)
+                file_name = f"fig{str(file_no)}.png"
+                temp_fig_path = f"{f}/{file_name}"
+                true_fig_path = f"{self.PLOT_DIR}/{file_name}"
+                fig.savefig(temp_fig_path)
+                assert matplotlib.testing.compare.compare_images(
+                    true_fig_path, temp_fig_path, 0.001
+                ) is None
+
+        invalid_calls = [(1, "pie"), (1, "bar")]
+        for idx, plot_type in invalid_calls:
+            with pytest.raises(TypeError):
+                df.make_plot(idx, plot_type)
+
+        with pytest.raises(AttributeError):
+            df.make_plot(0, "invalid_plot_type")
 
 
 class TestLoadCSV:

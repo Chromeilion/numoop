@@ -6,7 +6,7 @@
 #include <pybind11/stl.h>
 #include <carma>
 
-namespace oop::bindings {
+namespace oop::stats::bindings {
     class ConvertArray {
     public:
         template<typename T>

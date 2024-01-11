@@ -6,7 +6,7 @@
 #include <stats/stats.hpp>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void dataframe_bindings(py::module &m) {
         py::class_<oop::stats::DataFrame> df = py::class_<oop::stats::DataFrame>(
                 m, "PyDataFrame");

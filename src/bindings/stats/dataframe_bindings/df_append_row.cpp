@@ -7,8 +7,11 @@
 #include <stats/stats.hpp>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_append_row(py::class_<oop::stats::DataFrame> &m) {
+        // Because the append_row method creates a copy of the data being
+        // inserted, we don't need to worry about memory ownership like we do
+        // in some other methods.
         m.def("append_row",
               &oop::stats::DataFrame::append_row,
               py::arg("row").noconvert(true),
@@ -18,7 +21,7 @@ columns and the data types must match the current column dtypes.
 
 Parameters
 ----------
-row : list or list[list]
+row : list or list[list] or numpy.typing.NDArray
     A list with len 3 has 3 columns.
 )pbdoc");
     }

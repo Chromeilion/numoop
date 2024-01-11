@@ -8,7 +8,7 @@
 #include "df_helpers.hpp"
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void setitem_wrapper(
             oop::stats::DataFrame &self,
             unsigned long long idx,

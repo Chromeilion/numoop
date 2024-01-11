@@ -10,7 +10,7 @@ authors = [
 ]
 description = "Fast statistics and ODE solver library."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 version = "0.0.1"
 dependencies = [
     "numpy",
@@ -28,7 +28,7 @@ testpaths = ["build/tests", "tests"]
 
 [tool.mypy]
 strict = true
-paths = ["src/package"]
+paths = ["src/numoop"]
 exclude = "(extern|venv)"
 plugins = "numpy.typing.mypy_plugin"
-python_version = "3.11"
+python_version = "3.10"

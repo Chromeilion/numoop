@@ -8,7 +8,7 @@
 #include <pybind11/pybind11.h>
 #include <stats/stats.hpp>
 
-namespace oop::bindings {
+namespace oop::stats::bindings {
     // All Numpy datatypes that work with Numoop.
     typedef std::variant<
             py::array_t<int>,

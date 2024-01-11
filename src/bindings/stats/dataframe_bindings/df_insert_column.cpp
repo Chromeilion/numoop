@@ -8,7 +8,7 @@
 #include "df_helpers.hpp"
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void insert_col_wrapper(
             oop::stats::DataFrame &self,
             sup_arr_types &col,

@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.typing as npt
-from typing import Sequence, TypeAlias
+from typing import Sequence
 
 # The internal types supported for each column
 sup_col_types = (np.int32 | np.int64 | np.float32 | np.float64 | np.uint32 |

@@ -9,7 +9,7 @@
 #include <stats/stats.hpp>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void load_bindings(py::module_ &m) {
         m.def("load",
               static_cast<std::vector<std::string> (*)

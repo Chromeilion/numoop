@@ -8,7 +8,7 @@
 #include <pybind11/stl.h>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void append_column_wrapper(
             oop::stats::DataFrame &self,
             sup_arr_types &col,

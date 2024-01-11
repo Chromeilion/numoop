@@ -7,7 +7,7 @@
 #include <stats/stats.hpp>
 
 namespace py = pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     void df_set_map(py::class_<oop::stats::DataFrame> &m) {
         m.def("set_map",
               &oop::stats::DataFrame::set_map,

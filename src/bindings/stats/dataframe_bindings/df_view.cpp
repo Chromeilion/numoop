@@ -7,7 +7,7 @@
 #include <carma>
 
 namespace py=pybind11;
-namespace oop::bindings {
+namespace oop::stats::bindings {
     sup_arr_types view_wrapper(const oop::stats::DataFrame &self,
                                const unsigned &idx) {
         auto &col = self[idx];

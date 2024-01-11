@@ -2,6 +2,7 @@ import numoop
 import numpy as np
 import pytest
 import pickle
+import matplotlib.testing as mplt
 
 
 class TestDataFrame:
@@ -194,6 +195,23 @@ class TestDataFrame:
         df.set_map(2, cat_map_two)
         assert df.get_map(2) == cat_map_two
         assert df.get_map(0) == cat_map_one
+
+    def test_plots(self) -> None:
+        df = numoop.DataFrame([[1, 12.6, 0],
+                               [1, 55.0, 2],
+                               [0, 33.1, 3],
+                               [0, 50.5, 3],
+                               [0, 22.2, 0]])
+        df.set_map(0, {0: "cat1", 1: "cat2"})
+
+        mplt.setup()
+        df.make_plot(1, "hist")
+        # Labeled bar
+        df.make_plot(0, "bar")
+        # Bar with no labels
+        df.make_plot(2, "bar")
+
+        df.make_plot(1, "line")
 
 
 class TestLoadCSV:

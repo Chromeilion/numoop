@@ -28,7 +28,7 @@ testpaths = ["build/tests", "tests"]
 
 [tool.mypy]
 strict = true
-paths = ["src/package"]
+paths = ["src/numoop"]
 exclude = "(extern|venv)"
 plugins = "numpy.typing.mypy_plugin"
 python_version = "3.10"

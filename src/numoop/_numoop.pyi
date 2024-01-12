@@ -6,10 +6,10 @@ from __future__ import annotations
 import numpy as np
 import numpy.typing as npt
 from .types import *
-import typing
+from typing import Callable, overload
 
 __version__: str
-__all__ = ['__doc__', '__version__', 'load', 'PyDataFrame']
+__all__ = ['__doc__', '__version__', 'py_load', 'PyDataFrame']
 class PyDataFrame:
     def __call__(self, arg0: str) -> sup_col_arr_types:
         ...
@@ -17,10 +17,10 @@ class PyDataFrame:
         ...
     def __getstate__(self) -> tuple[sup_col_arr_types, all_cat_dict, list[str]]:
         ...
-    @typing.overload
+    @overload
     def __init__(self) -> None:
         ...
-    @typing.overload
+    @overload
     def __init__(self, data: sup_multi_row_types,
                  labels: list[str] | None = None) -> None:
         """
@@ -154,12 +154,12 @@ class PyDataFrame:
         -------
         shape : tuple[int, int]
         """
-@typing.overload
-def load(filepath: str,
+@overload
+def py_load(filepath: str,
          dataframe: PyDataFrame,
          header: bool | None = None,
          columns: list[int] | None = None,
-         col_types: list[typing.Callable[[str], sup_row_types]] | None = None,
+         col_types: list[Callable[[str], sup_row_types]] | None = None,
          newline_delimiter: str | None = None,
          column_delimiter: str | None = None) -> list[str]:
     """
@@ -168,7 +168,7 @@ def load(filepath: str,
     Parameters
     ----------
     filepath : str
-    dataframe : numoop.DataFrame, optional
+    dataframe : numoop.PyDataFrame, optional
     header : bool
         Whether the CSV file has a header.
     columns : list[int], optional
@@ -180,16 +180,21 @@ def load(filepath: str,
     
     Returns
     -------
-    df : numoop.DataFrame
     types : list[str]
         The column types that were autodetected when loading the CSV.
     """
-@typing.overload
-def load(filepath: str, header: bool | None = None,
+@overload
+def py_load(filepath: str, header: bool | None = None,
          columns: list[int] | None = None,
-         col_types: list[typing.Callable[[str], sup_row_types]] | None = None,
+         col_types: list[Callable[[str], sup_row_types]] | None = None,
          newline_delimiter: str | None = None,
          column_delimiter: str | None = None) -> tuple[list[str], PyDataFrame]:
     """
     Load a CSV into a new DataFrame
+
+    Returns
+    -------
+    types : list[str]
+        The column types that were autodetected when loading the CSV.
+    df : numoop.PyDataFrame
     """

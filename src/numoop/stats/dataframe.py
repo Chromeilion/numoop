@@ -1,6 +1,6 @@
 from __future__ import annotations
-from ._numoop import PyDataFrame
-from .types import sup_col_arr_types
+from numoop._numoop import PyDataFrame
+from numoop.types import sup_col_arr_types
 from typing import Literal, Optional, Any, TypeVar, Callable, ParamSpec
 import matplotlib.pyplot as plt
 import matplotlib.figure as mpf

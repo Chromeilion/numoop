@@ -259,7 +259,7 @@ class TestLoadCSV:
         'Unemployment rate', 'Inflation rate', 'GDP', 'Target']
 
     def test_full_load(self) -> None:
-        detected_types, df = numoop.load(self.CSV_PATH, True)
+        detected_types, df = numoop.load(self.CSV_PATH, header=True)
         assert df.column_labels == self.CSV_CORRECT_LABELS
         first_col = df[0]
         assert isinstance(detected_types, list)
@@ -277,10 +277,11 @@ class TestLoadCSV:
 
         # We should also be able to load into a DataFrame
         df = numoop.DataFrame()
-        detected_types = numoop.load(self.CSV_PATH, df, True)
+        detected_types, _ = numoop.load(self.CSV_PATH, df, True)
 
     def test_partial_load(self) -> None:
-        detected_types, df = numoop.load(self.CSV_PATH, True, columns=[1, 6])
+        detected_types, df = numoop.load(self.CSV_PATH, header=True,
+                                         columns=[1, 6])
         assert df.column_labels == [self.CSV_CORRECT_LABELS[1],
                                     self.CSV_CORRECT_LABELS[6]]
         first_col = df[0]

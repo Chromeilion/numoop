@@ -1,5 +1,6 @@
 import numoop
 import numpy as np
+import numpy.typing as npt
 import pytest
 import pickle
 import matplotlib.testing
@@ -57,7 +58,7 @@ class TestDataFrame:
         assert np.isclose(df[0], np.array([[5.5], [5.6]])).all()
         df_2 = numoop.DataFrame()
         # We should also be able to use a numpy array to add rows.
-        np_row = np.array([1, 2, 3, 4])
+        np_row: npt.NDArray[np.int_] = np.array([1, 2, 3, 4])
         df_2.append_row(np_row)
         assert (df_2[0][0] == 1 and df_2[1][0] == 2 and df_2[2][0] == 3 and
                 df_2[3][0] == 4)
@@ -273,6 +274,10 @@ class TestLoadCSV:
         assert catmap[0] == "Dropout"
         assert catmap[1] == "Graduate"
         assert catmap[2] == "Enrolled"
+
+        # We should also be able to load into a DataFrame
+        df = numoop.DataFrame()
+        detected_types = numoop.load(self.CSV_PATH, df, True)
 
     def test_partial_load(self) -> None:
         detected_types, df = numoop.load(self.CSV_PATH, True, columns=[1, 6])

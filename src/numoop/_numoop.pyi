@@ -58,14 +58,14 @@ class PyDataFrame:
         row : list or list[list]
             A list with len 3 has 3 columns.
         """
-    def get_map(self, idx: int) -> cat_dict:
+    def get_map(self, idx: int | str) -> cat_dict:
         """
         Get the integer label map for some column (if there is a mapping).
         
         Parameters
         ----------
-        idx : int
-            The index of the column from which you want to get a map.
+        idx : int or str
+            The index or label of the column from which you want to get a map.
         
         Returns
         -------

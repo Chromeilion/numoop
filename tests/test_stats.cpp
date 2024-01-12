@@ -94,7 +94,7 @@ TEST_F(LoadTest, LoadCSVCatMap) {
     std::unordered_map<arma::uword, std::string> correct_catmap{
             {0, "Dropout"}, {1, "Graduate"}, {2, "Enrolled"}
     };
-    std::unordered_map<arma::uword, std::string> map = d2_->first.get_map(34);
+    std::unordered_map<arma::uword, std::string> map = d2_->first.get_map(arma::uword{34});
     EXPECT_EQ(map.size(), 3);
     for (std::size_t i = 0; i < 3; ++i) {
         EXPECT_TRUE(map[i]=="Dropout" or map[i]=="Graduate" or map[i]=="Enrolled");

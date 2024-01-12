@@ -158,9 +158,13 @@ class TestDataFrame:
 
     def test_view(self) -> None:
         df = numoop.DataFrame([[5, 12.6, 4, 65.2],
-                               [1, 55.0, 7, 99.9]])
+                               [1, 55.0, 7, 99.9]],
+                              labels=["col1", "col2", "col3", "col4"])
         # Make sure the view has the correct values.
         assert np.all(df.view(0) == np.array([[5], [1]]))
+        # We should also be able to access a column with it's label:
+        assert np.all(df.view("col3") == np.array([[4], [7]]))
+
         # Editing a view is not allowed.
         with pytest.raises(ValueError):
             df.view(0)[1] = 10
@@ -259,11 +263,9 @@ class TestLoadCSV:
         'Unemployment rate', 'Inflation rate', 'GDP', 'Target']
 
     def test_full_load(self) -> None:
-        detected_types, df = numoop.load(self.CSV_PATH, header=True)
+        df = numoop.load(self.CSV_PATH, header=True)
         assert df.column_labels == self.CSV_CORRECT_LABELS
         first_col = df[0]
-        assert isinstance(detected_types, list)
-        assert len(detected_types) == 35
         assert df.shape == (499, 35)
         assert first_col.shape[0] == 499
         assert first_col.dtype.name == 'int64'
@@ -277,17 +279,14 @@ class TestLoadCSV:
 
         # We should also be able to load into a DataFrame
         df = numoop.DataFrame()
-        detected_types, _ = numoop.load(self.CSV_PATH, df, True)
+        numoop.load(self.CSV_PATH, df, True)
 
     def test_partial_load(self) -> None:
-        detected_types, df = numoop.load(self.CSV_PATH, header=True,
-                                         columns=[1, 6])
+        df = numoop.load(self.CSV_PATH, header=True, columns=[1, 6])
         assert df.column_labels == [self.CSV_CORRECT_LABELS[1],
                                     self.CSV_CORRECT_LABELS[6]]
         first_col = df[0]
         assert df.shape == (499, 2)
-        assert isinstance(detected_types, list)
-        assert len(detected_types) == 2
         assert first_col.shape[0] == 499
         assert first_col.dtype.name == 'int64'
         assert df[df.shape[1]-2].dtype.name == 'int64'

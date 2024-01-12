@@ -104,7 +104,7 @@ class PyDataFrame:
         """
         Print a summary of the DataFrame.
         """
-    def view(self, idx: int) -> sup_col_arr_types:
+    def view(self, idx: int | str) -> sup_col_arr_types:
         """
         Get a view into a column. This is much faster than indexing the dataframe
         because the column memory is not copied. This does mean however that the
@@ -112,7 +112,7 @@ class PyDataFrame:
         
         Parameters
         ----------
-        idx : unsigned int
+        idx : unsigned int or string
         
         Returns
         -------

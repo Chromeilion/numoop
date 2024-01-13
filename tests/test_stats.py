@@ -1,11 +1,16 @@
 import numoop
 import numpy as np
+import numpy.typing as npt
 import pytest
 import pickle
-import matplotlib.testing as mplt
+import matplotlib.testing
+import matplotlib.testing.compare
+import tempfile
 
 
 class TestDataFrame:
+    PLOT_DIR = "./tests/correct_plots"
+
     def test_init(self) -> None:
         # Init without anything
         df = numoop.DataFrame()
@@ -53,7 +58,7 @@ class TestDataFrame:
         assert np.isclose(df[0], np.array([[5.5], [5.6]])).all()
         df_2 = numoop.DataFrame()
         # We should also be able to use a numpy array to add rows.
-        np_row = np.array([1, 2, 3, 4])
+        np_row: npt.NDArray[np.int_] = np.array([1, 2, 3, 4])
         df_2.append_row(np_row)
         assert (df_2[0][0] == 1 and df_2[1][0] == 2 and df_2[2][0] == 3 and
                 df_2[3][0] == 4)
@@ -153,9 +158,13 @@ class TestDataFrame:
 
     def test_view(self) -> None:
         df = numoop.DataFrame([[5, 12.6, 4, 65.2],
-                               [1, 55.0, 7, 99.9]])
+                               [1, 55.0, 7, 99.9]],
+                              labels=["col1", "col2", "col3", "col4"])
         # Make sure the view has the correct values.
         assert np.all(df.view(0) == np.array([[5], [1]]))
+        # We should also be able to access a column with it's label:
+        assert np.all(df.view("col3") == np.array([[4], [7]]))
+
         # Editing a view is not allowed.
         with pytest.raises(ValueError):
             df.view(0)[1] = 10
@@ -203,15 +212,31 @@ class TestDataFrame:
                                [0, 50.5, 3],
                                [0, 22.2, 0]])
         df.set_map(0, {0: "cat1", 1: "cat2"})
+        df.column_labels = ["First Column", "Second Column", "Third Column"]
 
-        mplt.setup()
-        df.make_plot(1, "hist")
-        # Labeled bar
-        df.make_plot(0, "bar")
-        # Bar with no labels
-        df.make_plot(2, "bar")
+        plot_args = [(1, "hist"), (0, "bar"), (2, "bar"), (1, "line"),
+                     (0, "pie")]
 
-        df.make_plot(1, "line")
+        # Improve reproducibility
+        matplotlib.testing.setup()
+        with tempfile.TemporaryDirectory() as f:
+            for file_no, (idx, plot_type) in enumerate(plot_args):
+                fig, ax = df.make_plot(idx, plot_type)
+                file_name = f"fig{str(file_no)}.png"
+                temp_fig_path = f"{f}/{file_name}"
+                true_fig_path = f"{self.PLOT_DIR}/{file_name}"
+                fig.savefig(temp_fig_path)
+                assert matplotlib.testing.compare.compare_images(
+                    true_fig_path, temp_fig_path, 0.001
+                ) is None
+
+        invalid_calls = [(1, "pie"), (1, "bar")]
+        for idx, plot_type in invalid_calls:
+            with pytest.raises(TypeError):
+                df.make_plot(idx, plot_type)
+
+        with pytest.raises(AttributeError):
+            df.make_plot(0, "invalid_plot_type")
 
 
 class TestLoadCSV:
@@ -238,11 +263,9 @@ class TestLoadCSV:
         'Unemployment rate', 'Inflation rate', 'GDP', 'Target']
 
     def test_full_load(self) -> None:
-        detected_types, df = numoop.load(self.CSV_PATH, True)
+        df = numoop.load(self.CSV_PATH, header=True)
         assert df.column_labels == self.CSV_CORRECT_LABELS
         first_col = df[0]
-        assert isinstance(detected_types, list)
-        assert len(detected_types) == 35
         assert df.shape == (499, 35)
         assert first_col.shape[0] == 499
         assert first_col.dtype.name == 'int64'
@@ -254,14 +277,16 @@ class TestLoadCSV:
         assert catmap[1] == "Graduate"
         assert catmap[2] == "Enrolled"
 
+        # We should also be able to load into a DataFrame
+        df = numoop.DataFrame()
+        numoop.load(self.CSV_PATH, df, True)
+
     def test_partial_load(self) -> None:
-        detected_types, df = numoop.load(self.CSV_PATH, True, columns=[1, 6])
+        df = numoop.load(self.CSV_PATH, header=True, columns=[1, 6])
         assert df.column_labels == [self.CSV_CORRECT_LABELS[1],
                                     self.CSV_CORRECT_LABELS[6]]
         first_col = df[0]
         assert df.shape == (499, 2)
-        assert isinstance(detected_types, list)
-        assert len(detected_types) == 2
         assert first_col.shape[0] == 499
         assert first_col.dtype.name == 'int64'
         assert df[df.shape[1]-2].dtype.name == 'int64'

@@ -7,3 +7,4 @@ ninja
 pathspec
 pyproject_metadata
 matplotlib
+scipy

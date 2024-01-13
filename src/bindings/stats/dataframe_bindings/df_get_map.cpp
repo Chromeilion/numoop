@@ -17,8 +17,8 @@ Get the integer label map for some column (if there is a mapping).
 
 Parameters
 ----------
-idx : int
-    The index of the column from which you want to get a map.
+idx : int | str
+    The index or label of the column from which you want to get a map.
 
 Returns
 -------

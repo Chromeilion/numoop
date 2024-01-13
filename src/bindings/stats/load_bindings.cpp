@@ -11,7 +11,7 @@
 namespace py = pybind11;
 namespace oop::stats::bindings {
     void load_bindings(py::module_ &m) {
-        m.def("load",
+        m.def("py_load",
               static_cast<std::vector<std::string> (*)
                       (const std::string&,
                        oop::stats::DataFrame&,
@@ -35,7 +35,7 @@ Load a CSV file into a DataFrame object.
 Parameters
 ----------
 filepath : str
-dataframe : numoop.DataFrame, optional
+dataframe : numoop.PyDataFrame, optional
 header : bool
     Whether the CSV file has a header.
 columns : list[int], optional
@@ -47,7 +47,7 @@ column_delimiter : str
 
 Returns
 -------
-df : numoop.DataFrame
+df : numoop.PyDataFrame
 types : list[str]
     The column types that were autodetected when loading the CSV.
 )pbdoc"

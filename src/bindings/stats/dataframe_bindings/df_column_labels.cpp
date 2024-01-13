@@ -20,6 +20,15 @@ Returns
 -------
 column_labels : list[str]
 )pbdoc");
-    }
+        m.def("find_label",
+              &oop::stats::DataFrame::find_label,
+              py::arg("label"),
+              R"pbdoc(
+Get the column index for a label.
 
+Returns
+-------
+idx : int
+)pbdoc");
+    }
 }

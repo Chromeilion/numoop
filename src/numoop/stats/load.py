@@ -10,7 +10,7 @@ def load(filepath: str,
          columns: list[int] | None = None,
          col_types: list[Callable[[str], sup_row_types]] | None = None,
          newline_delimiter: str | None = None,
-         column_delimiter: str | None = None) -> tuple[list[str], DataFrame]:
+         column_delimiter: str | None = None) -> DataFrame:
     """
     Load a CSV file into a DataFrame object.
 
@@ -29,16 +29,14 @@ def load(filepath: str,
 
     Returns
     -------
-    types : list[str]
-    The column types that were autodetected when loading the CSV.
     df : numoop.DataFrame
     """
     if dataframe is None:
         dataframe = DataFrame()
     # We can simply supply the load function with our python dataframe and
     # everything works as if it was the C++ version.
-    det_types = py_load(
+    py_load(
         filepath, dataframe, header, columns, col_types, newline_delimiter,
         column_delimiter
     )
-    return det_types, dataframe
+    return dataframe

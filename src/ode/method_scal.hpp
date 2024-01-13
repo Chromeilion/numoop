@@ -6,6 +6,8 @@
 #define METHOD_SCAL_HPP
 
 #include <armadillo>
+#include <functional>
+#include <vector>
 
 namespace oop::ode_scal{
 
@@ -48,7 +50,8 @@ public:
     arma::Mat<T> ode() {
 
         arma::uword steps = static_cast<arma::uword>(end / h) + 1;
-        arma::Col<T> t = arma::linspace(0, end, steps);
+        arma::Col<double> temp = arma::linspace(0, end, steps);
+        arma::Col<T> t = arma::conv_to<arma::Col<T>>::from(temp);
         arma::Mat<T> result_mat = instantiate(steps);
         result_mat = method(result_mat, t);
         arma::Mat<T> out = result_mat.t();

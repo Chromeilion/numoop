@@ -14,9 +14,7 @@ template <typename T = double>
 class Euler_Scal : public ODE_Scal<T> {
 
 public:
-
     using func_scal = std::function<T(T,T)>;
-
     Euler_Scal(func_scal f = {}, T y0 = {}, T h = {}, T end = {})
         : ODE_Scal<T>(f, y0, h, end) {}
 

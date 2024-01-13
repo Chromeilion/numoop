@@ -53,9 +53,6 @@ namespace oop::stats {
         // Column labels, usually correspond to a CSV header.
         std::optional<std::vector<std::string>> _column_labels;
 
-        // Function that searches the labels for a specific label.
-        inline arma::uword find_label(const std::string &label) const;
-
         // Check that an index is within bounds an throw an error if not.
         inline void check_col_bounds(arma::uword idx) const;
 
@@ -100,6 +97,9 @@ namespace oop::stats {
 
         // Shape of the matrix.
         [[nodiscard]] inline std::pair<arma::uword, arma::uword> shape() const;
+
+        // Function that searches the labels for a specific label.
+        inline arma::uword find_label(const std::string &label) const;
 
         // Indexing
         inline sup_col_types &operator[](std::size_t idx);

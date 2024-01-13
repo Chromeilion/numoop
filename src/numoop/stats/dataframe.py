@@ -26,25 +26,26 @@ def _check_is_int(f: Callable[P, T]) -> Callable[P, T]:
     return wrapper
 
 
+_PLOT_RETURN_TYPE = tuple[mpf.Figure, mpa.Axes]
+
+
 class DataFrame(PyDataFrame):
     """
     Class for storing tabular data. Stores data in C++ and provides access
     through NumPy arrays. Also provides various utility functions for working
     with the data.
     """
-
-    _PLOT_RETURN_TYPE = tuple[mpf.Figure, mpa.Axes]
-
-    def make_plot(self, idx: int, plot_type: str,
+    def make_plot(self, idx: int | str, plot_type: str,
                   **kwargs: Any) -> _PLOT_RETURN_TYPE:
         """
         Plot a column with matplotlib. Supported plots are hist, pie, bar,
-        and line.
+        and line. To show the plot, either figure.show() or plt.show() must be
+        called after this function.
 
         Parameters
         ----------
-        idx : int
-            Index of the column to plot
+        idx : int or str
+            Index or label of the column to plot
         plot_type : str
             one of hist, pie, or line
         **kwargs : dict
@@ -55,6 +56,9 @@ class DataFrame(PyDataFrame):
         figure : matplotlib.pyplot.Figure
         axes : matplotlib.pyplot.Axes
         """
+        if isinstance(idx, str):
+            idx = self.find_label(idx)
+
         match plot_type:
             case "hist":
                 return self._make_hist(idx, **kwargs)
@@ -70,9 +74,8 @@ class DataFrame(PyDataFrame):
 
     def _make_hist(self, idx: int, **kwargs: Any) -> _PLOT_RETURN_TYPE:
         col = self.view(idx)
-        counts, bins = np.histogram(col)
         fig, ax = plt.subplots()
-        ax.stairs(counts, bins, **kwargs)
+        ax.hist(col, bins="auto", **kwargs)
         ax.set_title(self.get_lab(idx))
         return fig, ax
 

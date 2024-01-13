@@ -71,6 +71,14 @@ class PyDataFrame:
         -------
         col_cat_map : dict[int, str]
         """
+    def find_label(self, label: str) -> int:
+        """
+        Get the column index for a label.
+
+        Returns
+        -------
+        idx : int
+        """
     def insert_column(self, col: sup_col_arr_types, idx: int,
                       label: str | None = None) -> None:
         """

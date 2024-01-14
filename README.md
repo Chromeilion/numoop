@@ -96,6 +96,12 @@ make html
 ```
 This will build the web version of our docs in ```repo_root/docs/_build/html```.
 
+## Developing
+This package can be installed in editable mode by using the script ```build.sh```.
+This script expects the user to be using a virtualenv and the 
+```NUMOOP_VENV_SOURCE``` environment variable to be set to the path to the 
+environment activate file.
+
 ## Credits
 Numoop was created by Christian Špringer (christian.springer228@gmail.com) 
 and Uros Zivanovic (chromeilion@outlook.com). Christian worked on the ODE module 

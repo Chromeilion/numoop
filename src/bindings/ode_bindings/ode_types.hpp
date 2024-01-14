@@ -2,13 +2,28 @@
 #define ODE_TYPES_HPP
 
 #include <variant>
+#include <tuple>
+#include <functional>
 #include "ode/ode_scal.hpp"
 
 namespace oop::ode::bindings {
+using sup_init_types = std::variant <std::tuple<std::function<int(int,int)>,int,int,int>,
+                                    std::tuple<std::function<long int(long int, long int)>, long int, long int, long int>,
+                                    std::tuple<std::function<long long int(long long int,long long int)>,long long int,long long int, long long int>,
+                                    std::tuple<std::function<float(float,float)>,float,float,float>,
+                                    std::tuple<std::function<double(double,double)>,double,double,double>,
+                                    std::tuple<std::function<unsigned int(unsigned int, unsigned int)>, unsigned int, unsigned int, unsigned int>,
+                                    std::tuple<std::function<unsigned long int(unsigned long int, unsigned long int)>, unsigned long int, unsigned long int, unsigned long int>,
+                                    std::tuple<std::function<unsigned long long int(unsigned long long int, unsigned long long int)>, unsigned long long int, unsigned long long int, unsigned long long int>>;
 
-using sup_scal_types = std::variant <int, long int, long long int, float, 
-                       double, unsigned int, unsigned long int, 
-                       unsigned long long int>;
+using sup_scal_types = std::variant <int, 
+                                    long int,   
+                                    long long int, 
+                                    float, 
+                                    double, 
+                                    unsigned int, 
+                                    unsigned long int,
+                                    unsigned long long int>;
 
 using sup_vec_types = std::variant <
                       arma::Col<int>,
@@ -60,6 +75,14 @@ using sup_scal_funcs = std::variant <
                         std::function<unsigned long int(unsigned long int,unsigned long int)>,
                         std::function<unsigned long long int(unsigned long long int,unsigned long long int)>>;
 
-                        
+using sup_mat_types = std::variant <
+                        arma::Mat<int>,
+                        arma::Mat<long int>,
+                        arma::Mat<long long int>, 
+                        arma::Mat<float>, 
+                        arma::Mat<double>, 
+                        arma::Mat<unsigned int>,                    
+                        arma::Mat<unsigned long int>, 
+                        arma::Mat<unsigned long long int>>;
 }
 #endif //ODE_TYPES_HPP

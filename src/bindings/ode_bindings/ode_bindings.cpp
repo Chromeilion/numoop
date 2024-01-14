@@ -11,8 +11,9 @@ namespace oop::ode::bindings {
 
     void ode_bindings(py::module& m){
 
-        MakeBindings(m, "Euler_Scal");
-        //MakeBindings(m, "Midpoint_Scal")
+        MakeBindings<sup_scal_euler>(m,"Euler_Scal");
+        MakeBindings<sup_scal_midpoint>(m, "Midpoint_Scal");
+        MakeBindings<sup_scal_rk4>(m, "RK4_Scal");
     }
 
 } // namespace oop::ode::bindings

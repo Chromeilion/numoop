@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   numoop.ode
    numoop.stats
 
 Submodules

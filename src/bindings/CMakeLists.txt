@@ -20,3 +20,4 @@ pybind11_add_module(_numoop MODULE
 target_link_libraries(_numoop PRIVATE carma::carma)
 
 add_subdirectory(stats)
+add_subdirectory(ode_bindings)

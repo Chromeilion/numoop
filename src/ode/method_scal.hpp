@@ -6,6 +6,8 @@
 #define METHOD_SCAL_HPP
 
 #include <armadillo>
+#include <functional>
+#include <vector>
 
 namespace oop::ode_scal{
 
@@ -19,7 +21,7 @@ public:
     using func_scal = std::function<T(T,T)>;
 
     // Default constructor and destructor
-    ODE_Scal(func_scal f_ = {}, T y0_ = {}, T h_ = {}, T end_ = {}): 
+    ODE_Scal(const func_scal f_ = {}, const T y0_ = {}, const T h_ = {}, const T end_ = {}): 
               f(f_), y0(y0_), h(h_), end(end_) {}
 
     virtual ~ODE_Scal() = default;

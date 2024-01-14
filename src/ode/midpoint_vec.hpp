@@ -17,7 +17,7 @@ public:
 
     using func_vec = std::function<arma::Col<T>(T, const arma::Col<T>&)>;
 
-    Midpoint(func_vec f = {}, arma::Col<T>& y0 = {}, T& h = {}, T& end = {})
+    Midpoint(const func_vec f = {}, const arma::Col<T>& y0 = {}, const T& h = {}, const T& end = {})
         : ODE_Vec<T>(f, y0, h, end) {}
 
     // Implement Midpoint method for vector case

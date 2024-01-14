@@ -106,7 +106,6 @@ protected:
 
     // Test case for vector RungeKutta4
     void TestRK4Vec() {
-
         RK4<> rk4Obj(f, y0, h, end);
         rk4Obj.ode();
         const std::string reference_csv = "tests/csvtests/rk4_vector.csv";

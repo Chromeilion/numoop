@@ -16,10 +16,11 @@ class ODE_Vec {
 public:
 
     // Typedef for the function type
-    using func_vec = std::function<arma::Col<T>(T, const arma::Col<T>&)>;
+    using func_vec = std::function<arma::Col<T>(T, arma::Col<T>)>;
 
     // Default constructor and destructor
-    ODE_Vec(func_vec f_ = {}, arma::Col<T> y0_= {}, T h_= {}, T end_= {}): 
+    explicit ODE_Vec(const func_vec f_ = {}, const arma::Col<T> y0_= {},
+                     const T h_= {}, const T end_= {}):
             f(f_), y0(y0_), h(h_), end(end_) {}
 
     virtual ~ODE_Vec() = default;
@@ -48,7 +49,7 @@ public:
     arma::Mat<T> ode() {
 
         arma::uword steps = static_cast<arma::uword>(end / h) + 1;
-        arma::Col<T> t = arma::linspace(0, end, steps);
+        arma::Col<T> t = arma::linspace<arma::Col<T>>(0, end, steps);
         arma::Mat<T> result_mat = instantiate(steps);
         result_mat = method(result_mat, t);
         arma::Mat<T> out = result_mat.t();

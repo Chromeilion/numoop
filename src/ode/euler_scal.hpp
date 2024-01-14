@@ -14,10 +14,9 @@ template <typename T = double>
 class Euler_Scal : public ODE_Scal<T> {
 
 public:
-
     using func_scal = std::function<T(T,T)>;
-
-    Euler_Scal(func_scal f = {}, T y0 = {}, T h = {}, T end = {})
+    explicit Euler_Scal(const func_scal f = {}, const T y0 = {}, const T h = {},
+                        const T end = {})
         : ODE_Scal<T>(f, y0, h, end) {}
 
     // Implement Euler method for vector case

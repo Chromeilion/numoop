@@ -6,6 +6,8 @@
 #define METHOD_SCAL_HPP
 
 #include <armadillo>
+#include <functional>
+#include <vector>
 
 namespace oop::ode_scal{
 
@@ -19,7 +21,7 @@ public:
     using func_scal = std::function<T(T,T)>;
 
     // Default constructor and destructor
-    ODE_Scal(func_scal f_ = {}, T y0_ = {}, T h_ = {}, T end_ = {}): 
+    explicit ODE_Scal(func_scal f_ = {}, T y0_ = {}, T h_ = {}, T end_ = {}):
               f(f_), y0(y0_), h(h_), end(end_) {}
 
     virtual ~ODE_Scal() = default;
@@ -48,7 +50,7 @@ public:
     arma::Mat<T> ode() {
 
         arma::uword steps = static_cast<arma::uword>(end / h) + 1;
-        arma::Col<T> t = arma::linspace(0, end, steps);
+        arma::Col<T> t = arma::linspace<arma::Col<T>>(0, end, steps);
         arma::Mat<T> result_mat = instantiate(steps);
         result_mat = method(result_mat, t);
         arma::Mat<T> out = result_mat.t();

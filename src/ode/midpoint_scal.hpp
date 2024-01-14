@@ -17,7 +17,7 @@ public:
 
     using func_scal = std::function<T(T,T)>;
 
-    Midpoint_Scal(func_scal f = {}, T y0 = {}, T h = {}, T end = {})
+    Midpoint_Scal(const func_scal f = {}, const T y0 = {}, const T h = {}, const T end = {})
         : ODE_Scal<T>(f, y0, h, end) {}
 
     // Implementation for scalar case

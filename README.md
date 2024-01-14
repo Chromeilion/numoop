@@ -4,8 +4,8 @@ and ordinary differential equations, built on top of [Armadillo](https://arma.so
 
 ## What does numoop provide?
 ### DataFrame
-The DataFrame object is similar to a Python Pandas dataframe. Each column is 
-stored as an Armadillo Col object that can have its own type.
+The DataFrame object is very similar to a Python Pandas dataframe. Each column 
+is stored as an Armadillo Col object that can have its own type.
 It's possible to have labels for each column which can also be used for indexing.
 These features make a DataFrame perfect for working with various tabular data 
 formats such as CSV files. 

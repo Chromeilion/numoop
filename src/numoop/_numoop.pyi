@@ -10,9 +10,9 @@ from typing import Callable, overload
 
 __version__: str
 __all__ = ['__doc__', '__version__', 'py_load', 'PyDataFrame',
-           'Euler', 'Euler_Scal', 'Midpoint', 'Midpoint_Scal',
-             'ODE_Scal', 'ODE_Vec', 'RK4', 'RK4_Scal']
-class Euler(ODE_Vec):
+           'PyEuler', 'PyEuler_Scal', 'PyMidpoint', 'PyMidpoint_Scal',
+           'PyODE_Scal', 'PyODE_Vec', 'PyRK4', 'PyRK4_Scal']
+class PyEuler(PyODE_Vec):
     def __init__(self, func: sup_fun_vec, y0: sup_vec, 
                  h: float, end: float) -> None:
         """
@@ -29,7 +29,7 @@ class Euler(ODE_Vec):
         end : float
             The final time of the ODE.  
         """
-class Euler_Scal(ODE_Scal):
+class PyEuler_Scal(PyODE_Scal):
     def __init__(self, func: sup_fun_scal, y0: float,
                   h: float, end: float) -> None:
         """
@@ -46,7 +46,7 @@ class Euler_Scal(ODE_Scal):
         end : float
             The final time of the ODE. 
         """
-class Midpoint(ODE_Vec):
+class PyMidpoint(PyODE_Vec):
     def __init__(self, func: sup_fun_vec, y0: sup_vec,
                   h: float, end: float) -> None:
         """
@@ -63,7 +63,7 @@ class Midpoint(ODE_Vec):
         end : float
             The final time of the ODE.
         """
-class Midpoint_Scal(ODE_Scal):
+class PyMidpoint_Scal(PyODE_Scal):
     def __init__(self, func: sup_fun_scal, y0: float,
                   h: float, end: float) -> None:
         """
@@ -80,7 +80,7 @@ class Midpoint_Scal(ODE_Scal):
         end : float
             The final time of the ODE.
         """
-class RK4(ODE_Vec):
+class PyRK4(PyODE_Vec):
     def __init__(self, func: sup_fun_vec, y0: sup_vec, 
                  h: float, end: float) -> None:
         """
@@ -97,7 +97,7 @@ class RK4(ODE_Vec):
         end : float
             The final time of the ODE.
         """
-class RK4_Scal(ODE_Scal):
+class PyRK4_Scal(PyODE_Scal):
     def __init__(self, func: sup_fun_scal, y0: float, 
                  h: float, end: float) -> None:
         """
@@ -114,7 +114,7 @@ class RK4_Scal(ODE_Scal):
         end : float
             The final time of the ODE.
         """
-class ODE_Scal:
+class PyODE_Scal:
     def ode(self) -> sup_vec:
         """
         Solve the ODE using the selected method.
@@ -125,7 +125,7 @@ class ODE_Scal:
         sol : numpy.ndarray
             Solution of the scalar ODE at each given time.
         """
-class ODE_Vec:
+class PyODE_Vec:
     def ode(self) -> sup_vec:
         """
         Solve the ODE using the selected method.

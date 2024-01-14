@@ -11,7 +11,6 @@ namespace py = pybind11;
 namespace oop::ode::bindings {
 
     void ode_bindings(py::module& m){
-
         BindEulerScalar(m);
         BindEulerVector(m);
         BindMidpointScalar(m);

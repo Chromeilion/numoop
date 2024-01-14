@@ -13,7 +13,10 @@ namespace oop::ode::bindings{
 // Bindings for the base class
 template<typename T = double>
 void BindODEScalar(py::module &m, const char* classname) {
-    py::class_<ODE_Scal<T>>(m, classname)
+    py::class_<ODE_Scal<T>>(m, classname, R"pbdoc(
+Base ODE scalar class.
+)pbdoc"
+            )
         .def("ode", &ODE_Scal<T>::ode,
         R"pbdoc(
 Solve the ODE using the selected method.
@@ -28,15 +31,19 @@ sol : numpy.ndarray
 
 // Bindings for the derived class
 void BindEulerScalar(py::module &m) {
-    BindODEScalar<double>(m, "ODE_Scal");
+    BindODEScalar<double>(m, "PyODE_Scal");
 
-    py::class_<Euler_Scal<>,ODE_Scal<double>>(m, "Euler_Scal")
+    py::class_<Euler_Scal<>,ODE_Scal<double>>(m, "PyEuler_Scal",
+                                              R"pbdoc(
+Eular scalar ODE solver.
+)pbdoc")
         .def(py::init<Euler_Scal<>::
             func_scal, 
             double, 
             double, 
             double>(),
-            py::arg("func"), py::arg("y0"), py::arg("h"), py::arg("end"),
+            py::arg("func"), py::arg("y0"), py::arg("h"),
+            py::arg("end"),
             R"pbdoc(
 Constructor for the class representing the scalar case of the Euler method.
 
@@ -56,7 +63,10 @@ end : float
 void BindMidpointScalar(py::module &m) {
 //    BindODEScalar<double>(m, "ODE_Scal_Midpoint");
 
-    py::class_<Midpoint_Scal<>,ODE_Scal<double>>(m, "Midpoint_Scal")
+    py::class_<Midpoint_Scal<>,ODE_Scal<double>>(m, "PyMidpoint_Scal",
+                                                 R"pbdoc(
+Midpoint scalar ODE solver.
+)pbdoc")
         .def(py::init<Midpoint_Scal<>::
             func_scal, 
             double, 
@@ -82,7 +92,10 @@ end : float
 void BindRK4Scalar(py::module &m) {
     //BindODEScalar<double>(m, "ODE_Scal_RK4");
 
-    py::class_<RK4_Scal<>,ODE_Scal<double>>(m, "RK4_Scal")
+    py::class_<RK4_Scal<>,ODE_Scal<double>>(m, "PyRK4_Scal",
+                                            R"pbdoc(
+RK4 scalar ODE solver.
+)pbdoc")
         .def(py::init<RK4_Scal<>::
             func_scal,
             double, 

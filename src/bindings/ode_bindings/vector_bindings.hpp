@@ -16,7 +16,10 @@ namespace oop::ode::bindings{
 // Bindings for the base class
 template<typename T = double>
 void BindODEVector(py::module &m, const char* classname) {
-    py::class_<ODE_Vec<T>>(m, classname)
+    py::class_<ODE_Vec<T>>(m, classname,
+                           R"pbdoc(
+Base vector ODE solver.
+)pbdoc")
         .def("ode", &ODE_Vec<T>::ode,
         R"pbdoc(
 Solve the ODE using the selected method.
@@ -31,9 +34,12 @@ sol : numpy.ndarray
 
 // Bindings for the derived class
 void BindEulerVector(py::module &m) {
-    BindODEVector<double>(m, "ODE_Vec");
+    BindODEVector<double>(m, "PyODE_Vec");
 
-    py::class_<Euler<>,ODE_Vec<double>>(m, "Euler")
+    py::class_<Euler<>,ODE_Vec<double>>(m, "PyEuler",
+                                        R"pbdoc(
+Euler ODE vector solver.
+)pbdoc")
         .def(py::init<Euler<>::
         func_vec, 
         y0_vec, 
@@ -57,7 +63,10 @@ end : float
 
 void BindMidpointVector(py::module &m) {
 
-   py::class_<Midpoint<>,ODE_Vec<double>>(m, "Midpoint")
+   py::class_<Midpoint<>,ODE_Vec<double>>(m, "PyMidpoint",
+                                          R"pbdoc(
+Midpoint ODE vector solver.
+)pbdoc")
         .def(py::init<Midpoint<>::
         func_vec, 
         y0_vec, 
@@ -81,7 +90,10 @@ end : float
 
 void BindRK4Vector(py::module &m) {
 
-    py::class_<RK4<>,ODE_Vec<double>>(m, "RK4")
+    py::class_<RK4<>,ODE_Vec<double>>(m, "PyRK4",
+                                      R"pbdoc(
+RK4 ODE vector solver.
+)pbdoc")
         .def(py::init<RK4<>::
         func_vec, 
         y0_vec, 

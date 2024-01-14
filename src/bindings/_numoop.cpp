@@ -4,12 +4,15 @@
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 #include "stats/stats_bindings.hpp"
+#include "ode_bindings/ode_bindings.hpp"
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(_numoop, m) {
     // DataFrame bindings
     oop::stats::bindings::stats_bindings(m);
+    oop::ode::bindings::ode_bindings(m);
+
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);

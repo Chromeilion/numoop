@@ -10,12 +10,10 @@ It's possible to have labels for each column which can also be used for indexing
 These features make a DataFrame perfect for working with various tabular data 
 formats such as CSV files. 
 
-Because a column in a DataFrame is just an Armadillo array, it's easy to use 
-many statistical and numerical functions provided by Armadillo with a numoop 
-DataFrame. One limitation of this however, is that it's not possible to store 
-non-numeric data in the DataFrame. To get around this, categorical data must be 
-converted to ints. The DataFrame object has methods for getting and setting a 
-map which can map integer values to categories (strings).
+The Python bindings for the DataFrame automatically convert Armadillo columns to 
+NumPy arrays, as well as providing plotting functionality through matplotlib.
+Because a column in a DataFrame is just an Armadillo/NumPy array, it's easy to 
+use many statistical and numerical functions provided by these libraries. 
 
 #### CSV Loader
 Numoop also provides a function that can load a CSV file into a DataFrame for 
@@ -26,7 +24,8 @@ the function can also automatically read it into the DataFrame.
 Everything is user controllable, if you'd like to specify the type of each 
 column yourself, you can pass this to the function. It's also possible to only 
 load selected columns from the file and to provide custom newline and columns 
-separator chars.
+separator chars. Loading only specific columns speeds up the loading process 
+greatly.
 
 ### ODE Solvers
 Numoop provides the following ordinary differential equation solvers:
@@ -36,21 +35,24 @@ Numoop provides the following ordinary differential equation solvers:
 
 All methods work with both vector and scalar inputs. The solution is saved to a 
 CSV file and also returned from the function.
+These solvers also all have Python bindings which work the same way as the C++ 
+implementation.
 
-### Python Bindings
-While the module is perfectly usable as a header-only library in C++, all 
-functionality can additionally be accessed through Python with the included 
-bindings. When using the Python bindings, Armadillo columns are seamlessly 
-mapped to numpy arrays.
+### Considerations When Using the Python Bindings
+When using the Python bindings, Armadillo columns are seamlessly mapped to 
+NumPy arrays. When normally indexing, the returned array is a copy. If you'd 
+like to have the best performance, use the .view() method, which returns a 
+read-only view without copying any data.
 
-## Using numoop
+## Using Numoop From C++
 Since numoop is a header only library, using it is as simple as adding /src to 
 your include directories. From here, if you want to use the whole module, you 
 can include numoop.hpp. If you just want the stats module include stats/stats.hpp, 
 and if you just want the ode module include ode/ode.hpp.
 
 ### Using the Python Bindings
-Simply install the package with:
+Simply install the package by running the following command from the root of 
+the repository:
 ```bash
 pip install .
 ```

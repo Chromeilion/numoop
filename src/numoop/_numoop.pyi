@@ -44,7 +44,7 @@ class PyDataFrame:
         
         Parameters
         ----------
-        col : numpy.typing.NDArray
+        col : numpy.ndarray
             Must be a column vector i.e. shape=(x, 1)
         label : Optional[str]
         """
@@ -55,7 +55,7 @@ class PyDataFrame:
         
         Parameters
         ----------
-        row : list or list[list]
+        row : list or list[list] or numpy.ndarray
             A list with len 3 has 3 columns.
         """
     def get_map(self, idx: int | str) -> cat_dict:
@@ -86,7 +86,7 @@ class PyDataFrame:
         
         Parameters
         ----------
-        col : np.typing.NDArray
+        col : numpy.ndarray
         idx : unsigned int
         label : string, optional
         """
@@ -124,7 +124,7 @@ class PyDataFrame:
         
         Returns
         -------
-        col : np.typing.NDArray
+        col : numpy.ndarray
             A read-only numpy array.
         """
     @property
@@ -176,7 +176,7 @@ def py_load(filepath: str,
     Parameters
     ----------
     filepath : str
-    dataframe : numoop.PyDataFrame, optional
+    dataframe : :class:`.PyDataFrame`, optional
     header : bool
         Whether the CSV file has a header.
     columns : list[int], optional
@@ -204,5 +204,5 @@ def py_load(filepath: str, header: bool | None = None,
     -------
     types : list[str]
         The column types that were autodetected when loading the CSV.
-    df : numoop.PyDataFrame
+    df : :class:`.PyDataFrame`
     """

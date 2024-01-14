@@ -1,4 +1,5 @@
 import numoop
+from numoop.stats import DataFrame
 import numpy as np
 import numpy.typing as npt
 import pytest
@@ -13,17 +14,17 @@ class TestDataFrame:
 
     def test_init(self) -> None:
         # Init without anything
-        df = numoop.DataFrame()
+        df = DataFrame()
         assert df.shape == (0, 0)
         # Init with arguments
-        df = numoop.DataFrame([[0, 2.0, 100], [10, 11.11, 12]])
+        df = DataFrame([[0, 2.0, 100], [10, 11.11, 12]])
         assert df.shape == (2, 3)
         assert np.all((df[0] == np.array([[0], [10]])))
 
     def test_column_labels(self) -> None:
         labels = ["col1", "col2", "col3"]
         # Init with labels should work as expected.
-        df = numoop.DataFrame([[0, 2.0, 100],
+        df = DataFrame([[0, 2.0, 100],
                                [10, 11.11, 12]], labels)
         assert df.column_labels == labels
         assert np.all(df("col1") == np.array([[0], [10]]))
@@ -38,7 +39,7 @@ class TestDataFrame:
             df.column_labels = ["c1", "c2"]
 
     def test_append_row(self) -> None:
-        df = numoop.DataFrame()
+        df = DataFrame()
         # Appending to an empty DataFrme
         df.append_row([5.5, 1, 4, 7.7])
         # Make sure the values were set correctly
@@ -56,7 +57,7 @@ class TestDataFrame:
         df.append_row([5.6, 2, 5, 8.8])
         assert df.shape == (2, 4)
         assert np.isclose(df[0], np.array([[5.5], [5.6]])).all()
-        df_2 = numoop.DataFrame()
+        df_2 = DataFrame()
         # We should also be able to use a numpy array to add rows.
         np_row: npt.NDArray[np.int_] = np.array([1, 2, 3, 4])
         df_2.append_row(np_row)
@@ -64,7 +65,7 @@ class TestDataFrame:
                 df_2[3][0] == 4)
 
     def test_insert_row(self) -> None:
-        df = numoop.DataFrame()
+        df = DataFrame()
         # Insert a row into an empty DataFrame
         df.insert_row([5, 1.3, 4.4, 7], 0)
 
@@ -85,7 +86,7 @@ class TestDataFrame:
         assert np.all(df[0] == np.array([6, 5])[:, None])
 
     def test_append_column(self) -> None:
-        df = numoop.DataFrame()
+        df = DataFrame()
         # Append a column to an empty DataFrame.
         df.append_column(np.array([[5], [1], [4], [7]]))
         # Appending column with an incorrect number of rows.
@@ -99,7 +100,7 @@ class TestDataFrame:
         assert np.all(df[0] == np.array([[5], [1], [4], [7]]))
 
     def test_insert_column(self) -> None:
-        df = numoop.DataFrame()
+        df = DataFrame()
         # Insert column into an empty DataFrame.
         df.insert_column(np.array([[5], [1], [4], [7]]), 0)
         # Inserting an incorrect number of rows gives an error.
@@ -116,8 +117,8 @@ class TestDataFrame:
         assert np.all(df[1] == np.array([[5], [1], [4], [7]]))
 
     def test_indexing(self) -> None:
-        df = numoop.DataFrame([[5, 12.6, 4, 65.2],
-                               [1, 55.0, 7, 99.9]])
+        df = DataFrame([[5, 12.6, 4, 65.2],
+                        [1, 55.0, 7, 99.9]])
         # Make sure indexing gives us what we expect.
         assert np.all(df[0] == np.array([[5], [1]]))
         # Take a column out of the DataFrame, change a value, and then reinsert
@@ -133,7 +134,7 @@ class TestDataFrame:
             df[0] = arr
 
     def test_dtypes(self) -> None:
-        df = numoop.DataFrame()
+        df = DataFrame()
 
         # Now lets make sure that no hidden type conversions are happening.
         int_ = np.array([[21], [100]], dtype=np.intc)
@@ -157,9 +158,9 @@ class TestDataFrame:
             df.append_column(bool_)  # type: ignore
 
     def test_view(self) -> None:
-        df = numoop.DataFrame([[5, 12.6, 4, 65.2],
-                               [1, 55.0, 7, 99.9]],
-                              labels=["col1", "col2", "col3", "col4"])
+        df = DataFrame([[5, 12.6, 4, 65.2],
+                        [1, 55.0, 7, 99.9]],
+                        labels=["col1", "col2", "col3", "col4"])
         # Make sure the view has the correct values.
         assert np.all(df.view(0) == np.array([[5], [1]]))
         # We should also be able to access a column with it's label:
@@ -171,8 +172,8 @@ class TestDataFrame:
 
     def test_pickle(self) -> None:
         labs = ["col1", "col2", "col3", "col4"]
-        df = numoop.DataFrame([[0, 12.6, 4, 65.2],
-                               [1, 55.0, 7, 99.9]],
+        df = DataFrame([[0, 12.6, 4, 65.2],
+                        [1, 55.0, 7, 99.9]],
                               labs)
         cat_map = {0: "cat1", 1: "cat2"}
         df.set_map(0, cat_map)
@@ -189,9 +190,9 @@ class TestDataFrame:
         assert df_unpickled.get_map(0) == cat_map
 
     def test_set_map(self) -> None:
-        df = numoop.DataFrame([[1, 12.6, 0],
-                               [1, 55.0, 2],
-                               [0, 33.1, 3]])
+        df = DataFrame([[1, 12.6, 0],
+                        [1, 55.0, 2],
+                        [0, 33.1, 3]])
         cat_map_one = {0: "cat1", 1: "cat2"}
         cat_map_two = {0: "cat3", 1: "cat4", 2: "cat5", 3: "cat6"}
 
@@ -206,11 +207,11 @@ class TestDataFrame:
         assert df.get_map(0) == cat_map_one
 
     def test_plots(self) -> None:
-        df = numoop.DataFrame([[1, 12.6, 0],
-                               [1, 55.0, 2],
-                               [0, 33.1, 3],
-                               [0, 50.5, 3],
-                               [0, 22.2, 0]])
+        df = DataFrame([[1, 12.6, 0],
+                        [1, 55.0, 2],
+                        [0, 33.1, 3],
+                        [0, 50.5, 3],
+                        [0, 22.2, 0]])
         df.set_map(0, {0: "cat1", 1: "cat2"})
         df.column_labels = ["First Column", "Second Column", "Third Column"]
 
@@ -263,7 +264,7 @@ class TestLoadCSV:
         'Unemployment rate', 'Inflation rate', 'GDP', 'Target']
 
     def test_full_load(self) -> None:
-        df = numoop.load(self.CSV_PATH, header=True)
+        df = numoop.stats.load(self.CSV_PATH, header=True)
         assert df.column_labels == self.CSV_CORRECT_LABELS
         first_col = df[0]
         assert df.shape == (499, 35)
@@ -278,11 +279,11 @@ class TestLoadCSV:
         assert catmap[2] == "Enrolled"
 
         # We should also be able to load into a DataFrame
-        df = numoop.DataFrame()
-        numoop.load(self.CSV_PATH, df, True)
+        df = DataFrame()
+        numoop.stats.load(self.CSV_PATH, df, True)
 
     def test_partial_load(self) -> None:
-        df = numoop.load(self.CSV_PATH, header=True, columns=[1, 6])
+        df = numoop.stats.load(self.CSV_PATH, header=True, columns=[1, 6])
         assert df.column_labels == [self.CSV_CORRECT_LABELS[1],
                                     self.CSV_CORRECT_LABELS[6]]
         first_col = df[0]

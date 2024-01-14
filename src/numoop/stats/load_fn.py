@@ -17,7 +17,7 @@ def load(filepath: str,
     Parameters
     ----------
     filepath : str
-    dataframe : numoop.DataFrame, optional
+    dataframe : :class:`.DataFrame`, optional
     header : bool
         Whether the CSV file has a header.
     columns : list[int], optional

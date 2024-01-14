@@ -26,7 +26,7 @@ rows.
 
 Parameters
 ----------
-col : numpy.typing.NDArray
+col : numpy.ndarray
     Must be a column vector i.e. shape=(x, 1)
 label : Optional[str]
 )pbdoc");

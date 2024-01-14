@@ -20,7 +20,8 @@ dependencies = [
 [project.optional-dependencies]
 test = ["pytest-cpp"]
 examples = ["scipy"]
-all = ["numoop[test, examples]"]
+docs = ["Sphinx", "sphinx_rtd_theme"]
+
 
 [project.urls]
 Repository = "https://github.com/Chromeilion/numoop"

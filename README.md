@@ -76,18 +76,25 @@ root with pytest:
 ```bash
 pytest
 ```
+Additional static type checks can be performed with 
+[mypy](https://mypy.readthedocs.io/en/stable/)
+and the following command from the repository root dir:
+```bash
+mypy .
+```
 
-## Performance and other considerations
-The performance of numoop is highly dependent on the libraries present on the 
-system it's being run on. Specifically, the implementation of BLAS and LAPACK.
-Having a multi-threaded library such as OpenBLAS greatly improves the performance
-of Armadillo and therefore numoop.
-
-### Python Bindings Performance
-In order to maintain memory safety, a copy operation must be performed when a 
-column is indexed. Therefore, when accessing a column, it's preferable to use 
-DataFrame.view, as this avoids copies. This does result in a read-only numpy 
-array however.
+## Documentation
+This repository includes documentation created through 
+[Sphinx](https://www.sphinx-doc.org/en/master/). To compile the documentation, 
+install the package with the ```docs``` optional dependencies:
+```bash
+pip install .["docs"]
+```
+Then from the ``repo_root/docs`` directory, run:
+```bash
+make html
+```
+This will build the web version of our docs in ```repo_root/docs/_build/html```.
 
 ## Credits
 Numoop was created by Christian Špringer (christian.springer228@gmail.com) 

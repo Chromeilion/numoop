@@ -2,7 +2,8 @@
 This is an example project demonstrating the functionality of the DataFrame and
 load functions in numoop.
 """
-from numoop import load, utils
+from numoop.stats import load
+from numoop import utils
 from scipy.stats import mode
 import matplotlib.pyplot as plt
 

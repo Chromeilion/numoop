@@ -11,7 +11,7 @@ authors = [
 description = "Fast statistics and ODE solver library."
 readme = "README.md"
 requires-python = ">=3.10"
-version = "0.0.1"
+version = "2.0.0"
 dependencies = [
     "numpy",
     "matplotlib"

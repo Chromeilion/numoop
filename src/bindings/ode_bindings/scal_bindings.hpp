@@ -14,18 +14,28 @@ namespace oop::ode::bindings{
 template<typename T = double>
 void BindODEScalar(py::module &m, const char* classname) {
     py::class_<ODE_Scal<T>>(m, classname)
-        .def("set_func", &ODE_Scal<T>::set_func)
-        .def("set_y0", &ODE_Scal<T>::set_y0)
-        .def("set_h", &ODE_Scal<T>::set_h)
-        .def("set_end", &ODE_Scal<T>::set_end)
         .def("ode", &ODE_Scal<T>::ode);
 }
 
 // Bindings for the derived class
 void BindEulerScalar(py::module &m) {
-    BindODEScalar<double>(m, "ODE_Scal_double");
+    BindODEScalar<double>(m, "ODE_Scal");
 
     py::class_<Euler_Scal<>,ODE_Scal<double>>(m, "Euler_Scal")
         .def(py::init<Euler_Scal<>::func_scal, double, double, double>());
+}
+
+void BindMidpointScalar(py::module &m) {
+//    BindODEScalar<double>(m, "ODE_Scal_Midpoint");
+
+    py::class_<Midpoint_Scal<>,ODE_Scal<double>>(m, "Midpoint_Scal")
+        .def(py::init<Midpoint_Scal<>::func_scal, double, double, double>());
+}
+
+void BindRK4Scalar(py::module &m) {
+    //BindODEScalar<double>(m, "ODE_Scal_RK4");
+
+    py::class_<RK4_Scal<>,ODE_Scal<double>>(m, "RK4_Scal")
+        .def(py::init<RK4_Scal<>::func_scal, double, double, double>());
 }
 }

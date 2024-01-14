@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.typing as npt
-from typing import Sequence
+from typing import Sequence , Callable
 
 # The internal types supported for each column
 sup_col_types = (np.int32 | np.int64 | np.float32 | np.float64 | np.uint32 |
@@ -21,3 +21,10 @@ sup_col_arr_types = (
 cat_dict = dict[int, str]
 # Container for all cat dictionaries
 all_cat_dict = dict[int, cat_dict]
+# Supported type of vector
+sup_vec = (npt.NDArray[np.float64])
+# Supported type for vector function
+sup_fun_vec = Callable[[float, sup_vec], sup_vec]
+# Supported type for vector function
+sup_fun_scal = Callable[[float, float], float]
+

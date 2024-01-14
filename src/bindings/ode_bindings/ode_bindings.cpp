@@ -14,6 +14,10 @@ namespace oop::ode::bindings {
 
         BindEulerScalar(m);
         BindEulerVector(m);
+        BindMidpointScalar(m);
+        BindMidpointVector(m);
+        BindRK4Scalar(m);
+        BindRK4Vector(m);
     }
 
 } // namespace oop::ode::bindings

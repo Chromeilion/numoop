@@ -96,6 +96,15 @@ make html
 ```
 This will build the web version of our docs in ```repo_root/docs/_build/html```.
 
+## Example Scripts
+We've provided some example scripts to show how numoop can be used in practice.
+These can be found under the ```repo_root/examples``` directory.
+To run them, simply install the package with the optional examples 
+dependencies:
+```bash
+pip install .["examples"]
+```
+
 ## Developing
 This package can be installed in editable mode by using the script ```build.sh```.
 This script expects the user to be using a virtualenv and the 

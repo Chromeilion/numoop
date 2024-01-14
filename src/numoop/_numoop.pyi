@@ -13,35 +13,129 @@ __all__ = ['__doc__', '__version__', 'py_load', 'PyDataFrame',
            'Euler', 'Euler_Scal', 'Midpoint', 'Midpoint_Scal',
              'ODE_Scal', 'ODE_Vec', 'RK4', 'RK4_Scal']
 class Euler(ODE_Vec):
-    def __init__(self, arg0: sup_fun_vec, arg1: sup_vec, 
-                 arg2: float, arg3: float) -> None:
-        ...
+    def __init__(self, func: sup_fun_vec, y0: sup_vec, 
+                 h: float, end: float) -> None:
+        """
+        Constructor for the class representing the Euler's method.
+
+        Parameters
+        ----------
+        func : Callable[[float, numpy.ndarray], numpy.ndarray]
+            The function on which you want to perform the ODE.
+        y0 : numpy.ndarray
+            The starting point of the ODE.
+        h : float
+            The step considered for the ODE.
+        end : float
+            The final time of the ODE.  
+        """
 class Euler_Scal(ODE_Scal):
-    def __init__(self, arg0: sup_fun_scal, arg1: float,
-                  arg2: float, arg3: float) -> None:
-        ...
+    def __init__(self, func: sup_fun_scal, y0: float,
+                  h: float, end: float) -> None:
+        """
+        Constructor for the class representing the scalar case of the Euler's method.
+
+        Parameters
+        ----------
+        func : Callable[[float, float], float]
+            The function on which you want to perform the ODE.
+        y0 : float
+            The starting point of the ODE.
+        h : float
+            The step considered for the ODE.
+        end : float
+            The final time of the ODE. 
+        """
 class Midpoint(ODE_Vec):
-    def __init__(self, arg0: sup_fun_vec, arg1: sup_vec,
-                  arg2: float, arg3: float) -> None:
-        ...
+    def __init__(self, func: sup_fun_vec, y0: sup_vec,
+                  h: float, end: float) -> None:
+        """
+        Constructor for the class representing the Midpoint method.
+
+        Parameters
+        ----------
+        func : Callable[[float, numpy.ndarray], numpy.ndarray]
+            The function on which you want to perform the ODE.
+        y0 : numpy.ndarray
+            The starting point of the ODE.
+        h : float
+            The step considered for the ODE.
+        end : float
+            The final time of the ODE.
+        """
 class Midpoint_Scal(ODE_Scal):
-    def __init__(self, arg0: sup_fun_scal, arg1: float,
-                  arg2: float, arg3: float) -> None:
-        ...
+    def __init__(self, func: sup_fun_scal, y0: float,
+                  h: float, end: float) -> None:
+        """
+        Constructor for the class representing the scalar case of the Midpoint method.
+
+        Parameters
+        ----------
+        func : Callable[[float, float], float]
+            The function on which you want to perform the ODE.
+        y0 : float
+            The starting point of the ODE.
+        h : float
+            The step considered for the ODE.
+        end : float
+            The final time of the ODE.
+        """
 class RK4(ODE_Vec):
-    def __init__(self, arg0: sup_fun_vec, arg1: sup_vec, 
-                 arg2: float, arg3: float) -> None:
-        ...
+    def __init__(self, func: sup_fun_vec, y0: sup_vec, 
+                 h: float, end: float) -> None:
+        """
+        Constructor for the class representing the Runge-Kutta 4 method.
+
+        Parameters
+        ----------
+        func : Callable[[float, numpy.ndarray], numpy.ndarray]
+            The function on which you want to perform the ODE.
+        y0 : numpy.ndarray
+            The starting point of the ODE.
+        h : float
+            The step considered for the ODE.
+        end : float
+            The final time of the ODE.
+        """
 class RK4_Scal(ODE_Scal):
-    def __init__(self, arg0: sup_fun_scal, arg1: float, 
-                 arg2: float, arg3: float) -> None:
-        ...
+    def __init__(self, func: sup_fun_scal, y0: float, 
+                 h: float, end: float) -> None:
+        """
+        Constructor for the class representing the scalar case of the RK4 method.
+
+        Parameters
+        ----------
+        func : Callable[[float, float], float] or str
+            The function on which you want to perform the ODE.
+        y0 : float
+            The starting point of the ODE.
+        h : float
+            The step considered for the ODE.
+        end : float
+            The final time of the ODE.
+        """
 class ODE_Scal:
     def ode(self) -> sup_vec:
-        ...
+        """
+        Solve the ODE using the selected method.
+        Prints the output in a CSV.
+
+        Returns
+        -------
+        sol : numpy.ndarray
+            Solution of the scalar ODE at each given time.
+        """
 class ODE_Vec:
     def ode(self) -> sup_vec:
-        ...
+        """
+        Solve the ODE using the selected method.
+        Prints the output in a CSV.
+
+        Returns
+        -------
+        sol : numpy.ndarray
+            Solution of the ODE at each given time.
+        """
 class PyDataFrame:
     def __call__(self, arg0: str) -> sup_col_arr_types:
         ...

@@ -21,7 +21,7 @@ columns and the data types must match the current column dtypes.
 
 Parameters
 ----------
-row : list or list[list] or numpy.typing.NDArray
+row : list or list[list] or numpy.ndarray
     A list with len 3 has 3 columns.
 )pbdoc");
     }

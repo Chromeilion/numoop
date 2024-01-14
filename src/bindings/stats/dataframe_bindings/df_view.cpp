@@ -30,7 +30,7 @@ idx : unsigned int or string
 
 Returns
 -------
-col : np.typing.NDArray[sup_col_types]
+col : numpy.ndarray
     A read-only numpy array.
 )pbdoc");
     }

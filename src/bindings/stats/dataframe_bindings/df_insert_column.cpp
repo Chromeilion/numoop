@@ -27,7 +27,7 @@ Insert a column into the DataFrame.
 
 Parameters
 ----------
-col : np.typing.NDArray
+col : numpy.ndarray
 idx : unsigned int
 label : string, optional
 )pbdoc");

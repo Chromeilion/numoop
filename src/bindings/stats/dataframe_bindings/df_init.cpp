@@ -21,5 +21,4 @@ data : list or list[list], optional
 labels : list[str], optional
 )pbdoc");
     }
-
 }

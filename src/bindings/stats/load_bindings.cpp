@@ -35,7 +35,7 @@ Load a CSV file into a DataFrame object.
 Parameters
 ----------
 filepath : str
-dataframe : numoop.PyDataFrame, optional
+dataframe : :class:`.PyDataFrame`, optional
 header : bool
     Whether the CSV file has a header.
 columns : list[int], optional
@@ -47,12 +47,12 @@ column_delimiter : str
 
 Returns
 -------
-df : numoop.PyDataFrame
+df : :class:`.PyDataFrame`
 types : list[str]
     The column types that were autodetected when loading the CSV.
 )pbdoc"
         );
-        m.def("load",
+        m.def("py_load",
               static_cast<std::pair<std::vector<std::string>,
                       oop::stats::DataFrame> (*)
                       (const std::string&,

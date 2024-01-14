@@ -1,4 +1,4 @@
-import numoop
+import numoop 
 import numpy as np
 
 #Setting the parameters for testing
@@ -33,37 +33,37 @@ def check_results(res,csv_file_path):
 class TestODE:
     
     def test_eulerscal(self) -> None:
-        eul = numoop.Euler_Scal(scal_fun, y0_scal, h, end)
+        eul = numoop.ode.Euler_Scal(scal_fun, y0_scal, h, end)
         res = eul.ode()
         csv_file_path = 'tests/csvtests/euler_scalar.csv'
         check_results(res,csv_file_path)
         
     def test_eulervec(self) -> None:
-        eul = numoop.Euler(vec_fun, y0_vec, h, end)
+        eul = numoop.ode.Euler(vec_fun, y0_vec, h, end)
         res = eul.ode()
         csv_file_path = 'tests/csvtests/euler_vector.csv'
         check_results(res,csv_file_path)
 
     def test_midpointscal(self) -> None:
-        mpt = numoop.Midpoint_Scal(scal_fun, y0_scal, h, end)
+        mpt = numoop.ode.Midpoint_Scal(scal_fun, y0_scal, h, end)
         res = mpt.ode()
         csv_file_path = 'tests/csvtests/midpoint_scalar.csv'
         check_results(res,csv_file_path)
         
     def test_midpointvec(self) -> None:
-        mpt = numoop.Midpoint(vec_fun, y0_vec, h, end)
+        mpt = numoop.ode.Midpoint(vec_fun, y0_vec, h, end)
         res = mpt.ode()
         csv_file_path = 'tests/csvtests/midpoint_vector.csv'
         check_results(res,csv_file_path)
 
     def test_rk4scal(self) -> None:
-        rk4 = numoop.RK4_Scal(scal_fun, y0_scal, h, end)
+        rk4 = numoop.ode.RK4_Scal(scal_fun, y0_scal, h, end)
         res = rk4.ode()
         csv_file_path = 'tests/csvtests/rk4_scalar.csv'
         check_results(res,csv_file_path)
         
     def test_rk4vec(self) -> None:
-        rk4 = numoop.RK4(vec_fun, y0_vec, h, end)
+        rk4 = numoop.ode.RK4(vec_fun, y0_vec, h, end)
         res = rk4.ode()
         csv_file_path = 'tests/csvtests/rk4_vector.csv'
         check_results(res,csv_file_path)

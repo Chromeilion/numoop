@@ -27,7 +27,7 @@ cat_dict: TypeAlias = dict[int, str]
 all_cat_dict: TypeAlias = dict[int, cat_dict]
 
 # Supported type of vector
-sup_vec = (npt.NDArray[np.float64])
+sup_vec = npt.NDArray[np.float64]
 # Supported type for vector function
 sup_fun_vec = Callable[[float, sup_vec], sup_vec]
 # Supported type for vector function

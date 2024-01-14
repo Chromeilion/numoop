@@ -17,7 +17,16 @@ namespace oop::ode::bindings{
 template<typename T = double>
 void BindODEVector(py::module &m, const char* classname) {
     py::class_<ODE_Vec<T>>(m, classname)
-        .def("ode", &ODE_Vec<T>::ode);
+        .def("ode", &ODE_Vec<T>::ode,
+        R"pbdoc(
+Solve the ODE using the selected method.
+Prints the output in a CSV.
+
+Returns
+-------
+sol : numpy.ndarray
+    Solution of the ODE at each given time.
+)pbdoc");
 }
 
 // Bindings for the derived class
@@ -25,20 +34,72 @@ void BindEulerVector(py::module &m) {
     BindODEVector<double>(m, "ODE_Vec");
 
     py::class_<Euler<>,ODE_Vec<double>>(m, "Euler")
-        .def(py::init<Euler<>::func_vec, y0_vec, double, double>());
+        .def(py::init<Euler<>::
+        func_vec, 
+        y0_vec, 
+        double, 
+        double>(),
+        R"pbdoc(
+Constructor for the class representing the Euler method.
+
+Parameters
+----------
+func : Callable[[float, numpy.ndarray], numpy.ndarray]
+    The function on which you want to perform the ODE.
+y0 : numpy.ndarray
+    The starting point of the ODE.
+h : float
+    The step considered for the ODE.
+end : float
+    The final time of the ODE.
+)pbdoc");
 }
 
 void BindMidpointVector(py::module &m) {
-    //BindODEVector<double>(m, "ODE_Vec_Midpoint");
 
    py::class_<Midpoint<>,ODE_Vec<double>>(m, "Midpoint")
-        .def(py::init<Midpoint<>::func_vec, y0_vec, double, double>());
+        .def(py::init<Midpoint<>::
+        func_vec, 
+        y0_vec, 
+        double, 
+        double>(),
+        R"pbdoc(
+Constructor for the class representing the Midpoint method.
+
+Parameters
+----------
+func : Callable[[float, numpy.ndarray], numpy.ndarray]
+    The function on which you want to perform the ODE.
+y0 : numpy.ndarray
+    The starting point of the ODE.
+h : float
+    The step considered for the ODE.
+end : float
+    The final time of the ODE.
+)pbdoc");
 }
 
 void BindRK4Vector(py::module &m) {
-    //BindODEVector<double>(m, "ODE_Vec_RK4");
 
     py::class_<RK4<>,ODE_Vec<double>>(m, "RK4")
-        .def(py::init<RK4<>::func_vec, y0_vec, double, double>());
+        .def(py::init<RK4<>::
+        func_vec, 
+        y0_vec, 
+        double, 
+        double>(),
+        R"pbdoc(
+Constructor for the class representing the Runge-Kutta 4 method.
+
+Parameters
+----------
+func : Callable[[float, numpy.ndarray], numpy.ndarray]
+    The function on which you want to perform the ODE.
+y0 : numpy.ndarray
+    The starting point of the ODE.
+h : float
+    The step considered for the ODE.
+end : float
+    The final time of the ODE.
+)pbdoc");
 }
 }

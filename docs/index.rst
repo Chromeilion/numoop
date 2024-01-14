@@ -21,7 +21,11 @@ Stats
    class and :func:`.load` function. These allow you to work with any kind of
    tabular data easily and with great performance.
 ODE
-   A module for solving ordinary differential equations.
+   A module for solving ordinary differential equations. Provides the classes
+   :class:`.Euler`, :class:`.Midpoint` and :class:`.RK4` with the addition of
+   their scalar implementations. Designed to work even with high precision data.
+
+
 
 Indices and tables
 ==================

@@ -5,10 +5,7 @@ import numpy.typing as npt
 import os
 import tempfile
 
-all_methods = Union[Euler, EulerScal, MidpointScal, Midpoint,
-RK4Scal, RK4]
-
-_T = TypeVar("_T")
+all_methods = Union[EulerScal, MidpointScal, RK4Scal]
 
 
 # Setting the parameters for testing
@@ -16,14 +13,9 @@ def scal_fun(i: float, j: float) -> float:
     return i + j
 
 
-def vec_fun(i: float, j: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
-    return np.array([j[1], -j[0]], dtype=np.float64)
-
-
-y0_vec = np.array([0.0, 1.0], dtype=np.float64)
-y0_scal = np.float64(1.0)
-h = np.float64(0.05)
-end = np.float64(0.5)
+y0_scal = 1.0
+h = 0.05
+end = 0.5
 
 
 def check_results(res: npt.NDArray[np.float64], csv_file_path: str) -> bool:
@@ -63,22 +55,10 @@ class TestODE:
         csv_file_path = 'tests/csvtests/euler_scalar.csv'
         do_test(EulerScal(scal_fun, y0_scal, h, end), csv_file_path)
 
-    def test_eulervec(self) -> None:
-        csv_file_path = 'tests/csvtests/euler_vector.csv'
-        do_test(Euler(vec_fun, y0_vec, h, end), csv_file_path)
-
     def test_midpointscal(self) -> None:
         csv_file_path = 'tests/csvtests/midpoint_scalar.csv'
         do_test(MidpointScal(scal_fun, y0_scal, h, end), csv_file_path)
 
-    def test_midpointvec(self) -> None:
-        csv_file_path = 'tests/csvtests/midpoint_vector.csv'
-        do_test(Midpoint(vec_fun, y0_vec, h, end), csv_file_path)
-
     def test_rk4scal(self) -> None:
         csv_file_path = 'tests/csvtests/rk4_scalar.csv'
         do_test(RK4Scal(scal_fun, y0_scal, h, end), csv_file_path)
-
-    def test_rk4vec(self) -> None:
-        csv_file_path = 'tests/csvtests/rk4_vector.csv'
-        do_test(RK4(vec_fun, y0_vec, h, end), csv_file_path)

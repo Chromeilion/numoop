@@ -28,6 +28,16 @@ class TestODE:
         res = eul.ode()
         csv_file_path = 'tests/csvtests/euler_scalar.csv'
         check_results(res,csv_file_path)
+        
+    def test_euler_vec(self) -> None:
+
+        def test_fun(i,j):
+            return np.array([y[1],-y[0]])
+        y0 = np.array([0.0, 1.0])
+        eul = numoop.Euler(test_fun, y0, 0.05, 0.5)
+        res = eul.ode()
+        csv_file_path = 'tests/csvtests/euler_vector.csv'
+        check_results(res,csv_file_path)
 
 
 

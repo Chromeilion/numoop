@@ -9,7 +9,39 @@ from .types import *
 from typing import Callable, overload
 
 __version__: str
-__all__ = ['__doc__', '__version__', 'py_load', 'PyDataFrame']
+__all__ = ['__doc__', '__version__', 'py_load', 'PyDataFrame',
+           'Euler', 'Euler_Scal', 'Midpoint', 'Midpoint_Scal',
+             'ODE_Scal', 'ODE_Vec', 'RK4', 'RK4_Scal']
+class Euler(ODE_Vec):
+    def __init__(self, arg0: sup_fun_vec, arg1: sup_vec, 
+                 arg2: float, arg3: float) -> None:
+        ...
+class Euler_Scal(ODE_Scal):
+    def __init__(self, arg0: sup_fun_scal, arg1: float,
+                  arg2: float, arg3: float) -> None:
+        ...
+class Midpoint(ODE_Vec):
+    def __init__(self, arg0: sup_fun_vec, arg1: sup_vec,
+                  arg2: float, arg3: float) -> None:
+        ...
+class Midpoint_Scal(ODE_Scal):
+    def __init__(self, arg0: sup_fun_scal, arg1: float,
+                  arg2: float, arg3: float) -> None:
+        ...
+class RK4(ODE_Vec):
+    def __init__(self, arg0: sup_fun_vec, arg1: sup_vec, 
+                 arg2: float, arg3: float) -> None:
+        ...
+class RK4_Scal(ODE_Scal):
+    def __init__(self, arg0: sup_fun_scal, arg1: float, 
+                 arg2: float, arg3: float) -> None:
+        ...
+class ODE_Scal:
+    def ode(self) -> sup_vec:
+        ...
+class ODE_Vec:
+    def ode(self) -> sup_vec:
+        ...
 class PyDataFrame:
     def __call__(self, arg0: str) -> sup_col_arr_types:
         ...

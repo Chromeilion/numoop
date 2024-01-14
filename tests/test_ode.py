@@ -68,4 +68,3 @@ class TestODE:
         csv_file_path = 'tests/csvtests/rk4_vector.csv'
         check_results(res,csv_file_path)
 
-

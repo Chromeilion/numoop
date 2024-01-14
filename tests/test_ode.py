@@ -17,13 +17,13 @@ def scal_fun(i: float, j: float) -> float:
 
 
 def vec_fun(i: float, j: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
-    return np.array([j[1], -j[0]])
+    return np.array([j[1], -j[0]], dtype=np.float64)
 
 
-y0_vec = np.array([0.0, 1.0])
-y0_scal = 1.0
-h = 0.05
-end = 0.5
+y0_vec = np.array([0.0, 1.0], dtype=np.float64)
+y0_scal = np.float64(1.0)
+h = np.float64(0.05)
+end = np.float64(0.5)
 
 
 def check_results(res: npt.NDArray[np.float64], csv_file_path: str) -> bool:
@@ -50,7 +50,11 @@ def do_test(method: all_methods, csv_filepath: str) -> None:
         os.chdir(f)
         res = method.ode()
         csv_file_path = f"{old_dir}/{csv_filepath}"
-        assert check_results(res, csv_file_path)
+        try:
+            assert check_results(res, csv_file_path)
+        except AssertionError as e:
+            os.chdir(old_dir)
+            raise e
         os.chdir(old_dir)
 
 
